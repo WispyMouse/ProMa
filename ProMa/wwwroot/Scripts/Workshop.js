@@ -367,6 +367,7 @@ function FormatNoteTextIntoHTML(text) {
 }
 
 function FormatHTMLIntoNoteText(html) {
+	console.log(html);
 	var newText = html;
 
 	// because this is a content editable, we don't need to change the <br/> in the html into \r\n, like you'd expect
@@ -453,7 +454,6 @@ function AppendNoteCreationArea($dom, noteAreaButtonFunc) {
 	var highParent = $dom.closest(".postedNote").length === 0 ? "#NoteManagement" : ".postedNote";
 
 	$dom.html("");
-
 	var oldHtmlValue = FormatHTMLIntoNoteText(oldHtml);
 
 	$dom.append(

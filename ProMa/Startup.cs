@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ProMa
 {
@@ -30,8 +31,13 @@ namespace ProMa
         {
             // Add framework services.
             services.AddMvc().AddSessionStateTempDataProvider().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+			services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+			services.AddDistributedMemoryCache();
 			services.AddHttpContextAccessor();
-			services.AddSession();
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromMinutes(20);
+			});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +58,10 @@ namespace ProMa
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+			app.UseStaticHttpContext();
+			app.UseSession();
+
+			app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
@@ -62,9 +71,6 @@ namespace ProMa
 					name: "Services",
 					template: "Services/{controller=Home}/{action=Index}/{id?}");
 			});
-
-			app.UseStaticHttpContext();
-			app.UseSession();
         }
     }
 }

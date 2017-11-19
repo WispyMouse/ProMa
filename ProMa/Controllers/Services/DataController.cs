@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using ProMa.Models;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace ProMa.Controllers
 {
@@ -19,28 +21,28 @@ namespace ProMa.Controllers
 		{
 			get
 			{
-				return null;
-				// TODO KAG: How do I get this in a static...
-				//if (ContextTools.Current.Session == null)
-				//	return null;
+				// The first time someone makes a request to the server, they don't have a session yet
+				// This checks if any features in their HttpContext are Session related; otherwise, this will crash when checking for Session values
+				if (ContextTools.Current.Features.Get<ISessionFeature>()?.Session == null)
+					return null;
 
-				//int userId = ContextTools.Current.Items[USERIDSESSIONKEY] != null ? (int)ContextTools.Current.Items[USERIDSESSIONKEY] : -1;
-				//string userPassword = ContextTools.Current.Items[USERPASSWORDSESSIONKEY] != null ? ContextTools.Current.Items[USERPASSWORDSESSIONKEY].ToString() : null;
+				int? userId = ContextTools.Current.Session.GetInt32(USERIDSESSIONKEY);
+				string userPassword = ContextTools.Current.Session.GetString(USERPASSWORDSESSIONKEY);
 
-				//if (userId == -1 || string.IsNullOrEmpty(userPassword))
-				//	return null;
+				if (!userId.HasValue || string.IsNullOrEmpty(userPassword))
+					return null;
 
-				//ProMaUser cacheUser = ProMaUserHandler.GetUser(userId);
+				ProMaUser cacheUser = ProMaUserHandler.GetUser(userId.Value);
 
-				//if (cacheUser.HashedPassword == userPassword)
-				//{
-				//	cacheUser.PassBackPassword = userPassword;
-				//	return cacheUser;
-				//}
-				//else
-				//{
-				//	return null;
-				//}
+				if (cacheUser.HashedPassword == userPassword)
+				{
+					cacheUser.PassBackPassword = userPassword;
+					return cacheUser;
+				}
+				else
+				{
+					return null;
+				}
 			}
 		}
 
@@ -52,7 +54,6 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		[AllowAnonymous]
 		public ProMaUser LogInProMaUser([FromBody]LogInProMaUserRequestObject request)
 		{
 			string shaPassword = request.skipHash ? request.password : ProMaUser.ComputeSHA256(request.password);
@@ -65,8 +66,8 @@ namespace ProMa.Controllers
 			{
 				if (relevantUser.HashedPassword == shaPassword)
 				{
-					HttpContext.Items.Add(USERIDSESSIONKEY, relevantUser.UserId);
-					HttpContext.Items.Add(USERPASSWORDSESSIONKEY, shaPassword);
+					HttpContext.Session.SetInt32(USERIDSESSIONKEY, relevantUser.UserId);
+					HttpContext.Session.SetString(USERPASSWORDSESSIONKEY, shaPassword);
 
 					relevantUser.PassBackPassword = shaPassword;
 
@@ -103,34 +104,32 @@ namespace ProMa.Controllers
 				// make sure no user with the same name
 				ProMaUser existingUser = ProMaUserHandler.GetUserByUserName(userName);
 
-				if (existingUser == null)
-				{
-					ProMaUser newUser = new ProMaUser();
-
-					newUser.HashedPassword = ProMaUser.ComputeSHA256(md5Password); ;
-					newUser.JoinTime = ProMaUser.NowTime();
-					newUser.UserName = userName;
-
-					ProMaUserHandler.AddProMaUser(newUser);
-
-					PostedNote seedNote = new PostedNote();
-					seedNote.UserId = newUser.UserId;
-					seedNote.NoteText = @"You can create new notes by using the text area in the right.\r\n\r\nNotes can have note types (see the ""as type"" selector). You can create new note types using the utilties area to the bottom right, and selecting the ""Note Types"" tab.\r\n\r\nYou can sort by note types using the filters at the bottom of the screen, among other filter options.\r\n\r\nEach note has buttons to the top right of them, like the pencil icon for editing a note or the target icon for marking it as complete. Use these to alter the notes however you would like.\r\n\r\nTry out the other tabs for useful utilities, like keeping track of daily chores, or the Egg Timer tab to handle productivity cycles.\r\n\r\nHave fun using ProMa!";
-					seedNote.PostedTime = ProMaUser.NowTime();
-					seedNote.Active = true;
-					seedNote.Completed = false;
-					seedNote.CompletedTime = null;
-					seedNote.Highlighted = false;
-					seedNote.NoteTypeId = null;
-
-					PostedNoteHandler.AddPostedNote(seedNote);
-
-					return newUser;
-				}
-				else
+				if (existingUser != null)
 				{
 					throw new Exception("User already exists by that name");
 				}
+
+				ProMaUser newUser = new ProMaUser();
+
+				newUser.HashedPassword = ProMaUser.ComputeSHA256(md5Password); ;
+				newUser.JoinTime = ProMaUser.NowTime();
+				newUser.UserName = userName;
+
+				ProMaUserHandler.AddProMaUser(newUser);
+
+				PostedNote seedNote = new PostedNote();
+				seedNote.UserId = newUser.UserId;
+				seedNote.NoteText = @"You can create new notes by using the text area in the right.\r\n\r\nNotes can have note types (see the ""as type"" selector). You can create new note types using the utilties area to the bottom right, and selecting the ""Note Types"" tab.\r\n\r\nYou can sort by note types using the filters at the bottom of the screen, among other filter options.\r\n\r\nEach note has buttons to the top right of them, like the pencil icon for editing a note or the target icon for marking it as complete. Use these to alter the notes however you would like.\r\n\r\nTry out the other tabs for useful utilities, like keeping track of daily chores, or the Egg Timer tab to handle productivity cycles.\r\n\r\nHave fun using ProMa!";
+				seedNote.PostedTime = ProMaUser.NowTime();
+				seedNote.Active = true;
+				seedNote.Completed = false;
+				seedNote.CompletedTime = null;
+				seedNote.Highlighted = false;
+				seedNote.NoteTypeId = null;
+
+				PostedNoteHandler.AddPostedNote(seedNote);
+
+				return newUser;
 			}
 		}
 
@@ -191,7 +190,7 @@ namespace ProMa.Controllers
 				return false;
 			else
 			{
-				HttpContext.Items["tick"] = ProMaUser.NowTime().Second; // add something to the session so that the heartbeat stays alive
+				HttpContext.Session.SetInt32("tick", ProMaUser.NowTime().Second); // add something to the session so that the heartbeat stays alive
 				return true;
 			}
 		}

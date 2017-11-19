@@ -49,7 +49,7 @@ function SetUserInformation(ProMaUserEntityObject) {
 function GetLoggedInUserInfo() {
 	var def = $.Deferred();
 
-	AjaxCallWithWait("/Services/Data/GetLoggedInUser", null, $(".loginPending"))
+	AjaxCallWithWait("/Services/Data/GetLoggedInUser", null, $(".loginPending"), true, false, false, false, "GET")
 	.done(function (msg) {
 		SetUserInformation(msg);
 
