@@ -34,8 +34,8 @@ if (typeof PostedNotes == "undefined") {
 
 				AjaxCallWithWait("/Services/PostedNotes.asmx/PostNote", data, $("#PostNote").find("button.noteAreaButton"), true)
 				.done(function (msg) {
-					if (msg.d != null) {
-						PostedNotes.AppendNote(msg.d, true);
+					if (msg != null) {
+						PostedNotes.AppendNote(msg, true);
 						$("#PostNote").find(".noteTextInput").html("");
 					}
 				});
@@ -178,7 +178,7 @@ if (typeof PostedNotes == "undefined") {
 
 			AjaxCallWithWait("/Services/PostedNotes.asmx/SetNoteActive", data, $(dom), true)
 			.done(function (msg) {
-				PostedNotes.AppendNote(msg.d, true);
+				PostedNotes.AppendNote(msg, true);
 				def.resolve();
 			}).fail(function (msg) {
 				def.reject();
@@ -224,7 +224,7 @@ if (typeof PostedNotes == "undefined") {
 
 				AjaxCallWithWait("/Services/PostedNotes.asmx/EditNote", data, $dom, true)
 				.done(function (msg) {
-					PostedNotes.AppendNote(msg.d, true);
+					PostedNotes.AppendNote(msg, true);
 				});
 			} else {
 				AddFadingWarning($noteTextArea, "No note written", true);
@@ -248,7 +248,7 @@ if (typeof PostedNotes == "undefined") {
 
 			AjaxCallWithWait("/Services/PostedNotes.asmx/ToggleHighlightNote", data, $dom, true)
 			.done(function (msg) {
-				PostedNotes.AppendNote(msg.d, true);
+				PostedNotes.AppendNote(msg, true);
 			});
 		},
 		CompleteNote: function (dom, amount) {
@@ -259,7 +259,7 @@ if (typeof PostedNotes == "undefined") {
 
 			AjaxCallWithWait("/Services/PostedNotes.asmx/SetNoteProgress", data, $dom, true)
 			.done(function (msg) {
-				PostedNotes.AppendNote(msg.d, true);
+				PostedNotes.AppendNote(msg, true);
 			});
 		},
 		GetAllNotes: function (updateCookies) {
@@ -279,7 +279,7 @@ if (typeof PostedNotes == "undefined") {
 			.done(function (msg) {
 				$("#NoteLandingZone").html("");
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					PostedNotes.AppendNote(value, false);
 				});
 
@@ -401,7 +401,7 @@ if (typeof PostedNotes == "undefined") {
 
 			var $textArea = $(dom).closest(highParent).find(".noteTextInput");
 
-			AjaxCallWithWait("/Services/Data.asmx/UploadImage", formData, $(dom), true, false, true, false).done(function (msg) {
+			AjaxCallWithWait("/Services/Data/UploadImage", formData, $(dom), true, false, true, false).done(function (msg) {
 				var text = $textArea.html();
 				var addBreaklineToBefore = text.length === 0 ?
 					false :

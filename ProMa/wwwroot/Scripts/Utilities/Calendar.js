@@ -24,7 +24,7 @@ if (typeof Calendar === "undefined") {
 			.done(function (msg) {
 				$("#CalendarItems").html("<ul></ul>");
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					value.ForDate = ParseDateFromJSONReturn(value.ForDate);
 
 					$("#CalendarItems ul").append(

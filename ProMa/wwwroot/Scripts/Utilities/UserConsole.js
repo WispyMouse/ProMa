@@ -45,7 +45,7 @@ if (typeof UserConsole === "undefined") {
 			AjaxCallWithWait("/Services/UserConsole.asmx/UsersForFriendRequest", data, $("#ChoreItems"), true, true).done(function (msg) {
 				$("#UserConsoleSearchResults").html("<ul></ul>");
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					$("#UserConsoleSearchResults").find("ul").append("<li>" + value.UserName + "<span class='noteActionList'><span class='noteAction'><a href='javascript:void(0);' onclick='UserConsole.SendFriendRequest(" + value.UserId + ", this);'><span title='Send friend request' class='promaicon promaicon-friendrequest'></span></a></span></span></li>");
 				});
 			});
@@ -61,14 +61,14 @@ if (typeof UserConsole === "undefined") {
 			}
 
 			AjaxCallWithWait("/Services/UserConsole.asmx/GetFriendshipRequests", null, $hideDom, true, true).done(function (msg) {
-				if (msg.d.length > 0) {
+				if (msg.length > 0) {
 					$("#PendingUserConsole").html("<ul></ul>");
 				}
 				else {
 					$("#PendingUserConsole").html("");
 				}
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					$("#PendingUserConsole").find("ul").append(
 						"<li>" + (value.Sender.UserId !== LoggedInUser.userId ? value.Sender.UserName : value.Recipient.UserName) +
 							"<span class='noteActionList'>" +
@@ -115,12 +115,12 @@ if (typeof UserConsole === "undefined") {
 			});
 		},
 		UpdateFriends: function () {
-			AjaxCallWithWait("/Services/Data.asmx/GetFriends", null, $("#ShareNoteTypeUserTarget"), true, false).done(function (msg) {
+			AjaxCallWithWait("/Services/Data/GetFriends", null, $("#ShareNoteTypeUserTarget"), true, false).done(function (msg) {
 				var targetHtml = "";
 
 				$("#existingFriends").html("");
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					targetHtml += "<option value='" + value.UserId + "'>" + value.UserName + "</option>";
 					$("#existingFriends").append(
 						"<li data-userid=" + value.UserId + "><span>" + value.UserName + "</span>" +

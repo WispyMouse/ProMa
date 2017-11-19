@@ -27,7 +27,7 @@ if (typeof FunStuff === "undefined") {
 			var data = { noteTypeId: $("#MarkovNoteTypes").val() };
 
 			AjaxCallWithWait("/Services/FunStuff.asmx/MarkovPostedNote", data, $("#MarkovChainButton"), true, false).done(function (msg) {
-				$("#MarkovLanding").html("<p>" + FormatNoteTextIntoHTML(msg.d) + "</p>");
+				$("#MarkovLanding").html("<p>" + FormatNoteTextIntoHTML(msg) + "</p>");
 			});
 		}
 	}

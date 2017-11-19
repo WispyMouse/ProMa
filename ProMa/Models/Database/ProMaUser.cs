@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ProMa.Models
 {
@@ -28,7 +31,11 @@ namespace ProMa.Models
         public string EmailAddress { get; set; }
         public bool IsDemo { get; set; }
 
-        public ICollection<CalendarEntry> CalendarEntries { get; set; }
+		// Used for meta calls so the user can be relogged in
+		[NotMapped]
+		public string PassBackPassword { get; set; }
+
+		public ICollection<CalendarEntry> CalendarEntries { get; set; }
         public ICollection<FriendshipRequest> FriendshipRequestsRecipient { get; set; }
         public ICollection<FriendshipRequest> FriendshipRequestsSender { get; set; }
         public ICollection<Friendship> FriendshipsMemberOne { get; set; }
@@ -42,6 +49,48 @@ namespace ProMa.Models
 		public static DateTime NowTime(int utcOffset = 0)
 		{
 			return DateTime.UtcNow.ToUniversalTime().AddHours(utcOffset);
+		}
+
+		// The password hashing method is to take the md5 input
+		// then do a SHA256 hash of the result
+		// this is just to avoid having plain text sent over http requests
+		public static string ComputeMD5Hash(string plaintextPassword)
+		{
+			byte[] bytes = Encoding.UTF8.GetBytes(plaintextPassword);
+			byte[] hash = MD5.Create().ComputeHash(bytes);
+			string hashString = string.Empty;
+			foreach (byte theByte in hash)
+			{
+				hashString += theByte.ToString("x2");
+			}
+
+			return hashString;
+		}
+
+		public static string ComputeSHA256(string md5EncodedPassword)
+		{
+			byte[] bytes = Encoding.UTF8.GetBytes(md5EncodedPassword);
+			SHA256Managed hashstring = new SHA256Managed();
+			byte[] hash = hashstring.ComputeHash(bytes);
+			string hashString = string.Empty;
+			foreach (byte theByte in hash)
+			{
+				hashString += theByte.ToString("x2");
+			}
+
+			return hashString;
+		}
+
+		public static bool VerifyName(string name)
+		{
+			if (string.IsNullOrWhiteSpace(name) || name.Contains("@") || name.Contains(" ") || name.Contains("'") || name.Contains("\"") || name.Length > 20)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
 }

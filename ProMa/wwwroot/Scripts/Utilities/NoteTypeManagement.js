@@ -51,7 +51,7 @@ if (typeof NoteTypeManagement === "undefined") {
 				var defaultNoteTypePost = GetCookie(DEFAULTNOTETYPECOOKIENAME, -1);
 				var defaultNoteTypePostFound = false;
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					var canPostNote = true;
 					var isOwner = true;
 					var hibernated = value.Hibernated;

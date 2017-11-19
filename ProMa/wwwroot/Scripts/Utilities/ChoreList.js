@@ -61,7 +61,7 @@ if (typeof ChoreList === "undefined") {
 			AjaxCallWithWait("/Services/Chores.asmx/GetChoreItems", data, $("#ChoreItems"), true, true)
 			.done(function (msg) {
 				$("#ChoreItems").html("");
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					var completionString = "";
 
 					if (value.UserId !== null) {
@@ -186,7 +186,7 @@ if (typeof ChoreList === "undefined") {
 			.done(function (msg) {
 				var userSelectorHtml = "<option value='-1'>(none)</option>";
 
-				$.each(msg.d, function (index, value) {
+				$.each(msg, function (index, value) {
 					userSelectorHtml += "<option value='" + value.UserId + "'>" + value.UserName + "</option>";
 				});
 

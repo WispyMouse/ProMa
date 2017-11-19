@@ -94,8 +94,8 @@ function ShowWorkshop() {
 }
 
 function HeartBeat() {
-	AjaxCallWithWait("/Services/Data.asmx/HeartBeat", null).done(function (msg) {
-		if (msg.d === true) {
+	AjaxCallWithWait("/Services/Data/HeartBeat", null).done(function (msg) {
+		if (msg === true) {
 			AdminConsole.AddHeartBeat();
 			setTimeout(HeartBeat, 100000);
 		} else {
@@ -155,7 +155,7 @@ function UploadImage(dom, highParent) {
 
 		var $textArea = $(dom).closest(highParent).find(".noteTextInput");
 
-		AjaxCallWithWait("/Services/Data.asmx/UploadImage", formData, $(dom), true, false, true, false).done(function (msg) {
+		AjaxCallWithWait("/Services/Data/UploadImage", formData, $(dom), true, false, true, false).done(function (msg) {
 			$textArea.html($textArea.html() + ($textArea.html().length !== 0 ? "\r\n" : "") + "[[image:" + msg.fileName + "]]\r\n");
 			$(dom).parent().find("input[type=file]").val("");
 		}).fail(function (msg) {
@@ -406,14 +406,14 @@ var friendshipCacheVersion = -1;
 function LongPoll() {
 	var data = { userId: LoggedInUser.userId, choreCacheVersion: choreCacheVersion, friendshipCacheVersion: friendshipCacheVersion };
 
-	AjaxCallWithWait("/Services/Data.asmx/LongPoll", data).done(function (msg) {
-		var responseChoreCacheVersion = ValueOfKeyInKeyValuePairArray(msg.d, "choreCacheVersion");
+	AjaxCallWithWait("/Services/Data/LongPoll", data).done(function (msg) {
+		var responseChoreCacheVersion = ValueOfKeyInKeyValuePairArray(msg, "choreCacheVersion");
 		if (choreCacheVersion !== responseChoreCacheVersion) {
 			ChoreList.GetChoreItems();
 			choreCacheVersion = responseChoreCacheVersion;
 		}
 
-		var responseFriendshipCacheVersion = ValueOfKeyInKeyValuePairArray(msg.d, "friendshipCacheVersion");
+		var responseFriendshipCacheVersion = ValueOfKeyInKeyValuePairArray(msg, "friendshipCacheVersion");
 		if (friendshipCacheVersion !== responseFriendshipCacheVersion) {
 			UserConsole.UpdateFriends();
 			friendshipCacheVersion = responseFriendshipCacheVersion;

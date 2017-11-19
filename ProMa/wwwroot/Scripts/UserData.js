@@ -21,8 +21,8 @@ function LoginWithInformation(userName, password, skipHash) {
 
 	var data = { userName: userName, password: password, skipHash: skipHash };
 
-	AjaxCallWithWait("/Services/Data.asmx/LogInProMaUser", data, $(".loginWaiter"), true).done(function (msg) {
-		SetUserInformation(msg.d);
+	AjaxCallWithWait("/Services/Data/LogInProMaUser", data, $(".loginWaiter"), true).done(function (msg) {
+		SetUserInformation(msg);
 		def.resolve();
 	}).fail(function (msg) {
 		def.reject();
@@ -32,6 +32,7 @@ function LoginWithInformation(userName, password, skipHash) {
 }
 
 function SetUserInformation(ProMaUserEntityObject) {
+	console.log(ProMaUserEntityObject);
 	SetCookie(USERNAMECOOKIE, ProMaUserEntityObject.UserName);
 
 	LoggedInUser = {
@@ -48,9 +49,9 @@ function SetUserInformation(ProMaUserEntityObject) {
 function GetLoggedInUserInfo() {
 	var def = $.Deferred();
 
-	AjaxCallWithWait("/Services/Data.asmx/GetLoggedInUser", null, $(".loginPending"))
+	AjaxCallWithWait("/Services/Data/GetLoggedInUser", null, $(".loginPending"))
 	.done(function (msg) {
-		SetUserInformation(msg.d);
+		SetUserInformation(msg);
 
 		def.resolve();
 	}).fail(function (msg) {
@@ -97,7 +98,7 @@ function RegisterProMaUser() {
 
 		var data = { userName: userName, md5Password: md5Password, skipHash: false };
 
-		AjaxCallWithWait("/Services/Data.asmx/RegisterProMaUser", data, $("#Register"), true)
+		AjaxCallWithWait("/Services/Data/RegisterProMaUser", data, $("#Register"), true)
 		.done(function (msg) {
 			LogInProMaUser();
 		}).fail(function (msg) {
@@ -107,7 +108,7 @@ function RegisterProMaUser() {
 }
 
 function LogOutUser() {
-	AjaxCallWithWait("/Services/Data.asmx/LogOutUser", null).done(function () {
+	AjaxCallWithWait("/Services/Data/LogOutUser", null).done(function () {
 		location.reload();
 	});
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace ProMa
 {
@@ -28,8 +29,9 @@ namespace ProMa
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc().AddSessionStateTempDataProvider().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 			services.AddHttpContextAccessor();
+			services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,9 +57,14 @@ namespace ProMa
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
+
+				routes.MapRoute(
+					name: "Services",
+					template: "Services/{controller=Home}/{action=Index}/{id?}");
+			});
 
 			app.UseStaticHttpContext();
+			app.UseSession();
         }
     }
 }

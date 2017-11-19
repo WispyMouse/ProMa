@@ -17,7 +17,7 @@ if (typeof AdminConsole === "undefined") {
 					);
 
 				AjaxCallWithWait("/Services/AdminConsole.asmx/GetMostRecentUsers", null, $("#MostRecentUsers").closest(".formSet"), true, true).done(function (msg) {
-					$.each(msg.d, function (index, value) {
+					$.each(msg, function (index, value) {
 						$("#MostRecentUsers").append("<li><span>" + value.UserName + ", Email: " + (value.EmailAddress !== null ? value.EmailAddress : "<i class='weaktext'>(none)</i>") + ", Joined: " + FormatDateString(ParseDateFromJSONReturn(value.JoinTime), TimeModes.JUSTDATEMODE, DateModes.REMOVEYEARIFSAME) + "</span></li>");
 					});
 				});
