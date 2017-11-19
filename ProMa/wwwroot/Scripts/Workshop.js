@@ -17,7 +17,7 @@ function ShowWorkshop() {
 
 	$("#UnloggedArea").remove();
 
-	$("#SiteForm").append(
+	$("body").append(
 		"<div id='TopBar'>&nbsp;</div>" +
 		"<div id='WorkshopHolder'>" +
 			"<div id='NoteGutter'></div>" +
@@ -367,7 +367,6 @@ function FormatNoteTextIntoHTML(text) {
 }
 
 function FormatHTMLIntoNoteText(html) {
-	console.log(html);
 	var newText = html;
 
 	// because this is a content editable, we don't need to change the <br/> in the html into \r\n, like you'd expect

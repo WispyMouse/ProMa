@@ -32,7 +32,7 @@ if (typeof PostedNotes == "undefined") {
 
 				var data = { noteText: noteText, noteTypeId: noteTypeId };
 
-				AjaxCallWithWait("/Services/PostedNotes.asmx/PostNote", data, $("#PostNote").find("button.noteAreaButton"), true)
+				AjaxCallWithWait("/Services/PostedNotes/PostNote", data, $("#PostNote").find("button.noteAreaButton"), true)
 				.done(function (msg) {
 					if (msg != null) {
 						PostedNotes.AppendNote(msg, true);
@@ -176,7 +176,7 @@ if (typeof PostedNotes == "undefined") {
 
 			var data = { noteId: thisNote.NoteId, active: value };
 
-			AjaxCallWithWait("/Services/PostedNotes.asmx/SetNoteActive", data, $(dom), true)
+			AjaxCallWithWait("/Services/PostedNotes/SetNoteActive", data, $(dom), true)
 			.done(function (msg) {
 				PostedNotes.AppendNote(msg, true);
 				def.resolve();
@@ -222,7 +222,7 @@ if (typeof PostedNotes == "undefined") {
 
 				$noteTextArea.parent().html(text);
 
-				AjaxCallWithWait("/Services/PostedNotes.asmx/EditNote", data, $dom, true)
+				AjaxCallWithWait("/Services/PostedNotes/EditNote", data, $dom, true)
 				.done(function (msg) {
 					PostedNotes.AppendNote(msg, true);
 				});
@@ -246,7 +246,7 @@ if (typeof PostedNotes == "undefined") {
 			var thisNote = $dom.PostedNote();
 			var data = { noteId: thisNote.NoteId };
 
-			AjaxCallWithWait("/Services/PostedNotes.asmx/ToggleHighlightNote", data, $dom, true)
+			AjaxCallWithWait("/Services/PostedNotes/ToggleHighlightNote", data, $dom, true)
 			.done(function (msg) {
 				PostedNotes.AppendNote(msg, true);
 			});
@@ -257,7 +257,7 @@ if (typeof PostedNotes == "undefined") {
 
 			var data = { noteId: thisNote.NoteId, progressLevel: amount };
 
-			AjaxCallWithWait("/Services/PostedNotes.asmx/SetNoteProgress", data, $dom, true)
+			AjaxCallWithWait("/Services/PostedNotes/SetNoteProgress", data, $dom, true)
 			.done(function (msg) {
 				PostedNotes.AppendNote(msg, true);
 			});
@@ -275,7 +275,7 @@ if (typeof PostedNotes == "undefined") {
 
 			var data = { sortOption: sortOption };
 
-			AjaxCallWithWait("/Services/PostedNotes.asmx/GetAllNotes", data, $(".bigWaitHolder"), false, true)
+			AjaxCallWithWait("/Services/PostedNotes/GetAllNotes", data, $(".bigWaitHolder"), false, true)
 			.done(function (msg) {
 				$("#NoteLandingZone").html("");
 

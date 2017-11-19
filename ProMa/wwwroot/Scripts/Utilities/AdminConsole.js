@@ -16,7 +16,7 @@ if (typeof AdminConsole === "undefined") {
 					"<div id='HeartBeatArea'></div>"
 					);
 
-				AjaxCallWithWait("/Services/AdminConsole.asmx/GetMostRecentUsers", null, $("#MostRecentUsers").closest(".formSet"), true, true).done(function (msg) {
+				AjaxCallWithWait("/Services/AdminConsole/GetMostRecentUsers", null, $("#MostRecentUsers").closest(".formSet"), true, true).done(function (msg) {
 					$.each(msg, function (index, value) {
 						$("#MostRecentUsers").append("<li><span>" + value.UserName + ", Email: " + (value.EmailAddress !== null ? value.EmailAddress : "<i class='weaktext'>(none)</i>") + ", Joined: " + FormatDateString(ParseDateFromJSONReturn(value.JoinTime), TimeModes.JUSTDATEMODE, DateModes.REMOVEYEARIFSAME) + "</span></li>");
 					});
@@ -28,7 +28,7 @@ if (typeof AdminConsole === "undefined") {
 			}
 		},
 		ResetCaches: function () {
-			AjaxCallWithWait("/Services/AdminConsole.asmx/ResetCaches", null, $("#ResetCaches"));
+			AjaxCallWithWait("/Services/AdminConsole/ResetCaches", null, $("#ResetCaches"));
 		},
 		AddHeartBeat: function () {
 			var nowTime = new Date();

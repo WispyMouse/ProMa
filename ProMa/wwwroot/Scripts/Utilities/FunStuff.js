@@ -26,7 +26,7 @@ if (typeof FunStuff === "undefined") {
 		MarkovChain: function () {
 			var data = { noteTypeId: $("#MarkovNoteTypes").val() };
 
-			AjaxCallWithWait("/Services/FunStuff.asmx/MarkovPostedNote", data, $("#MarkovChainButton"), true, false).done(function (msg) {
+			AjaxCallWithWait("/Services/FunStuff/MarkovPostedNote", data, $("#MarkovChainButton"), true, false).done(function (msg) {
 				$("#MarkovLanding").html("<p>" + FormatNoteTextIntoHTML(msg) + "</p>");
 			});
 		}

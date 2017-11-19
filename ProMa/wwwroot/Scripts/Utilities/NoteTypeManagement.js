@@ -34,7 +34,7 @@ if (typeof NoteTypeManagement === "undefined") {
 		GetNoteTypes: function () {
 			var def = $.Deferred();
 
-			AjaxCallWithWait("/Services/NoteTypes.asmx/GetNoteTypes", null, $("#NoteTypeSelector"), true, false)
+			AjaxCallWithWait("/Services/NoteTypes/GetNoteTypes", null, $("#NoteTypeSelector"), true, false)
 			.done(function (msg) {
 				var ownNoteTypesLabel = "Own Note Types";
 				var sharedNoteTypesLabel = "Note Types Shared With You";
@@ -135,7 +135,7 @@ if (typeof NoteTypeManagement === "undefined") {
 
 				$("#AddNoteType").find("input").val("");
 
-				AjaxCallWithWait("/Services/NoteTypes.asmx/AddNoteType", data, $("#AddNoteType").find("button"), true, false)
+				AjaxCallWithWait("/Services/NoteTypes/AddNoteType", data, $("#AddNoteType").find("button"), true, false)
 				.done(function (msg) {
 					NoteTypeManagement.GetNoteTypes();
 				});
@@ -145,7 +145,7 @@ if (typeof NoteTypeManagement === "undefined") {
 			if (confirm("Are you sure you want to delete this note type? All notes of this type will be set to inactive. There is no way to quickly restore this note type.")) {
 				var data = { noteTypeId: $("#NoteTypeSelector").val() }
 
-				AjaxCallWithWait("/Services/NoteTypes.asmx/DeleteNoteType", data, $("#DeleteNoteType").find("button"), true, false)
+				AjaxCallWithWait("/Services/NoteTypes/DeleteNoteType", data, $("#DeleteNoteType").find("button"), true, false)
 				.done(function (msg) {
 					NoteTypeManagement.GetNoteTypes();
 				});
@@ -155,7 +155,7 @@ if (typeof NoteTypeManagement === "undefined") {
 			if (confirm("Are you sure you want to hibernate this note type? Notes of this type won't show up in your normal note stream, and you won't be able to make more notes of this type. You can restore this note type easily by clicking this button again.")) {
 				var data = { noteTypeId: $("#NoteTypeSelector").val() }
 
-				AjaxCallWithWait("/Services/NoteTypes.asmx/HibernateNoteType", data, $("#HibernateNoteType").find("button"), true, false)
+				AjaxCallWithWait("/Services/NoteTypes/HibernateNoteType", data, $("#HibernateNoteType").find("button"), true, false)
 				.done(function (msg) {
 					NoteTypeManagement.GetNoteTypes();
 				});
@@ -164,7 +164,7 @@ if (typeof NoteTypeManagement === "undefined") {
 		RestoreNoteType: function () {
 			var data = { noteTypeId: $("#NoteTypeSelector").val() }
 
-			AjaxCallWithWait("/Services/NoteTypes.asmx/RestoreNoteType", data, $("#HibernateNoteType").find("button"), true, false)
+			AjaxCallWithWait("/Services/NoteTypes/RestoreNoteType", data, $("#HibernateNoteType").find("button"), true, false)
 			.done(function (msg) {
 				NoteTypeManagement.GetNoteTypes();
 			});
@@ -176,7 +176,7 @@ if (typeof NoteTypeManagement === "undefined") {
 
 			var data = { noteTypeId: noteTypeId, userId: userId, canEdit: canEdit };
 
-			AjaxCallWithWait("/Services/NoteTypes.asmx/ShareNoteType", data, $("#ShareNoteType").find("button"), true, false).done(function () {
+			AjaxCallWithWait("/Services/NoteTypes/ShareNoteType", data, $("#ShareNoteType").find("button"), true, false).done(function () {
 				NoteTypeManagement.GetNoteTypes();
 			});
 		},
@@ -196,7 +196,7 @@ if (typeof NoteTypeManagement === "undefined") {
 			var data = { noteTypeId: noteTypeId };
 
 			if (confirm("Are you sure you want to remove yourself from this note type? The owner of the note type would have to share it with you again to see that note type.")) {
-				AjaxCallWithWait("/Services/NoteTypes.asmx/RemoveFromNoteType", data, $(dom), true).done(function (msg) {
+				AjaxCallWithWait("/Services/NoteTypes/RemoveFromNoteType", data, $(dom), true).done(function (msg) {
 					NoteTypeManagement.GetNoteTypes();
 				});
 			}
@@ -207,7 +207,7 @@ if (typeof NoteTypeManagement === "undefined") {
 			if (data.newName.trim().length === 0 || data.newName.indexOf("'") !== -1 || data.newName.indexOf('"') !== -1 || data.newName.indexOf("\\") !== -1) {
 				AddFadingWarning($("#RenameNoteForm").find("input"), "Invalid note type name", true);
 			} else {
-				AjaxCallWithWait("/Services/NoteTypes.asmx/RenameNoteType", data, $("#RenameNoteForm").find("button"), true).done(function (msg) {
+				AjaxCallWithWait("/Services/NoteTypes/RenameNoteType", data, $("#RenameNoteForm").find("button"), true).done(function (msg) {
 					NoteTypeManagement.GetNoteTypes();
 				});
 			}

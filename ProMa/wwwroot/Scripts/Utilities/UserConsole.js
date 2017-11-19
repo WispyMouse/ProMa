@@ -42,7 +42,7 @@ if (typeof UserConsole === "undefined") {
 		SearchForFriends: function () {
 			var data = { name: $("#UserNameContains").val(), excludeOwn: true };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/UsersForFriendRequest", data, $("#ChoreItems"), true, true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/UsersForFriendRequest", data, $("#ChoreItems"), true, true).done(function (msg) {
 				$("#UserConsoleSearchResults").html("<ul></ul>");
 
 				$.each(msg, function (index, value) {
@@ -60,7 +60,7 @@ if (typeof UserConsole === "undefined") {
 				$hideDom = null;
 			}
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/GetFriendshipRequests", null, $hideDom, true, true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/GetFriendshipRequests", null, $hideDom, true, true).done(function (msg) {
 				if (msg.length > 0) {
 					$("#PendingUserConsole").html("<ul></ul>");
 				}
@@ -89,28 +89,28 @@ if (typeof UserConsole === "undefined") {
 		SendFriendRequest: function (userId, dom) {
 			var data = { toUser: userId };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/SendFriendRequest", data, $(dom), true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/SendFriendRequest", data, $(dom), true).done(function (msg) {
 				UserConsole.SearchForFriends();
 			});
 		},
 		AcceptFriendRequest: function (userId, dom) {
 			var data = { fromUser: userId };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/AcceptFriendRequest", data, $(dom), true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/AcceptFriendRequest", data, $(dom), true).done(function (msg) {
 				// This will refresh thanks to the long poll
 			});
 		},
 		RejectFriendRequest: function (userId, dom) {
 			var data = { fromUser: userId };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/RejectFriendRequest", data, $(dom), true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/RejectFriendRequest", data, $(dom), true).done(function (msg) {
 				// This will refresh thanks to the long poll
 			});
 		},
 		CancelFriendRequest: function (userId, dom) {
 			var data = { recipient: userId };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/CancelFriendRequest", data, $(dom), true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/CancelFriendRequest", data, $(dom), true).done(function (msg) {
 				// This will refresh thanks to the long poll
 			});
 		},
@@ -137,7 +137,7 @@ if (typeof UserConsole === "undefined") {
 		ChangeEnterPref: function () {
 			var data = { value: $("#EnterNoteAreaRadio").find("input[value=true]")[0].checked };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/ChangeEnterPref", data, $("#EnterNoteAreaRadio"), true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/ChangeEnterPref", data, $("#EnterNoteAreaRadio"), true).done(function (msg) {
 				LoggedInUser.enterAsNewlinePref = data.value;
 			});
 		},
@@ -145,7 +145,7 @@ if (typeof UserConsole === "undefined") {
 			var data = { fromUser: userId };
 
 			if (confirm("Are you sure you want to remove this friendship?")) {
-				AjaxCallWithWait("/Services/UserConsole.asmx/RemoveFriend", data, $(dom), true).done(function (msg) {
+				AjaxCallWithWait("/Services/UserConsole/RemoveFriend", data, $(dom), true).done(function (msg) {
 					UserConsole.GetPendingUserConsole();
 				});
 			}
@@ -153,7 +153,7 @@ if (typeof UserConsole === "undefined") {
 		SaveEmailAddress: function () {
 			var data = { emailAddress: $("#UserEmailAddress").find("input").val() };
 
-			AjaxCallWithWait("/Services/UserConsole.asmx/UpdateEmailAddress", data, $("#UserEmailAddress").find("button"), true).done(function (msg) {
+			AjaxCallWithWait("/Services/UserConsole/UpdateEmailAddress", data, $("#UserEmailAddress").find("button"), true).done(function (msg) {
 			});
 		},
 		ChangeUsername: function () {
@@ -162,7 +162,7 @@ if (typeof UserConsole === "undefined") {
 			if (!VerifyBasicCleanliness(data.userName)) {
 				AddFadingWarning($("#ChangeUserName"), "Invalid user name", true);
 			} else {
-				AjaxCallWithWait("/Services/UserConsole.asmx/ChangeUsername", data, $("#ChangeUserName").find("button"), true).done(function (msg) {
+				AjaxCallWithWait("/Services/UserConsole/ChangeUsername", data, $("#ChangeUserName").find("button"), true).done(function (msg) {
 					alert("The screen will now refresh. Login with your new information.");
 					LogOutUser();
 				}).fail(function (msg) {
@@ -176,7 +176,7 @@ if (typeof UserConsole === "undefined") {
 			} else {
 				var data = { md5Password: $.md5($("#ChangePassword").find("input").val()) };
 
-				AjaxCallWithWait("/Services/UserConsole.asmx/ChangePassword", data, $("#ChangePassword").find("button"), true).done(function (msg) {
+				AjaxCallWithWait("/Services/UserConsole/ChangePassword", data, $("#ChangePassword").find("button"), true).done(function (msg) {
 					alert("The screen will now refresh. Login with your new information.");
 					LogOutUser();
 				}).fail(function (msg) {

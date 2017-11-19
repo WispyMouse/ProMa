@@ -20,7 +20,7 @@ if (typeof Calendar === "undefined") {
 			Calendar.GetItems();
 		},
 		GetItems: function () {
-			AjaxCallWithWait("/Services/Calendar.asmx/GetCalendarEntries", { utcOffset: GetTimezoneOffsetInHours() }, $("#CalendarItems"), true, true)
+			AjaxCallWithWait("/Services/Calendar/GetCalendarEntries", { utcOffset: GetTimezoneOffsetInHours() }, $("#CalendarItems"), true, true)
 			.done(function (msg) {
 				$("#CalendarItems").html("<ul></ul>");
 
@@ -55,7 +55,7 @@ if (typeof Calendar === "undefined") {
 				yearly: $("#CalendarYearly")[0].checked
 			};
 
-			AjaxCallWithWait("/Services/Calendar.asmx/AddCalendar", data, $("#Calendar button"), true, true)
+			AjaxCallWithWait("/Services/Calendar/AddCalendar", data, $("#Calendar button"), true, true)
 			.done(function (msg) {
 				Calendar.GetItems();
 			});
@@ -64,7 +64,7 @@ if (typeof Calendar === "undefined") {
 			if (confirm("Are you certain you want to delete this calendar entry?")) {
 				var data = { calendarId: $(button).closest("li").attr("data-calendarid") };
 
-				AjaxCallWithWait("/Services/Calendar.asmx/DeleteCalendar", data, $(button).closest("li"), true, false)
+				AjaxCallWithWait("/Services/Calendar/DeleteCalendar", data, $(button).closest("li"), true, false)
 				.done(function (msg) {
 					Calendar.GetItems();
 				});

@@ -21,7 +21,7 @@ function LoginWithInformation(userName, password, skipHash) {
 
 	var data = { userName: userName, password: password, skipHash: skipHash };
 
-	AjaxCallWithWait("/Services/Data/LogInProMaUser", data, $(".loginWaiter"), true).done(function (msg) {
+	AjaxCallWithWait("/Services/Data/LogInProMaUser", data, $(".loginWaiter"), true, false, false, true, "POST").done(function (msg) {
 		SetUserInformation(msg);
 		def.resolve();
 	}).fail(function (msg) {
@@ -98,7 +98,7 @@ function RegisterProMaUser() {
 
 		var data = { userName: userName, md5Password: md5Password, skipHash: false };
 
-		AjaxCallWithWait("/Services/Data/RegisterProMaUser", data, $("#Register"), true)
+		AjaxCallWithWait("/Services/Data/RegisterProMaUser", data, $("#Register"), true, false, false, false, "POST")
 		.done(function (msg) {
 			LogInProMaUser();
 		}).fail(function (msg) {

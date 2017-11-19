@@ -31,7 +31,7 @@ if (typeof ChoreList === "undefined") {
 
 					$("#ChoreList").find(".addItem").find("input").val("");
 
-					AjaxCallWithWait("/Services/Chores.asmx/AddNewChore", data, $("#ChoreList").find(".addItem").find("button"), true)
+					AjaxCallWithWait("/Services/Chores/AddNewChore", data, $("#ChoreList").find(".addItem").find("button"), true)
 					.done(function (msg) {
 						// This will refresh thanks to the long poll
 					});
@@ -58,7 +58,7 @@ if (typeof ChoreList === "undefined") {
 			var nowTime = new Date();
 
 			var data = { year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1, day: selectedDate.getDate() };
-			AjaxCallWithWait("/Services/Chores.asmx/GetChoreItems", data, $("#ChoreItems"), true, true)
+			AjaxCallWithWait("/Services/Chores/GetChoreItems", data, $("#ChoreItems"), true, true)
 			.done(function (msg) {
 				$("#ChoreItems").html("");
 				$.each(msg, function (index, value) {
@@ -131,7 +131,7 @@ if (typeof ChoreList === "undefined") {
 							data.pairings.push({ Key: parseInt($(value).attr("data-choreid")), Value: index });
 						});
 
-						AjaxCallWithWait("/Services/Chores.asmx/RememberSorting", data, $("#ChoreItems"), true, true).done(function () {
+						AjaxCallWithWait("/Services/Chores/RememberSorting", data, $("#ChoreItems"), true, true).done(function () {
 							ChoreList.GetChoreItems();
 						});
 					}
@@ -146,7 +146,7 @@ if (typeof ChoreList === "undefined") {
 			var data = { choreId: choreId };
 
 			if (confirm("Are you sure you want to remove yourself from this chore?")) {
-				AjaxCallWithWait("/Services/Chores.asmx/RemoveChoreMembership", data, $("#ChoreItems"), true, true)
+				AjaxCallWithWait("/Services/Chores/RemoveChoreMembership", data, $("#ChoreItems"), true, true)
 				.done(function (msg) {
 					// This will refresh thanks to the long poll
 				});
@@ -165,7 +165,7 @@ if (typeof ChoreList === "undefined") {
 				$existingAlertForId.remove();
 			}
 
-			AjaxCallWithWait("/Services/Chores.asmx/ChangeChoreItemCompletion", data, $(button).parent(), true, false)
+			AjaxCallWithWait("/Services/Chores/ChangeChoreItemCompletion", data, $(button).parent(), true, false)
 			.done(function (msg) {
 				// This will refresh thanks to the long poll
 			});
@@ -182,7 +182,7 @@ if (typeof ChoreList === "undefined") {
 			var choreId = $(button).closest(".choreListItem").attr("data-choreid");
 			var data = { choreId: choreId };
 
-			AjaxCallWithWait("/Services/Chores.asmx/GetUsersNotAssignedToChore", data, $(button), true, false)
+			AjaxCallWithWait("/Services/Chores/GetUsersNotAssignedToChore", data, $(button), true, false)
 			.done(function (msg) {
 				var userSelectorHtml = "<option value='-1'>(none)</option>";
 
@@ -216,7 +216,7 @@ if (typeof ChoreList === "undefined") {
 
 			if (userId !== "-1") {
 				var data = { choreId: choreId, userId: userId };
-				AjaxCallWithWait("/Services/Chores.asmx/AssignUserToChore", data, $(button), true, false)
+				AjaxCallWithWait("/Services/Chores/AssignUserToChore", data, $(button), true, false)
 				.done(function (msg) {
 					ChoreList.ManageChore($(button).closest(".choreListItem").find(".noteAction").find("a")[0], true);
 				});
@@ -298,7 +298,7 @@ if (typeof ChoreList === "undefined") {
 
 			var data = { choreId: $(button).closest(".choreListItem").attr("data-choreid"), alertHour: alertHour, alertMinute: alertMinute };
 
-			AjaxCallWithWait("/Services/Chores.asmx/SaveChoreAlert", data, $(button), true, false).done(function () {
+			AjaxCallWithWait("/Services/Chores/SaveChoreAlert", data, $(button), true, false).done(function () {
 				ChoreList.GetChoreItems();
 			});
 		},

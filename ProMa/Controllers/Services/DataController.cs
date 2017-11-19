@@ -46,21 +46,14 @@ namespace ProMa.Controllers
 			}
 		}
 
-		public class LogInProMaUserRequestObject
-		{
-			public string userName { get; set; }
-			public string password { get; set; }
-			public bool skipHash { get; set; }
-		}
-
 		[HttpPost]
-		public ProMaUser LogInProMaUser([FromBody]LogInProMaUserRequestObject request)
+		public ProMaUser LogInProMaUser(string userName, string password, bool skipHash)
 		{
-			string shaPassword = request.skipHash ? request.password : ProMaUser.ComputeSHA256(request.password);
+			string shaPassword = skipHash ? password : ProMaUser.ComputeSHA256(password);
 
 			// For the convenience of users, we want to return a message in the case where a user name exists, but the password is wrong
 			// the slight security concerns relating to this is noted
-			ProMaUser relevantUser = ProMaUserHandler.ThisCache.FirstOrDefault(x => x.UserName.ToLower() == request.userName.ToLower());
+			ProMaUser relevantUser = ProMaUserHandler.ThisCache.FirstOrDefault(x => x.UserName.ToLower() == userName.ToLower());
 
 			if (relevantUser != null)
 			{
@@ -90,7 +83,7 @@ namespace ProMa.Controllers
 			HttpContext.Items.Clear();
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public ProMaUser RegisterProMaUser(string userName, string md5Password)
 		{
 			using (ProMaDB scope = new ProMaDB())
