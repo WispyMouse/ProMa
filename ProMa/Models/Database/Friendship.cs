@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace ProMa.Models
 {
-    public partial class Friendships
+    public partial class Friendship
     {
         public int MemberOneId { get; set; }
         public int MemberTwoId { get; set; }
 
-        public ProMaUsers MemberOne { get; set; }
-        public ProMaUsers MemberTwo { get; set; }
+        public ProMaUser MemberOne { get; set; }
+        public ProMaUser MemberTwo { get; set; }
     }
 }

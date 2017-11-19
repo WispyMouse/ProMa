@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProMa.Models
 {
-    public partial class CalendarEntries
+    public partial class CalendarEntry
     {
         public int CalendarId { get; set; }
         public string CalendarName { get; set; }
@@ -11,6 +11,6 @@ namespace ProMa.Models
         public DateTimeOffset ForDate { get; set; }
         public int UserId { get; set; }
 
-        public ProMaUsers User { get; set; }
+        public ProMaUser User { get; set; }
     }
 }

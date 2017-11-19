@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProMa.Models
 {
-    public partial class PostedNotes
+    public partial class PostedNote
     {
         public int NoteId { get; set; }
         public int UserId { get; set; }
@@ -19,9 +19,9 @@ namespace ProMa.Models
         public int? EditedUserId { get; set; }
         public string NoteText { get; set; }
 
-        public ProMaUsers CompletedUser { get; set; }
-        public ProMaUsers EditedUser { get; set; }
-        public NoteTypes NoteType { get; set; }
-        public ProMaUsers User { get; set; }
+        public ProMaUser CompletedUser { get; set; }
+        public ProMaUser EditedUser { get; set; }
+        public NoteType NoteType { get; set; }
+        public ProMaUser User { get; set; }
     }
 }

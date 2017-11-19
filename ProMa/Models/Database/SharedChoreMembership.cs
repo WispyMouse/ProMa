@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProMa.Models
 {
-    public partial class SharedChoreMemberships
+    public partial class SharedChoreMembership
     {
         public int SharedChoreId { get; set; }
         public int UserId { get; set; }
@@ -11,7 +11,7 @@ namespace ProMa.Models
         public int? AlertHour { get; set; }
         public int? AlertMinute { get; set; }
 
-        public SharedChores SharedChore { get; set; }
-        public ProMaUsers User { get; set; }
+        public SharedChore SharedChore { get; set; }
+        public ProMaUser User { get; set; }
     }
 }

@@ -10,16 +10,16 @@ namespace ProMa.Models
     {
 		static public IConfigurationRoot Configuration { get; set; }
 
-		public virtual DbSet<CalendarEntries> CalendarEntries { get; set; }
-        public virtual DbSet<CompletedChores> CompletedChores { get; set; }
-        public virtual DbSet<FriendshipRequests> FriendshipRequests { get; set; }
-        public virtual DbSet<Friendships> Friendships { get; set; }
-        public virtual DbSet<NoteTypeMemberships> NoteTypeMemberships { get; set; }
-        public virtual DbSet<NoteTypes> NoteTypes { get; set; }
-        public virtual DbSet<PostedNotes> PostedNotes { get; set; }
-        public virtual DbSet<ProMaUsers> ProMaUsers { get; set; }
-        public virtual DbSet<SharedChoreMemberships> SharedChoreMemberships { get; set; }
-        public virtual DbSet<SharedChores> SharedChores { get; set; }
+		public virtual DbSet<CalendarEntry> CalendarEntries { get; set; }
+        public virtual DbSet<CompletedChore> CompletedChores { get; set; }
+        public virtual DbSet<FriendshipRequest> FriendshipRequests { get; set; }
+        public virtual DbSet<Friendship> Friendships { get; set; }
+        public virtual DbSet<NoteTypeMembership> NoteTypeMemberships { get; set; }
+        public virtual DbSet<NoteType> NoteTypes { get; set; }
+        public virtual DbSet<PostedNote> PostedNotes { get; set; }
+        public virtual DbSet<ProMaUser> ProMaUsers { get; set; }
+        public virtual DbSet<SharedChoreMembership> SharedChoreMemberships { get; set; }
+        public virtual DbSet<SharedChore> SharedChores { get; set; }
 
         // Unable to generate entity type for table 'dbo.Menu'. Please see the warning messages.
 
@@ -39,7 +39,7 @@ namespace ProMa.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CalendarEntries>(entity =>
+            modelBuilder.Entity<CalendarEntry>(entity =>
             {
                 entity.HasKey(e => e.CalendarId);
 
@@ -52,7 +52,7 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.CalendarEntries_dbo.ProMaUsers_UserId");
             });
 
-            modelBuilder.Entity<CompletedChores>(entity =>
+            modelBuilder.Entity<CompletedChore>(entity =>
             {
                 entity.HasKey(e => new { e.ChoreDate, e.SharedChoreId });
 
@@ -70,7 +70,7 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.ChoreItems_dbo.SharedChores_SharedChoreId");
             });
 
-            modelBuilder.Entity<FriendshipRequests>(entity =>
+            modelBuilder.Entity<FriendshipRequest>(entity =>
             {
                 entity.HasKey(e => new { e.SenderId, e.RecipientId });
 
@@ -93,7 +93,7 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.FriendshipRequests_dbo.ProMaUsers_SenderId");
             });
 
-            modelBuilder.Entity<Friendships>(entity =>
+            modelBuilder.Entity<Friendship>(entity =>
             {
                 entity.HasKey(e => new { e.MemberOneId, e.MemberTwoId });
 
@@ -116,7 +116,7 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.Friendships_dbo.ProMaUsers_MemberTwoId");
             });
 
-            modelBuilder.Entity<NoteTypeMemberships>(entity =>
+            modelBuilder.Entity<NoteTypeMembership>(entity =>
             {
                 entity.HasKey(e => new { e.NoteTypeId, e.UserId });
 
@@ -139,12 +139,12 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.NoteTypeMemberships_dbo.ProMaUsers_UserId");
             });
 
-            modelBuilder.Entity<NoteTypes>(entity =>
+            modelBuilder.Entity<NoteType>(entity =>
             {
                 entity.HasKey(e => e.NoteTypeId);
             });
 
-            modelBuilder.Entity<PostedNotes>(entity =>
+            modelBuilder.Entity<PostedNote>(entity =>
             {
                 entity.HasKey(e => e.NoteId);
 
@@ -183,12 +183,12 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.PostedNotes_dbo.ProMaUsers_UserId");
             });
 
-            modelBuilder.Entity<ProMaUsers>(entity =>
+            modelBuilder.Entity<ProMaUser>(entity =>
             {
                 entity.HasKey(e => e.UserId);
             });
 
-            modelBuilder.Entity<SharedChoreMemberships>(entity =>
+            modelBuilder.Entity<SharedChoreMembership>(entity =>
             {
                 entity.HasKey(e => new { e.SharedChoreId, e.UserId });
 
@@ -212,7 +212,7 @@ namespace ProMa.Models
                     .HasConstraintName("FK_dbo.SharedChoreMemberships_dbo.ProMaUsers_UserId");
             });
 
-            modelBuilder.Entity<SharedChores>(entity =>
+            modelBuilder.Entity<SharedChore>(entity =>
             {
                 entity.HasKey(e => e.SharedChoreId);
             });

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProMa.Models
 {
-    public partial class CompletedChores
+    public partial class CompletedChore
     {
         public DateTime ChoreDate { get; set; }
         public int SharedChoreId { get; set; }
@@ -11,6 +11,6 @@ namespace ProMa.Models
         public DateTimeOffset? PostedTime { get; set; }
         public int? UserId { get; set; }
 
-        public SharedChores SharedChore { get; set; }
+        public SharedChore SharedChore { get; set; }
     }
 }
