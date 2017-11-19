@@ -10,7 +10,7 @@ using System;
 
 namespace ProMa.Migrations
 {
-    [DbContext(typeof(ProMaContext))]
+    [DbContext(typeof(ProMaDB))]
     partial class ProMaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

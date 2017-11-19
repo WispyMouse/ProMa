@@ -29,6 +29,7 @@ namespace ProMa
         {
             // Add framework services.
             services.AddMvc();
+			services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +56,8 @@ namespace ProMa
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+			app.UseStaticHttpContext();
         }
     }
 }

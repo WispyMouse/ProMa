@@ -10,7 +10,7 @@ using System;
 
 namespace ProMa.Migrations
 {
-    [DbContext(typeof(ProMaContext))]
+    [DbContext(typeof(ProMaDB))]
     [Migration("20171119034032_InitialContact")]
     partial class InitialContact
     {

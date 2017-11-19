@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ProMa.Models
 {
-    public partial class ProMaContext : DbContext
+    public partial class ProMaDB : DbContext
     {
 		static public IConfigurationRoot Configuration { get; set; }
 

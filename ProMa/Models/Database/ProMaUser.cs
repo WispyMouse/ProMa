@@ -38,5 +38,10 @@ namespace ProMa.Models
         public ICollection<PostedNote> PostedNotesEditedUser { get; set; }
         public ICollection<PostedNote> PostedNotesUser { get; set; }
         public ICollection<SharedChoreMembership> SharedChoreMemberships { get; set; }
-    }
+
+		public static DateTime NowTime(int utcOffset = 0)
+		{
+			return DateTime.UtcNow.ToUniversalTime().AddHours(utcOffset);
+		}
+	}
 }
