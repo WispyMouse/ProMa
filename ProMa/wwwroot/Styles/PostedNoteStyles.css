@@ -1,0 +1,138 @@
+﻿/*
+	111155 Dark blue font
+	30629E Blue bottom margin
+	6196AF Background blue
+	CCDDEE Light blue background
+	CCEEEE Light blue background (w/ greenish)
+*/
+
+.postedNote {
+	margin: .5em 0 .5em 0;
+	border-radius: 3px;
+	border: 2px solid;
+	position: relative;
+	padding: .25em .25em .25em .75em;
+	max-width: 100%;
+	width: auto;
+	min-height: 70px;
+}
+
+.postedNote .stringHolders {
+	max-width: 50%;
+	margin-left: .5em;
+	margin-bottom: .5em;
+	min-height: 1.3em;
+}
+
+	.postedNote .stringHolders > div {
+		display: block;
+		line-height: 1em;
+		font-size: .8rem;
+		position: relative;
+	}
+
+	.postedNote .postContent {
+		width: 100%;
+		padding-right: 1em;
+		display: inline-block;
+	}
+
+.postedNote[data-active="false"] {
+	border-style: dotted;
+}
+
+.postedNote[data-completed="true"] {
+	background-image: url("/Images/AlphaCheckmark.png");
+	background-repeat: no-repeat;
+	background-position: right 6px bottom 6px;
+}
+
+.postedNote[data-highlighted="true"] {
+	border-style: double;
+	border-width: 6px;
+	background-color: #BBFFDD;
+	-webkit-animation-name: highlightedNote;
+	-webkit-animation-duration: 2.5s;
+	animation-iteration-count: infinite;
+	animation-name: highlightedNote;
+	animation-duration: 2.5s;
+}
+
+.postedNote.newlyCreated {
+	-webkit-animation-name: highlightedNote;
+	-webkit-animation-duration: 1s;
+	animation-iteration-count: 2;
+	animation-name: highlightedNote;
+	animation-duration: 1s;
+}
+
+.postedNote .noteTextInput {
+	overflow: auto;
+	width: 90%;
+	min-height: 8em;
+}
+
+.imageNotChosenHolder {
+	width: 40px;
+	height: 40px;
+	background-color: red;
+	border: 1px solid black;
+}
+
+html:not(.mobile) .PostedNoteDialog {
+	max-width: 42em;
+	width: 42em !important; /* When a dialog is moved, JQuery puts a width on the element level; we don't want to enforce this on mobile though, where the width might be less than 42 em */
+}
+
+.PostedNoteDialog {
+	height: auto !important; /* When a dialog is moved, JQuery puts a height on the element level */
+}
+
+.mobile .postedNote {
+	margin: .25em 0;
+}
+
+.postedNote figure {
+	cursor: pointer;
+}
+
+.ImageDialog {
+	max-width: 90%;
+	padding: 0;
+	height: auto !important; /* override jquery's element level height, which is screwy on moving */
+}
+
+.ImageDialog .ui-widget-header {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.ImageDialog .ui-dialog-content {
+	overflow: hidden;
+	padding: 0;
+}
+
+.ImageDialog .ui-dialog-content img {
+	margin-right:auto;
+	margin-left:auto;
+	display: block;
+	max-width: 100%;
+}
+
+figcaption {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-bottom: .5em;
+	font-size: 1.3em;
+}
+
+figcaption + br {
+	display: none;
+}
+
+figure figcaption {
+	/* Could be useful to have different logic for immediately following image */
+}

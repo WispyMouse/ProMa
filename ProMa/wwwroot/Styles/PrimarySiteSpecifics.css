@@ -1,0 +1,296 @@
+﻿/*
+	111155 Dark blue font
+	30629E Blue bottom margin
+	6196AF Background blue
+	CCDDEE Light blue background
+	CCEEEE Light blue background (w/ greenish)
+*/
+
+#WorkshopHolder {
+	display: flex;
+	display: -ms-flexbox;
+
+	flex-flow: row-reverse nowrap;
+	-ms-flex-flow: row-reverse nowrap;
+
+	flex: 1 1 auto;
+
+	-webkit-align-items: stretch;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+#NoteGutter {
+	flex: 2 1 auto;
+
+	display: inline-block;
+}
+
+	#NoteGutter.middle {
+		flex: 4 1 auto;
+
+		min-width: .5em;
+	}
+
+#NoteLandingZone {
+	box-sizing: border-box;
+	display: inline-block;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	max-width: 45em;
+	padding-right: 1em;
+	padding-left: 1em;
+	width: 100%;
+	position: relative;
+}
+
+	#NoteLandingZone > .bigWaitHolder {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+	}
+
+	#NoteLandingZone > hr {
+		border: 2px groove;
+	}
+
+#WorkshopRight {
+	display: inline-block;
+	border: 0;
+	position: relative;
+	min-width: 30em;
+}
+
+#NoteManagement, #WorkshopUtilities {
+	position: absolute;
+	width: 30em;
+	right: 0;
+}
+
+#NoteManagement {
+	top: 1em;
+	padding: .5em;
+}
+
+#WorkshopUtilities {
+	bottom: 4em;
+	border: 0;
+	height: 45%;
+}
+
+	#WorkshopUtilities > div {
+		overflow: auto;
+		padding: .5em;
+		height: 100%;
+	}
+
+	.mobile #WorkshopUtilities > div {
+		margin-top: 1em;
+	}
+
+#PostNote .noteTextInput {
+	width: 100%;
+	min-height: 8em;
+	min-width: 12em;
+}
+
+#TopBar {
+	display: block;
+	height: 1em;
+	width: 100%;
+	top: 0;
+	z-index: 10;
+}
+
+#BottomBar {
+	box-sizing: content-box;
+	height: 2rem;
+	width: 100%;
+	bottom: 0;
+	z-index: 10;
+	padding: .5rem 0 0 .5rem;
+}
+
+	#BottomBar .optionList {
+		padding-left: .25em;
+		padding-right: .25em;
+		border-radius: 7px;
+		border-right: 3px double #111155;
+		border-left: 3px double #111155;
+		height: calc(1.4em + 2px);
+		vertical-align: middle;
+		text-align: center;
+		display: inline-block;
+
+		cursor: pointer;
+	}
+
+		#BottomBar .optionList:not(:first-of-type) {
+			margin-left: 2em;
+		}
+
+		#BottomBar .optionList span:not(:first-of-type) {
+			margin-left: .5em;
+		}
+
+		#BottomBar .optionList > span {
+			vertical-align: top;
+		}
+
+	#BottomBar input[type=checkbox] {
+		margin-right: .25em;
+		cursor: pointer;
+	}
+
+	#BottomBar select {
+		bottom: 2px;
+	}
+
+.mobile form {
+	overflow: visible;
+}
+
+.mobile #WorkshopHolder {
+	flex-flow: column nowrap;
+	-ms-flex-flow: column nowrap;
+
+	max-height: 100%;
+}
+
+.mobile #NoteLandingZone {
+	width: 100%;
+	max-width: 100%;
+	position: relative;
+	top: 0;
+	max-height: 100%;
+	padding-left: .5em;
+	padding-right: .5em;
+	height: 100%;
+	background: none;
+}
+
+.mobile #NoteManagement {
+	background: none;
+}
+
+.mobile #WorkshopRight {
+	left: 0;
+	height: auto;
+	border: 1px solid black;
+	border-bottom-right-radius: 2px;
+	border-bottom-left-radius: 2px;
+	padding: .25em;
+	display: inline-block;
+	width: 100%;
+	min-width: initial;
+}
+
+.mobile.UtilitiesOpen #WorkshopRight {
+	overflow-y: auto;
+}
+
+.mobile.UtilitiesOpen #BottomBar {
+	display: none;
+}
+
+	.mobile #WorkshopRight > div {
+		flex: 1 0 auto;
+
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+		left: 0;
+		position: relative;
+		border: 0;
+		top: 0;
+		display: block;
+	}
+
+	.mobile #WorkshopRight > ul {
+		flex: 1 0 auto;
+
+		position: relative;
+	}
+
+	.mobile #WorkshopRight .ui-widget-content {
+		border: 0;
+	}
+
+.mobile #NoteManagement .formSet#PostNote {
+	flex: 0 0 auto;
+
+	flex-flow: column nowrap;
+	-ms-flex-flow: column nowrap;
+
+	-ms-flex-align: stretch;
+}
+
+.mobile .noteAreaHolder {
+	min-width: 14em;
+}
+
+.mobile .noteAreaHolder .noteTextInput, .mobile #PostNote .noteAreaHolder .noteTextInput {
+	min-height: 4em;
+	display: block;
+	margin-bottom: 2px;
+	padding: 0;
+	width: auto;
+}
+
+.mobile .noteAreaHolder input, .noteAreaHolder button, .noteAreaHolder select {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	max-width: none;
+}
+
+.mobile #TopBar {
+	display: none;
+}
+
+.mobile #BottomBar {
+	height: 3.5em;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	position: relative;
+}
+
+.mobile #NoteManagement .boxItem {
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+
+	flex: 0 0 auto;
+
+	-ms-flex-align: stretch;
+	vertical-align: middle;
+}
+
+/* When in mobile mode, the NoteLandingZone (and accompanied PostNote area, normally to the top right) are one tab, while the workshop utilities are another
+	this area hides and shows things as appropriate in mobile, while disabling this tab functionality in not-mobile
+*/
+
+.mobile #NoteGutter {
+	display: none;
+}
+
+.mobile.UtilitiesOpen #NoteLandingZone {
+	display: none;
+}
+
+html:not(.mobile) #WorkshopRight > .ui-tabs-nav {
+	display: none;
+}
+
+html:not(.short):not(.mobile) #WorkshopRight > .ui-widget-content {
+	display: block !important;
+}
+
+html.short:not(.mobile) #WorkshopUtilities {
+	display: none;
+}

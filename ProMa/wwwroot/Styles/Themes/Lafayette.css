@@ -1,0 +1,72 @@
+﻿body {
+	background-color: #7A122D;
+}
+
+#BottomBar, #TopBar, #NoteLandingZone, figcaption, figure, .ImageDialog {
+	background-color: #531323;
+}
+
+.postedNote, #NoteManagement, #WorkshopUtilities > div, .mobile #WorkshopRight, #UnloggedArea > .contentwrapper > .content, .indexLeftTab, .fadedBackground:before {
+	background-color: #D1D1DD;
+}
+
+figCaption, #BottomBar {
+	color: #C0B19E;
+}
+
+html, a.ui-tabs-anchor, a.ui-tabs-anchor:active, a.ui-tabs-anchor:hover, a.ui-tabs-anchor:visited {
+	color: #010100;
+}
+
+.formRow > .label, .weaktext {
+	color: #666677;
+}
+
+b {
+	color: #000000;
+}
+
+.help {
+	border-color: #666677;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	border: 1px solid #D1D1DD;
+}
+
+.ui-widget-content, .ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+.postedNote {
+	border-color: #010100;
+}
+
+@-webkit-keyframes highlightedNote {
+	0% {
+	}
+
+	50% {
+		background-color: #DBEBEB;
+	}
+
+	100% {
+	}
+}
+
+@keyframes highlightedNote {
+	0% {
+	}
+
+	50% {
+		background-color: #DBEBEB;
+	}
+
+	100% {
+	}
+}

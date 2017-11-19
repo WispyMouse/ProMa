@@ -1,0 +1,73 @@
+﻿body {
+	background-image: none;
+	background-color:  #808080;
+}
+
+#BottomBar, #TopBar, #NoteLandingZone, figcaption, figure, .ImageDialog {
+	background-color: #A9A9A9;
+}
+
+.postedNote, #NoteManagement, #WorkshopUtilities > div, .mobile #WorkshopRight, #UnloggedArea > .contentwrapper > .content, .indexLeftTab, .fadedBackground:before {
+	background-color:  #D3D3D3;
+}
+
+figCaption, #BottomBar {
+	color: #D3D3D3;
+}
+
+html, a.ui-tabs-anchor, a.ui-tabs-anchor:active, a.ui-tabs-anchor:hover, a.ui-tabs-anchor:visited  {
+	color: #000000;
+}
+
+.formRow > .label, .weaktext {
+	color: #666677;
+}
+
+b {
+	color: #000000;
+}
+
+.help {
+	border-color: #666677;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	border: 1px solid #D3D3D3;
+}
+
+.ui-widget-content, .ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+.postedNote {
+	border-color: black;
+}
+
+@-webkit-keyframes highlightedNote {
+	0% {
+	}
+
+	50% {
+		background-color: palevioletred;
+	}
+
+	100% {
+	}
+}
+
+@keyframes highlightedNote {
+	0% {
+	}
+
+	50% {
+		background-color: palevioletred;
+	}
+
+	100% {
+	}
+}

@@ -1,5 +1,122 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "ProMa Landing Page";
 }
 
-Hello world.
+<head>
+	<link rel="shortcut icon" href="/favicon.ico?v=2" />
+	<link rel="icon" sizes="16x16 32x32 64x64" href="/Images/FavIcos/favicon.ico?v=2" />
+	<link rel="icon" type="image/png" sizes="196x196" href="/Images/FavIcos/favicon-192.png" />
+	<link rel="icon" type="image/png" sizes="160x160" href="/Images/FavIcos/favicon-160.png" />
+	<link rel="icon" type="image/png" sizes="96x96" href="/Images/FavIcos/favicon-96.png" />
+	<link rel="icon" type="image/png" sizes="64x64" href="/Images/FavIcos/favicon-64.png" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/Images/FavIcos/favicon-32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/Images/FavIcos/favicon-16.png" />
+	<link rel="apple-touch-icon" href="/Images/FavIcos/favicon-57.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="/Images/FavIcos/favicon-114.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="/Images/FavIcos/favicon-72.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="/Images/FavIcos/favicon-144.png" />
+	<link rel="apple-touch-icon" sizes="60x60" href="/Images/FavIcos/favicon-60.png" />
+	<link rel="apple-touch-icon" sizes="120x120" href="/Images/FavIcos/favicon-120.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="/Images/FavIcos/favicon-76.png" />
+	<link rel="apple-touch-icon" sizes="152x152" href="/Images/FavIcos/favicon-152.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/Images/FavIcos/favicon-180.png" />
+	<meta name="msapplication-TileColor" content="#FFFFFF" />
+	<meta name="msapplication-TileImage" content="/Images/FavIcos/favicon-144.png" />
+	<meta name="msapplication-config" content="/Images/FavIcos/browserconfig.xml" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="/Imports/JQueryThemes/base/all.css" />
+
+	<link rel="stylesheet" type="text/css" href="/Styles/Inputs.css" />
+	<link rel="stylesheet" type="text/css" href="/Styles/Stylings.css" />
+	<link rel="stylesheet" type="text/css" href="/Styles/PostedNoteStyles.css" />
+	<link rel="stylesheet" type="text/css" href="/Styles/PrimarySiteSpecifics.css" />
+	<link rel="stylesheet" type="text/css" href="/Styles/UnloggedStyles.css" />
+
+	<link rel="stylesheet" type="text/css" href="/Styles/Themes/Offline.css" id="OfflineStyle" />
+	<link rel="stylesheet" type="text/css" id="NewThemeSelector" />
+	<link rel="stylesheet" type="text/css" href="/Styles/Themes/CoolTouch.css" id="ThemeSelector" />
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/Imports/jquery/jquery.md5.js"></script>
+
+	<script type="text/javascript" src="/Scripts/References.js"></script>
+	<script type="text/javascript" src="/Scripts/UIImprovements.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/Styles/ProMaIcons.css" />
+
+	<script type="text/javascript" src="/Scripts/UserData.js"></script>
+	<script type="text/javascript" src="/Scripts/PostedNotes.js"></script>
+
+	<script type="text/javascript" src="/Scripts/Workshop.js"></script>
+
+	<script type="text/javascript" src="/Scripts/Utilities/UserConsole.js"></script>
+	<script type="text/javascript" src="/Scripts/Utilities/EggTimer.js"></script>
+	<link rel="stylesheet" type="text/css" href="/Scripts/Utilities/EggTimerStyles.css" />
+	<script type="text/javascript" src="/Scripts/Utilities/ChoreList.js"></script>
+	<link rel="stylesheet" type="text/css" href="/Scripts/Utilities/ChoreListStyles.css" />
+	<script type="text/javascript" src="/Scripts/Utilities/NoteTypeManagement.js"></script>
+	<link rel="stylesheet" type="text/css" href="/Scripts/Utilities/NoteTypeManagement.css" />
+	<script type="text/javascript" src="/Scripts/Utilities/AdminConsole.js"></script>
+	<link rel="stylesheet" type="text/css" href="/Scripts/Utilities/AdminConsole.css" />
+	<script type="text/javascript" src="/Scripts/Utilities/FunStuff.js"></script>
+	<script type="text/javascript" src="/Scripts/Utilities/Resume.js"></script>
+	<script type="text/javascript" src="/Scripts/Utilities/Themes.js"></script>
+	<script type="text/javascript" src="/Scripts/Utilities/Calendar.js"></script>
+	<link rel="stylesheet" type="text/css" href="/Scripts/Utilities/Calendar.css" />
+</head>
+<body>
+	<div id="UnloggedArea">
+		<div class="gutter"></div>
+		<div class="contentwrapper">
+			<div class="content">
+				<h1>ProMa</h1>
+
+				<p>
+					This is "ProMa", or "<strong><em>PRO</em></strong>ductivity <strong><em>MA</em></strong>nager", the personal project of <strong>Kenneth Gould</strong>. It is a single page application that allows you to log notes, keep track of chores, and organize your activities. You can register for a free account below, no email address required. You can also preview it using a shared test account by clicking the ProMa Demo button below.
+				</p>
+
+				<p>
+					ProMa is run on an ASP.NET, C#, MSSQL through Code-First Linq-to-Entities Migration, Javascript/JQuery stack. The codebase for this site is publically viewable at <a href="https://www.assembla.com/spaces/wispymouse/subversion/source">this public assembla svn repository</a>. Email me at <a href="mailto:Kenneth.Gould@Outlook.com">Kenneth.Gould@Outlook.com</a> if you want to contact me.
+				</p>
+
+				<div class="formSet">
+					<div class="formRow">
+						<span class='label'>Username:</span><input name="username" class="formItem" type="text" id="Username" />
+					</div>
+					<div class="formRow">
+						<span class='label'>Password:</span><input name="password" class="formItem" type="password" id="Password" />
+					</div>
+					<div class="formRow">
+						<span class='label'>&nbsp;</span>
+						<button id="Login" class="loginWaiter formItem" type="button" onclick="LogInProMaUser(); return false;">Login</button>
+					</div>
+					<div class="formRow">
+						<span class='label'>&nbsp;</span>
+						<button id="Register" class="formItem" type="button" onclick="RegisterProMaUser(); return false;">Register User</button>
+					</div>
+				</div>
+
+				<p class="weaktext">
+					Note: No privacy policy, terms of service, or warranty are offered. This site makes use of cookies. IE9 and below are not supported. ProMa will not work if javascript is disabled.
+				</p>
+			</div>
+			<div id="IndexLeftTabs">
+				<div class="indexLeftTab">
+					<a href='/Resume.pdf' target="_blank">Resume</a>
+				</div>
+				<div class="indexLeftTab">
+					<a href="https://www.linkedin.com/in/kenneth-gould-863003122" target="_blank">LinkedIn</a>
+				</div>
+				<div class="indexLeftTab">
+					<a href='#' onclick="DemoLogin();">ProMa Demo</a>
+				</div>
+			</div>
+		</div>
+		<div class="gutter"></div>
+	</div>
+</body>

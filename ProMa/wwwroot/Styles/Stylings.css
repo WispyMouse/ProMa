@@ -1,0 +1,269 @@
+﻿/*
+	111155 Dark blue font
+	30629E Blue bottom margin
+	6196AF Background blue
+	CCDDEE Light blue background
+	CCEEEE Light blue background (w/ greenish)
+*/
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 13px;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	/* font-family: 'Roboto', sans-serif; */ /* Potential font */
+	font-weight: 100;
+	line-height: 1.3em;
+	word-wrap: break-word;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+}
+
+form {
+	display: flex;
+	display: -ms-flexbox;
+
+	flex-flow: column nowrap;
+	-ms-flex-flow: column nowrap;
+
+	flex: 0 0 auto;
+
+	-webkit-align-items: stretch;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+
+	height: 100%;
+	overflow: hidden;
+}
+
+b, strong {
+	font-weight: bold;
+}
+
+li {
+	position: relative;
+	text-align: left;
+}
+
+h1 {
+	display: block;
+	margin-top: .25em;
+	margin-bottom: .5em;
+	font-size: 2em;
+	text-align: center;
+}
+
+p {
+	display: block;
+	margin-bottom: 1em;
+	margin-top: 0;
+}
+
+.waitImageHolder {
+	flex: 0 1 auto;
+
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+}
+
+	.waitImageHolder > span:not(.blackOutCover) {
+		display: flex;
+		display: -ms-flexbox;
+
+		flex-flow: row nowrap;
+		-ms-flex-flow: row nowrap;
+
+		flex: 0 0 auto;
+
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+
+		white-space: nowrap;
+		justify-content: center;
+
+		height: 100%;
+		width: 100%;
+		min-height: 16px;
+		min-width: 16px;
+		
+		position: absolute;
+	}
+
+	.blackOutCover {
+		height: 100%;
+		width: 100%;
+		background-color: #111155;
+		opacity: .2;
+		position: absolute;
+		display: block;
+	}
+
+		.waitImageHolder.bigWait > span:not(.blackOutCover) {
+			min-height: 64px;
+			min-width: 64px;
+		}
+
+.noteAction .waitImageHolder {
+	vertical-align: top;
+}
+
+.waitImage {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+p.weaktext {
+	line-height: .9em;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	padding-left: 10%;
+	padding-right: 10%;
+	font-size: .8em;
+}
+
+.weaktext {
+	font-size: .9em;
+	font-style: italic;
+	line-height: inherit;
+}
+
+.error {
+	color: darkred;
+	font-weight: bold;
+}
+
+.clearfix {
+	clear: both;
+}
+
+.half {
+	display: inline-block;
+	vertical-align: top;
+	padding-left: .5em;
+	padding-right: .5em;
+	width: 50%;
+}
+
+.noteActionList {
+	position: absolute;
+	right: .25em;
+	white-space: nowrap;
+	max-width: 100%;
+}
+
+.noteActionGroup {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+}
+
+.noteAction {
+	position: relative;
+	z-index: 1;
+	height: 16px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+	.noteAction .promaicon:not(.promaicon-wait) {
+		vertical-align: top;
+	}
+
+	.noteAction select, .noteAction input[type=text] {
+		position: relative;
+		top: -2px;
+		max-width: 13em;
+		height: calc(100% + 4px);
+	}
+
+.fadingWarning {
+	color: red;
+	font-weight: bold;
+	position: absolute;
+	text-align: center;
+	vertical-align: top;
+	white-space: nowrap;
+	padding: .25em;
+	background-color: #FFBBBB;
+	border: 1px solid #FF0000;
+	border-radius: 8px;
+	opacity: 0.9;
+	filter: alpha(opacity=90);
+	z-index: 1000;
+}
+
+.ui-dialog .hideInDialog {
+	display: none !important;
+}
+
+.particle {
+	position: absolute;
+	display: block;
+	z-index: -1;
+}
+
+.particle img {
+	width: 100%;
+}
+
+.fadedBackground:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: .85;
+	z-index: -1;
+}
+
+.imageHolder {
+	cursor: pointer;
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+	height: auto;
+
+	flex: 0 0 auto;
+}
+
+figure {
+	margin: 0;
+	width: 100%;
+	height: auto;
+}
+
+.imageHolder figure > div {
+	max-width: 400px;
+}
+
+.imageHolder figure > div img {
+	max-height: 400px;
+}
+
+figure > div {
+	margin-left: auto;
+	margin-right: auto;
+	width: auto;
+	height: auto;
+}
+
+figure > div > img {
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	display: block;
+}

@@ -1,0 +1,9 @@
+﻿#Calendar #CalendarItems {
+	margin-bottom: 1rem;
+	min-height: 64px;
+}
+
+#CalendarItems .noteAction .weaktext {
+	font-size: .8rem;
+	padding-left: .5em;
+}

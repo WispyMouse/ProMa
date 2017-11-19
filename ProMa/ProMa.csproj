@@ -25,4 +25,28 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\Imports\" />
+    <Folder Include="wwwroot\Scripts\" />
+    <Folder Include="wwwroot\Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Styles\Inputs.css" />
+    <None Include="wwwroot\Styles\PostedNoteStyles.css" />
+    <None Include="wwwroot\Styles\PrimarySiteSpecifics.css" />
+    <None Include="wwwroot\Styles\ProMaIcons.css" />
+    <None Include="wwwroot\Styles\Stylings.css" />
+    <None Include="wwwroot\Styles\Themes\CoolTouch.css" />
+    <None Include="wwwroot\Styles\Themes\CoolTouchBackground.png" />
+    <None Include="wwwroot\Styles\Themes\Lafayette.css" />
+    <None Include="wwwroot\Styles\Themes\MorningEmbers.css" />
+    <None Include="wwwroot\Styles\Themes\MorningEmbersParticle.png" />
+    <None Include="wwwroot\Styles\Themes\Offline.css" />
+    <None Include="wwwroot\Styles\Themes\OffWork.css" />
+    <None Include="wwwroot\Styles\Themes\OffWorkBackground.png" />
+    <None Include="wwwroot\Styles\UnloggedStyles.css" />
+  </ItemGroup>
+
 </Project>

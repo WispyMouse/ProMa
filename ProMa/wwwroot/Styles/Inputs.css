@@ -1,0 +1,237 @@
+﻿button, select, input[type=text], input[type=password], input[type=number] {
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	/* font-family: 'Roboto', sans-serif; */ /* Potential font */
+	font-weight: 100;
+	font-size: 1em;
+	line-height: 1em;
+	color: #111155;
+	position: relative;
+	z-index: 1;
+	height: 1.8em;
+	max-width: 13em;
+}
+
+button {
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid black;
+	background-color: #EEEEEE;
+	border-radius: 4px;
+	padding-right: 1px;
+	padding-left: 1px;
+}
+
+	button:hover {
+		background-color: #ddddff;
+	}
+
+	button:active {
+		outline-offset: -3px;
+		outline: 1px dotted black;
+	}
+
+select {
+	flex: 1 0 auto;
+
+	cursor: pointer;
+	z-index: 1;
+}
+
+input[type=text], input[type=password], input[type=number] {
+	flex: 1 0 auto;
+
+	border: 1px solid black;
+	border-radius: 4px;
+	background-color: #ffffff;
+	padding: 2px;
+}
+
+	input[type=text]:hover, input[type=password]:hover, input[type=number]:hover {
+		background-color: #ddddff;
+	}
+
+.noteTextInput {
+	overflow: auto;
+	background-color: white;
+	border: 1px solid black;
+	text-align: left;
+	word-wrap: break-word;
+	padding: 2px;
+	-moz-appearance: textfield-multiline;
+	-webkit-appearance: textarea;
+	display: block;
+	margin-bottom: .5em;
+}
+
+.noteTextInput p { /* Fixes Internet Explorer adding bottom padding to p elements */
+	margin-bottom: 0;
+}
+
+.noteTextInput.imageOver {
+	outline: dashed 1px black;
+	outline-offset: -5px;
+}
+
+/* Usage:
+	<div class='formSet'>
+		<div class='formRow'>
+			<span class='label'>Label</span><button>Control</button>
+		</div>
+		<div class='formRow inlineInMobile'>
+			<span class='label'>This will be inline in small screen widths</span>
+		</div>
+		<div class='formRow inlineInMobile'>
+			<span class='label'>This will be on the same line as above</span><button>Inline button</button>
+		</div>
+	</div>
+*/
+
+.formSet {
+	display: flex;
+	display: -ms-flexbox;
+
+	flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+
+	-webkit-align-items: stretch;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+
+	vertical-align: middle;
+	width: 100%;
+	position: relative;
+}
+
+	.formSet + *:not(hr) {
+		margin-top: 1em;
+	}
+
+.formRow {
+	display: flex;
+	display: -ms-flexbox;
+
+	flex-flow: row nowrap;
+	-ms-flex-flow: row nowrap;
+
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+
+	flex: 0 1 100%;
+
+	text-align: right;
+	overflow: visible;
+	position: relative;
+	max-width: 100%;
+}
+
+	.formRow:not(:last-of-type) {
+		margin-bottom: 1px;
+	}
+
+	.mobile .formRow:not(:last-of-type) {
+		margin-bottom: 2px;
+	}
+
+	.formRow > .formItem {
+		flex: 1 1 100%;
+
+		min-width: 5em;
+	}
+
+	.formRow > .formItem ~ * {
+		margin-left: 1px;
+	}
+
+	.formRow > .label + ol.formItem, .formRow > .label + ul.formItem {
+		max-width: 60%;
+	}
+
+	.formRow > *:not(.label):not(.formItem):not(.waitImageHolder):not(.promaicon) {
+		flex: 1 1 1%;
+
+		min-width: 0;
+		max-width: none;
+	}
+
+	.formRow > ol.formItem, .formRow > ul.formItem {
+		padding-left: 1em;
+	}
+
+		.formRow > ol.formItem > li, .formRow > ul.formItem > li {
+			white-space: nowrap;
+		}
+
+			.formRow > ol.formItem > li > span:first-child, .formRow > ul.formItem > li > span:first-child {
+				display: inline-block;
+				max-width: calc(100% - 2em);
+				white-space: normal;
+				vertical-align: text-top;
+			}
+
+	.formRow > .label {
+		display: -ms-inline-flexbox;
+		display: inline-flex;
+
+		flex: 0 0 auto;
+
+		justify-content: flex-end;
+		align-items: center;
+		font-size: .9em;
+		padding-right: .5em;
+		max-width: 200px;
+		width: 40%;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		cursor: default;
+	}
+
+.mobile .formRow.inlineInMobile {
+	flex: 1 0 auto;
+}
+
+/* Don't apply flex-grow to checkboxes, or they'll act strangely*/
+.formRow > input.formItem[type=checkbox], .formRow > input.formItem[type=radio] {
+	flex: none;
+	min-width: 0;
+}
+
+.help {
+	border-bottom: 1px dashed #808080;
+}
+
+.enterFocus {
+	-webkit-animation-name: enterFocusHighlight;
+	-webkit-animation-duration: 4.5s;
+	animation-iteration-count: infinite;
+	animation-name: enterFocusHighlight;
+	animation-duration: 4.5s;
+}
+
+@-webkit-keyframes enterFocusHighlight {
+	0% {
+	}
+
+	50% {
+		background-color: #ddddff;
+	}
+
+	100% {
+	}
+}
+
+@keyframes enterFocusHighlight {
+	0% {
+	}
+
+	50% {
+		background-color: #ddddff;
+	}
+
+	100% {
+	}
+}

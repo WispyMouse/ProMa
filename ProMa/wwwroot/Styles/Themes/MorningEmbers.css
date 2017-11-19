@@ -1,0 +1,77 @@
+﻿body {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000828+0,013349+40,01382f+81,3f2a01+89,680d00+100 */
+background: #000828; /* Old browsers */
+background: -moz-linear-gradient(top, #00001e 0%, #01182f 73%, #680d00 73%, #5f3a00 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #00001e 0%, #01182f 73%, #680d00 73%, #5f3a00 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(top, #00001e 0%, #01182f 73%, #680d00 73%, #5f3a00 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000828', endColorstr='#5f3a00',GradientType=0 ); /* IE6-9 */
+}
+
+#BottomBar, #TopBar, #NoteLandingZone, figcaption, figure, .ImageDialog {
+	background-color: #000828;
+}
+
+.postedNote, #NoteManagement, #WorkshopUtilities > div, .mobile #WorkshopRight, #UnloggedArea > .contentwrapper > .content, .indexLeftTab, .fadedBackground:before {
+	background-color: #C6C6CE;
+}
+
+figCaption, #BottomBar {
+	color: #C6C6CE;
+}
+
+html, a.ui-tabs-anchor, a.ui-tabs-anchor:active, a.ui-tabs-anchor:hover, a.ui-tabs-anchor:visited {
+	color: #331111;
+}
+
+.formRow > .label, .weaktext {
+	color: #666677;
+}
+
+b {
+	color: #000000;
+}
+
+.help {
+	border-color: #666677;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default  {
+	border: 1px solid #C6C6CE;
+}
+
+.ui-widget-content, .ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+.postedNote {
+	border-color: #222222;
+}
+
+@-webkit-keyframes highlightedNote {
+	0% {
+	}
+
+	50% {
+		background-color: #DBEBEB;
+	}
+
+	100% {
+	}
+}
+
+@keyframes highlightedNote {
+	0% {
+	}
+
+	50% {
+		background-color: #DBEBEB;
+	}
+
+	100% {
+	}
+}

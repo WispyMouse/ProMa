@@ -1,0 +1,75 @@
+﻿#UnloggedArea {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+
+	display: flex;
+	display: -ms-flexbox;
+
+	flex-flow: column nowrap;
+	-ms-flex-flow: column nowrap;
+
+	flex: 0 0 auto;
+	overflow-y: auto;
+
+	-webkit-align-items: initial;
+	-webkit-box-align: initial;
+	-ms-flex-align: initial;
+	align-items: initial;
+}
+
+	#UnloggedArea > .gutter {
+		flex: 1 1 auto;
+		width: 100%;
+		min-height: 0;
+	}
+
+	#UnloggedArea > .contentwrapper {
+		flex: 0 1 auto;
+
+		display: flex;
+		display: -ms-flexbox;
+		position: relative;
+
+		flex-flow: column nowrap;
+		-ms-flex-flow: column nowrap;
+
+		-webkit-align-items: stretch;
+		-webkit-box-align: stretch;
+		-ms-flex-align: stretch;
+		align-items: stretch;
+
+		
+		width: 90%;
+		max-width: 600px;
+
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	#UnloggedArea > .contentwrapper > .content {
+		box-sizing: content-box;
+		padding: 1rem;
+		border: 1px solid black;
+	}
+
+#IndexLeftTabs {
+}
+
+.indexLeftTab {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	border-color: black;
+	padding: .25em .5em 1em .5em;
+
+	margin-right: .5em;
+	vertical-align: middle;
+	display: inline-block;
+
+	position: relative;
+	top: -1px;
+}

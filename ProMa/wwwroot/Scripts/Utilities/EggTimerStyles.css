@@ -1,0 +1,147 @@
+﻿#TimerPercents {
+	width: 100%; /* Contained within a two-box system that takes up half of the available area, needs to support being very thin*/
+	max-width: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 80px;
+	display: block;
+	position: relative;
+	border: 1px solid black;
+	border-bottom-right-radius: 12px;
+	border-bottom-left-radius: 12px;
+	border-top-right-radius: 100px;
+	border-top-left-radius: 100px;
+}
+
+	#TimerPercents span {
+		position: absolute;
+		display: inline-block;
+		user-select: none;
+		-moz-user-select: none;
+		-khtml-user-select: none;
+		-webkit-user-select: none;
+		-o-user-select: none;
+		cursor: default;
+	}
+
+	#TimerPercents .timerPercent:nth-of-type(1) {
+		bottom: 1.5em;
+		left: .5em;
+		text-align: left;
+	}
+
+	#TimerPercents .timerPercent:nth-of-type(2) {
+		top: 1em;
+		right: 65%;
+		text-align: left;
+	}
+
+	#TimerPercents .timerPercent:nth-of-type(3) {
+		width: 100%;
+		top: 0;
+		text-align: center;
+	}
+
+	#TimerPercents .timerPercent:nth-of-type(4) {
+		top: 1em;
+		left: 65%;
+		text-align: right;
+	}
+
+	#TimerPercents .timerPercent:nth-of-type(5) {
+		bottom: 1.5em;
+		right: .5em;
+		text-align: right;
+	}
+
+#TimePointer {
+	bottom: 1em;
+	text-align: center;
+	width: 100%;
+	pointer-events: none;
+}
+
+#TimeCounter {
+	bottom: 0em;
+	text-align: center;
+	width: 100%;
+	background-color: rgba(238,238,238,.6);
+	border-bottom-right-radius: 7px;
+	border-bottom-left-radius: 7px;
+	font-size: 1.3em;
+}
+
+.crossedTallies {
+	position: relative;
+	padding-right: .5em;
+	display: inline-block;
+}
+
+	.crossedTallies .tallyCrosser {
+		position: absolute;
+		-webkit-transform: rotate(-31deg);
+		-ms-transform: rotate(-31deg);
+		transform: rotate(-31deg);
+		border-bottom: 1px solid black;
+		top: -5px;
+		left: -4px;
+		width: 1.6em;
+	}
+
+#PomodoroText ol {
+	margin-top: 0em;
+	margin-bottom: 0em;
+}
+
+#PomodoroText li {
+	font-size: .7em;
+	margin-left: -3em;
+}
+
+#ReminderToAddCheckmarkHolder {
+	left: 100%;
+	font-weight: bold;
+	position: absolute;
+	text-align: center;
+	vertical-align: top;
+	white-space: nowrap;
+	padding: .25em;
+	background-color: #CCEEEE;
+	border: 1px solid #00AA00;
+	border-radius: 8px;
+	opacity: 0.9;
+	filter: alpha(opacity=90);
+	z-index: 1000;
+	-webkit-animation-name: rememberToAddCheckmark;
+	-webkit-animation-duration: 8s;
+	animation-iteration-count: infinite;
+	animation-name: rememberToAddCheckmark;
+	animation-duration: 8s;
+	font-weight: bold;
+}
+
+#EggTimerCheckmarkHolderBox {
+	position: relative;
+	min-height: 3rem;
+}
+
+#EggTimerCheckmarkCount {
+	display: block;
+	position: absolute;
+	font-size: 3em;
+	height: 100%;
+	width: 100%;
+	top: 10px;
+	text-align: center;
+	opacity: .3;
+	user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	cursor: default;
+}
+
+#EggTimer > div {
+	overflow: hidden;
+}

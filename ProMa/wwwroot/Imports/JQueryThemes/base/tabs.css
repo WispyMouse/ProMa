@@ -1,0 +1,58 @@
+/*!
+ * jQuery UI Tabs 1.11.4
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/tabs/#theming
+ */
+.ui-tabs {
+	position: relative;/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+	/* WispyMouse Edit: no padding */
+}
+.ui-tabs .ui-tabs-nav {
+	margin: 0;
+	/* WispyMouse Edit: No padding */
+}
+.ui-tabs .ui-tabs-nav li {
+	list-style: none;
+	float: left;
+	position: relative;
+	top: 0;
+	/* Wispy Mouse edit: removed margins*/
+	border-bottom-width: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+/* WispyMouse Edit: in mobile mode, readd padding*/
+.mobile .ui-tabs .ui-tabs-nav li {
+	margin: 2px 2px 0 0;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+	float: left;
+	padding: .25em; /*Wispy Mouse edit: Reduced padding*/
+	text-decoration: none;
+	line-height: 1em;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+	margin-bottom: -1px;
+	padding-bottom: 1px;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+	cursor: text;
+	outline: 0; /* Wispy Mouse edit: Explicitly remove outline for Chrome*/
+}
+.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+	cursor: pointer;
+	outline: 0; /* Wispy Mouse edit: Explicitly remove outline for Chrome*/
+}
+.ui-tabs .ui-tabs-panel {
+	display: block;
+	border: 1px solid black; /* WispyMouse Edit: Border on tabs panel*/
+	/* WispyMouse Edit: No padding */
+	background: none;
+}

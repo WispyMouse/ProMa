@@ -1,0 +1,57 @@
+﻿#ChoreList .choreListItem {
+	display: block;
+	position: relative;
+	vertical-align: sub;
+	margin-bottom: 1px;
+	line-height: 1em;
+}
+
+#ChoreList .choreListItem .checkboxHolder {
+	position: relative;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 1em;
+	vertical-align: top;
+	bottom: 1px;
+}
+
+#ChoreList .choreListItem .checkboxHolder input {
+	position: absolute;
+	bottom: -6px;
+}
+
+#ChoreList .choreListItem .promaicon-handle {
+	vertical-align: top;
+	cursor: move;
+}
+
+#ChoreList .choreListItem .choreName {
+	max-width: 80%;
+	display: inline-block;
+	font-size: .9em;
+}
+
+#ChoreList .choreListItem .options {
+	float: right;
+}
+
+#ChoreList .noteAction .weaktext {
+	font-size: .8rem;
+	padding-left: .5em;
+}
+
+#ChoreList #ChoreItems {
+	margin-bottom: 1rem;
+	min-height: 64px;
+}
+
+#ChoreList .manageChore {
+	display: block;
+	margin-left: 2em;
+	margin-bottom: .75em;
+}
+
+#ChoreList .formSet + .formSet {
+	margin-top: 1px;
+}
