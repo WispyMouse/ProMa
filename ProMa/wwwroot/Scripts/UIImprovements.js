@@ -157,7 +157,7 @@ function IsMobileDevice() {
 }
 
 /// Animates a wait icon on a form element. Puts wait icon after element
-function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWait, showFinishIcon, alterHeaders, requestType) {
+function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWait, showFinishIcon, alterHeaders, requestType, secretFlag) {
 	var $waitImage = null;
 
 	if (bigWait === undefined) {
@@ -251,10 +251,20 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 
 	if (data == null) {
 		transferedData = "";
-	} else if (alterHeaders) {
-		transferedData = JSON.stringify(data);
-	} else if (!alterHeaders) {
-		transferedData = data;
+	} else {
+		if (secretFlag) {
+			console.log(data);
+			transferedData = "=" + data[Object.keys(data)[0]].toString();
+		}
+		else {
+			if (alterHeaders) {
+				transferedData = JSON.stringify(data);
+			} else if (!alterHeaders) {
+				transferedData = data;
+			}
+		}
+
+		
 	}
 
 	var def = $.Deferred();
@@ -266,8 +276,7 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 		dataType: "json",
 		type: requestType,
 		data: transferedData,
-		contentType: alterHeaders ? "application/json; charset=utf-8" : false,
-		crossDomain: true,
+		contentType: !secretFlag ? "application/json; charset=utf-8" : "application/x-www-form-urlencoded",// alterHeaders ? "application/json; charset=utf-8" : false,
 		processData: alterHeaders,
 		success: function (msg) {
 			if ($waitImage != null) {

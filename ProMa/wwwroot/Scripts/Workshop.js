@@ -17,7 +17,7 @@ function ShowWorkshop() {
 
 	$("#UnloggedArea").remove();
 
-	$("body").append(
+	$("#siteContainer").append(
 		"<div id='TopBar'>&nbsp;</div>" +
 		"<div id='WorkshopHolder'>" +
 			"<div id='NoteGutter'></div>" +

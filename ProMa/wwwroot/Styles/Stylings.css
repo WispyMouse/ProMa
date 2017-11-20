@@ -27,7 +27,7 @@ html, body {
 	overflow: hidden;
 }
 
-form {
+#siteContainer {
 	display: flex;
 	display: -ms-flexbox;
 

@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using System.IO;
+using System.Text;
 
 namespace ProMa.Controllers
 {
@@ -131,7 +133,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public List<PostedNote.PostedNotePayload> GetAllNotes([FromBody]string sortOption)
+		public List<PostedNote.PostedNotePayload> GetAllNotes([FromForm]string sortOption)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
