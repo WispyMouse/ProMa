@@ -28,7 +28,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void DeleteNoteType([FromBody]int noteTypeId)
+		public void DeleteNoteType([FromForm]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -47,7 +47,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void HibernateNoteType([FromBody]int noteTypeId)
+		public void HibernateNoteType([FromForm]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -67,7 +67,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void RestoreNoteType([FromBody]int noteTypeId)
+		public void RestoreNoteType([FromForm]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -87,7 +87,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void AddNoteType([FromBody]string noteTypeName)
+		public void AddNoteType([FromForm]string noteTypeName)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -137,7 +137,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void RemoveFromNoteType([FromBody]int noteTypeId)
+		public void RemoveFromNoteType([FromForm]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

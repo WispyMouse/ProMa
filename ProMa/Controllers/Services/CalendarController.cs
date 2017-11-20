@@ -43,7 +43,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public List<CalendarEntry> GetCalendarEntries([FromBody]int utcOffset)
+		public List<CalendarEntry> GetCalendarEntries([FromForm]int utcOffset)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -56,7 +56,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void DeleteCalendar([FromBody]int calendarId)
+		public void DeleteCalendar([FromForm]int calendarId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

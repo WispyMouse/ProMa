@@ -15,7 +15,7 @@ namespace ProMa.Controllers
 	public class ChoresController : Controller
     {
 		[HttpPost]
-		public void AddNewChore([FromBody]string newItemName)
+		public void AddNewChore([FromForm]string newItemName)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -76,7 +76,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void RemoveChoreMembership([FromBody]int choreId)
+		public void RemoveChoreMembership([FromForm]int choreId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -119,7 +119,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public List<ProMaUser> GetUsersNotAssignedToChore([FromBody]int choreId)
+		public List<ProMaUser> GetUsersNotAssignedToChore([FromForm]int choreId)
 		{
 			using (ProMaDB scope = new ProMaDB())
 			{
@@ -160,7 +160,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void RememberSorting([FromBody]SerializableIntIntPair[] pairings)
+		public void RememberSorting([FromForm]SerializableIntIntPair[] pairings)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

@@ -15,12 +15,17 @@ namespace ProMa.Controllers
 	public class UserConsoleController : Controller
     {
 		[HttpPost]
-		public List<ProMaUser> UsersForFriendRequest([FromBody]string name)
+		public List<ProMaUser> UsersForFriendRequest([FromForm]string name)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
+
+			if(name == null)
+			{
+				name = String.Empty;
+			}
 
 			List<ProMaUser> fittingUsers = ProMaUserHandler.GetAllUsers().Where(x => x.UserName.ToLower().Contains(name.ToLower()) && x.UserId != user.UserId).ToList();
 
@@ -42,7 +47,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void SendFriendRequest([FromBody]int toUser)
+		public void SendFriendRequest([FromForm]int toUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -72,7 +77,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void AcceptFriendRequest([FromBody]int fromUser)
+		public void AcceptFriendRequest([FromForm]int fromUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -83,7 +88,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void RejectFriendRequest([FromBody]int fromUser)
+		public void RejectFriendRequest([FromForm]int fromUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -94,7 +99,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void CancelFriendRequest([FromBody]int recipient)
+		public void CancelFriendRequest([FromForm]int recipient)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -105,7 +110,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void RemoveFriend([FromBody]int fromUser)
+		public void RemoveFriend([FromForm]int fromUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -116,7 +121,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void ChangeEnterPref([FromBody]bool value)
+		public void ChangeEnterPref([FromForm]bool value)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -129,7 +134,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void UpdateEmailAddress([FromBody]string emailAddress)
+		public void UpdateEmailAddress([FromForm]string emailAddress)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -145,7 +150,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void ChangeUsername([FromBody]string userName)
+		public void ChangeUsername([FromForm]string userName)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -174,7 +179,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public void ChangePassword([FromBody]string md5Password)
+		public void ChangePassword([FromForm]string md5Password)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

@@ -157,7 +157,7 @@ function IsMobileDevice() {
 }
 
 /// Animates a wait icon on a form element. Puts wait icon after element
-function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWait, showFinishIcon, alterHeaders, requestType, secretFlag) {
+function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWait, showFinishIcon, alterHeaders, requestType) {
 	var $waitImage = null;
 
 	if (bigWait === undefined) {
@@ -247,24 +247,28 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 		}
 	}
 
-	var transferedData = null;
-
+	// If there is one piece of information in the data object, then we're going to send this request as a form.
+	// Otherwise, stringify the object and place it in the body as a json type data
+	var transferedData = null, formFlag = false, firstInformation = "";
+	
 	if (data == null) {
 		transferedData = "";
 	} else {
-		if (secretFlag) {
-			console.log(data);
-			transferedData = "=" + data[Object.keys(data)[0]].toString();
+		if (Object.keys(data).length == 1) {
+			firstInformation = data[Object.keys(data)[0]].toString();
 		}
-		else {
+
+		if (firstInformation !== "")
+		{
+			formFlag = true;
+			transferedData = "=" + firstInformation;
+		} else {
 			if (alterHeaders) {
 				transferedData = JSON.stringify(data);
 			} else if (!alterHeaders) {
 				transferedData = data;
 			}
 		}
-
-		
 	}
 
 	var def = $.Deferred();
@@ -276,7 +280,7 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 		dataType: "json",
 		type: requestType,
 		data: transferedData,
-		contentType: !secretFlag ? "application/json; charset=utf-8" : "application/x-www-form-urlencoded",// alterHeaders ? "application/json; charset=utf-8" : false,
+		contentType: !formFlag ? "application/json; charset=utf-8" : "application/x-www-form-urlencoded",
 		processData: alterHeaders,
 		success: function (msg) {
 			if ($waitImage != null) {

@@ -87,7 +87,7 @@ namespace ProMa.Controllers
 		[HttpPost]
 		public void LogOutUser()
 		{
-			HttpContext.Items.Clear();
+			HttpContext.Session.Clear();
 		}
 
 		public class RegisterProMaUserRequestObject

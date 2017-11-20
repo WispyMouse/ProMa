@@ -253,7 +253,7 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public PostedNote.PostedNotePayload ToggleHighlightNote([FromBody]int noteId)
+		public PostedNote.PostedNotePayload ToggleHighlightNote([FromForm]int noteId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

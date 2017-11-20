@@ -275,7 +275,7 @@ if (typeof PostedNotes == "undefined") {
 
 			var data = { sortOption: sortOption };
 
-			AjaxCallWithWait("/Services/PostedNotes/GetAllNotes", data, $(".bigWaitHolder"), false, true, false, true, "POST", true)
+			AjaxCallWithWait("/Services/PostedNotes/GetAllNotes", data, $(".bigWaitHolder"), false, true, false, true, "POST")
 			.done(function (msg) {
 				$("#NoteLandingZone").html("");
 
