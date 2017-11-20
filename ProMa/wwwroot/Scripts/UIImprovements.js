@@ -165,7 +165,7 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 	}
 
 	if (requestType === undefined) {
-		requestType = "GET";
+		requestType = "POST";
 	}
 
 	if (replaceElementWithWait === undefined) {

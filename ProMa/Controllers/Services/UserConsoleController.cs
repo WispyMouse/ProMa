@@ -14,8 +14,8 @@ namespace ProMa.Controllers
 {
 	public class UserConsoleController : Controller
     {
-		[HttpGet]
-		public List<ProMaUser> UsersForFriendRequest(string name)
+		[HttpPost]
+		public List<ProMaUser> UsersForFriendRequest([FromBody]string name)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -41,8 +41,8 @@ namespace ProMa.Controllers
 			return returnThis;
 		}
 
-		[HttpGet]
-		public void SendFriendRequest(int toUser)
+		[HttpPost]
+		public void SendFriendRequest([FromBody]int toUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -56,7 +56,7 @@ namespace ProMa.Controllers
 			FriendshipRequestHandler.AddFriendshipRequest(newRequest);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public List<FriendshipRequest> GetFriendshipRequests()
 		{
 			ProMaUser user = DataController.LoggedInUser;
@@ -71,8 +71,8 @@ namespace ProMa.Controllers
 			return requests;
 		}
 
-		[HttpGet]
-		public void AcceptFriendRequest(int fromUser)
+		[HttpPost]
+		public void AcceptFriendRequest([FromBody]int fromUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -82,8 +82,8 @@ namespace ProMa.Controllers
 			FriendshipRequestHandler.AcceptRequestBetweenUsers(user.UserId, fromUser);
 		}
 
-		[HttpGet]
-		public void RejectFriendRequest(int fromUser)
+		[HttpPost]
+		public void RejectFriendRequest([FromBody]int fromUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -93,8 +93,8 @@ namespace ProMa.Controllers
 			FriendshipRequestHandler.RejectRequestBetweenUsers(user.UserId, fromUser);
 		}
 
-		[HttpGet]
-		public void CancelFriendRequest(int recipient)
+		[HttpPost]
+		public void CancelFriendRequest([FromBody]int recipient)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -104,8 +104,8 @@ namespace ProMa.Controllers
 			FriendshipRequestHandler.RejectRequestBetweenUsers(recipient, user.UserId);
 		}
 
-		[HttpGet]
-		public void RemoveFriend(int fromUser)
+		[HttpPost]
+		public void RemoveFriend([FromBody]int fromUser)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -115,8 +115,8 @@ namespace ProMa.Controllers
 			FriendshipHandler.RemoveFriendship(user.UserId, fromUser);
 		}
 
-		[HttpGet]
-		public void ChangeEnterPref(bool value)
+		[HttpPost]
+		public void ChangeEnterPref([FromBody]bool value)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -128,8 +128,8 @@ namespace ProMa.Controllers
 			ProMaUserHandler.UpdateUser(user);
 		}
 
-		[HttpGet]
-		public void UpdateEmailAddress(string emailAddress)
+		[HttpPost]
+		public void UpdateEmailAddress([FromBody]string emailAddress)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -144,8 +144,8 @@ namespace ProMa.Controllers
 			ProMaUserHandler.UpdateUser(user);
 		}
 
-		[HttpGet]
-		public void ChangeUsername(string userName)
+		[HttpPost]
+		public void ChangeUsername([FromBody]string userName)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -173,8 +173,8 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpGet]
-		public void ChangePassword(string md5Password)
+		[HttpPost]
+		public void ChangePassword([FromBody]string md5Password)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

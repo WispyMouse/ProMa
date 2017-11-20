@@ -14,8 +14,17 @@ namespace ProMa.Controllers
 {
 	public class CalendarController : Controller
     {
-		[HttpGet]
-		public void AddCalendar(string newItemName, int year, int month, int day, bool yearly)
+		public class AddCalendarRequestObject
+		{
+			public string newItemName { get; set; }
+			public int year { get; set; }
+			public int month { get; set; }
+			public int day { get; set; }
+			public bool yearly { get; set; }
+		}
+
+		[HttpPost]
+		public void AddCalendar([FromBody]AddCalendarRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -25,16 +34,16 @@ namespace ProMa.Controllers
 			}
 
 			CalendarEntry newEntry = new CalendarEntry();
-			newEntry.CalendarName = newItemName;
-			newEntry.Yearly = yearly;
-			newEntry.ForDate = new DateTimeOffset(year, month, day, 0, 0, 0, new TimeSpan());
+			newEntry.CalendarName = requestObject.newItemName;
+			newEntry.Yearly = requestObject.yearly;
+			newEntry.ForDate = new DateTimeOffset(requestObject.year, requestObject.month, requestObject.day, 0, 0, 0, new TimeSpan());
 			newEntry.UserId = user.UserId;
 
 			CalendarHandler.AddCalendar(newEntry);
 		}
 
-		[HttpGet]
-		public List<CalendarEntry> GetCalendarEntries(int utcOffset)
+		[HttpPost]
+		public List<CalendarEntry> GetCalendarEntries([FromBody]int utcOffset)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -46,8 +55,8 @@ namespace ProMa.Controllers
 			return CalendarHandler.GetCalendarEntriesForUser(user.UserId, utcOffset);
 		}
 
-		[HttpGet]
-		public void DeleteCalendar(int calendarId)
+		[HttpPost]
+		public void DeleteCalendar([FromBody]int calendarId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

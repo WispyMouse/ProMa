@@ -14,7 +14,7 @@ namespace ProMa.Controllers
 {
 	public class AdminConsoleController : Controller
     {
-		[HttpGet]
+		[HttpPost]
 		public List<ProMaUser> GetMostRecentUsers()
 		{
 			ProMaUser user = DataController.LoggedInUser;
@@ -28,7 +28,7 @@ namespace ProMa.Controllers
 			return ProMaUserHandler.ThisCache.OrderByDescending(x => x.JoinTime).Take(5).ToList();
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public void ResetCaches()
 		{
 			ProMaUser user = DataController.LoggedInUser;

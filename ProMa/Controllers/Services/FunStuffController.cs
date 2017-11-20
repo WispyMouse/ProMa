@@ -16,8 +16,8 @@ namespace ProMa.Controllers
     {
 		private static List<string> sentenceEnders = new List<string>() { ".", "!", "?", "\\r\\n" };
 
-		[HttpGet]
-		public string MarkovPostedNote(int noteTypeId)
+		[HttpPost]
+		public string MarkovPostedNote([FromBody]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

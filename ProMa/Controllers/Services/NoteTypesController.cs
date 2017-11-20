@@ -14,7 +14,7 @@ namespace ProMa.Controllers
 {
 	public class NoteTypesController : Controller
     {
-		[HttpGet]
+		[HttpPost]
 		public List<NoteType> GetNoteTypes()
 		{
 			ProMaUser user = DataController.LoggedInUser;
@@ -27,8 +27,8 @@ namespace ProMa.Controllers
 			return returnThis;
 		}
 
-		[HttpGet]
-		public void DeleteNoteType(int noteTypeId)
+		[HttpPost]
+		public void DeleteNoteType([FromBody]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -46,8 +46,8 @@ namespace ProMa.Controllers
 			NoteTypeHandler.DeleteNoteType(relevantNoteType);
 		}
 
-		[HttpGet]
-		public void HibernateNoteType(int noteTypeId)
+		[HttpPost]
+		public void HibernateNoteType([FromBody]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -66,8 +66,8 @@ namespace ProMa.Controllers
 			NoteTypeHandler.UpdateNoteType(relevantNoteType);
 		}
 
-		[HttpGet]
-		public void RestoreNoteType(int noteTypeId)
+		[HttpPost]
+		public void RestoreNoteType([FromBody]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -86,8 +86,8 @@ namespace ProMa.Controllers
 			NoteTypeHandler.UpdateNoteType(relevantNoteType);
 		}
 
-		[HttpGet]
-		public void AddNoteType(string noteTypeName)
+		[HttpPost]
+		public void AddNoteType([FromBody]string noteTypeName)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -109,28 +109,35 @@ namespace ProMa.Controllers
 			NoteTypeMembershipHandler.AddNoteTypeMembership(originalMembership);
 		}
 
-		[HttpGet]
-		public void ShareNoteType(int noteTypeId, int userId, bool canEdit)
+		public class ShareNoteTypeRequestObject
+		{
+			public int noteTypeId { get; set; }
+			public int userId { get; set; }
+			public bool canEdit { get; set; }
+		}
+
+		[HttpPost]
+		public void ShareNoteType([FromBody]ShareNoteTypeRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			NoteType relevantNoteType = NoteTypeHandler.GetNoteType(noteTypeId, user.UserId);
+			NoteType relevantNoteType = NoteTypeHandler.GetNoteType(requestObject.noteTypeId, user.UserId);
 
 			if (!relevantNoteType.Membership.IsCreator)
 				throw new Exception("Created by someone else");
 
 			NoteTypeMembership newMembership = new NoteTypeMembership();
-			newMembership.NoteTypeId = noteTypeId;
-			newMembership.CanUseNotes = canEdit;
-			newMembership.UserId = userId;
+			newMembership.NoteTypeId = requestObject.noteTypeId;
+			newMembership.CanUseNotes = requestObject.canEdit;
+			newMembership.UserId = requestObject.userId;
 			NoteTypeMembershipHandler.AddNoteTypeMembership(newMembership);
 		}
 
-		[HttpGet]
-		public void RemoveFromNoteType(int noteTypeId)
+		[HttpPost]
+		public void RemoveFromNoteType([FromBody]int noteTypeId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -142,23 +149,29 @@ namespace ProMa.Controllers
 			NoteTypeMembershipHandler.RemoveNoteTypeMembership(toRemove);
 		}
 
-		[HttpGet]
-		public void RenameNoteType(int noteTypeId, string newName)
+		public class RenameNoteTypeRequestObject
+		{
+			public int noteTypeId { get; set; }
+			public string newName { get; set; }
+		}
+
+		[HttpPost]
+		public void RenameNoteType([FromBody]RenameNoteTypeRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			if (newName.Contains("'") || newName.Contains("\""))
+			if (requestObject.newName.Contains("'") || requestObject.newName.Contains("\""))
 				throw new Exception("Invalid Note Type name");
 
-			NoteType relevantNoteType = NoteTypeHandler.GetNoteType(noteTypeId, user.UserId);
+			NoteType relevantNoteType = NoteTypeHandler.GetNoteType(requestObject.noteTypeId, user.UserId);
 
 			if (!relevantNoteType.Membership.IsCreator)
 				throw new Exception("Created by someone else");
 
-			relevantNoteType.NoteTypeName = newName;
+			relevantNoteType.NoteTypeName = requestObject.newName;
 			NoteTypeHandler.UpdateNoteType(relevantNoteType);
 		}
 	}

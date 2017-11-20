@@ -13,22 +13,28 @@ using Microsoft.AspNetCore.Http.Features;
 namespace ProMa.Controllers
 {
 	public class PostedNotesController : Controller
-    {
+	{
+		public class PostNoteRequestObject
+		{
+			public string noteText { get; set; }
+			public int noteTypeId { get; set; }
+		}
+
 		// Returns posted note
-		[HttpGet]
-		public PostedNote.PostedNotePayload PostNote(string noteText, int noteTypeId)
+		[HttpPost]
+		public PostedNote.PostedNotePayload PostNote([FromBody]PostNoteRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			if (noteTypeId != -1 && !NoteTypeHandler.UserCanPostNotesOfType(user.UserId, noteTypeId))
+			if (requestObject.noteTypeId != -1 && !NoteTypeHandler.UserCanPostNotesOfType(user.UserId, requestObject.noteTypeId))
 				throw new Exception();
 
 			PostedNote newNote = new PostedNote();
 
-			newNote.NoteText = PostedNoteHandler.CleanNoteText(noteText);
+			newNote.NoteText = PostedNoteHandler.CleanNoteText(requestObject.noteText);
 			newNote.PostedTime = ProMaUser.NowTime();
 			newNote.UserId = user.UserId;
 			newNote.Active = true;
@@ -38,8 +44,8 @@ namespace ProMa.Controllers
 
 			newNote.Highlighted = false;
 
-			if (noteTypeId != -1)
-				newNote.NoteTypeId = noteTypeId;
+			if (requestObject.noteTypeId != -1)
+				newNote.NoteTypeId = requestObject.noteTypeId;
 			else
 				newNote.NoteTypeId = null;
 
@@ -48,23 +54,29 @@ namespace ProMa.Controllers
 			return PostedNoteHandler.GetPayloadNote(newNote, user.UserId);
 		}
 
-		[HttpGet]
-		public PostedNote.PostedNotePayload SetNoteActive(int noteId, bool active)
+		public class SetNoteActiveRequestObject
+		{
+			public int noteId { get; set; }
+			public bool active { get; set; }
+		}
+
+		[HttpPost]
+		public PostedNote.PostedNotePayload SetNoteActive([FromBody]SetNoteActiveRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			PostedNote relevantNote = PostedNoteHandler.GetNote(noteId);
+			PostedNote relevantNote = PostedNoteHandler.GetNote(requestObject.noteId);
 
 			if (relevantNote == null)
-				throw new Exception("No note with id " + noteId.ToString());
+				throw new Exception("No note with id " + requestObject.noteId.ToString());
 
 			if (relevantNote.NoteTypeId.HasValue && !NoteTypeHandler.UserCanPostNotesOfType(user.UserId, relevantNote.NoteTypeId.Value))
 				throw new Exception("Cannot modify or create notes of this type");
 
-			relevantNote.Active = active;
+			relevantNote.Active = requestObject.active;
 
 			relevantNote.EditedTime = ProMaUser.NowTime();
 			relevantNote.EditedUserId = user.UserId;
@@ -74,27 +86,35 @@ namespace ProMa.Controllers
 			return PostedNoteHandler.GetPayloadNote(relevantNote, user.UserId);
 		}
 
-		[HttpGet]
-		public PostedNote.PostedNotePayload EditNote(int noteId, string noteText, int noteTypeId, string noteTitle)
+		public class EditNoteRequestObject
+		{
+			public int noteId { get; set; }
+			public string noteText { get; set; }
+			public int noteTypeId { get; set; }
+			public string noteTitle { get; set; }
+		}
+
+		[HttpPost]
+		public PostedNote.PostedNotePayload EditNote([FromBody]EditNoteRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			PostedNote relevantNote = PostedNoteHandler.GetNote(noteId);
+			PostedNote relevantNote = PostedNoteHandler.GetNote(requestObject.noteId);
 
 			if (relevantNote == null)
-				throw new Exception("No note with id " + noteId.ToString());
+				throw new Exception("No note with id " + requestObject.noteId.ToString());
 
 			if (relevantNote.NoteTypeId.HasValue && !NoteTypeHandler.UserCanPostNotesOfType(user.UserId, relevantNote.NoteTypeId.Value))
 				throw new Exception("Cannot modify or create notes of this type");
 
-			relevantNote.NoteText = PostedNoteHandler.CleanNoteText(noteText);
+			relevantNote.NoteText = PostedNoteHandler.CleanNoteText(requestObject.noteText);
 
-			if (noteTypeId != -1)
+			if (requestObject.noteTypeId != -1)
 			{
-				relevantNote.NoteTypeId = noteTypeId;
+				relevantNote.NoteTypeId = requestObject.noteTypeId;
 			}
 			else
 			{
@@ -103,15 +123,15 @@ namespace ProMa.Controllers
 
 			relevantNote.EditedTime = ProMaUser.NowTime();
 			relevantNote.EditedUserId = user.UserId;
-			relevantNote.NoteTitle = noteTitle;
+			relevantNote.NoteTitle = requestObject.noteTitle;
 
 			PostedNoteHandler.UpdatePostedNote(relevantNote);
 
 			return PostedNoteHandler.GetPayloadNote(relevantNote, (int?)(user.UserId));
 		}
 
-		[HttpGet]
-		public List<PostedNote.PostedNotePayload> GetAllNotes(string sortOption)
+		[HttpPost]
+		public List<PostedNote.PostedNotePayload> GetAllNotes([FromBody]string sortOption)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -174,7 +194,7 @@ namespace ProMa.Controllers
 				// TODO KAG: Fix this mobile recognition
 				// if (HttpContext.Request.Browser.IsMobileDevice)
 				{
-				// 	postedNoteFinishedList = orderedQuery.Take(50).ToList();
+					// 	postedNoteFinishedList = orderedQuery.Take(50).ToList();
 				}
 				// else
 				{
@@ -189,25 +209,31 @@ namespace ProMa.Controllers
 			return PostedNoteHandler.GetPayloadNotes(postedNoteFinishedList, user.UserId);
 		}
 
-		[HttpGet]
-		public PostedNote.PostedNotePayload SetNoteProgress(int noteId, bool progressLevel)
+		public class SetNoteProgressRequestObject
+		{
+			public int noteId { get; set; }
+			public bool progressLevel { get; set; }
+		}
+
+		[HttpPost]
+		public PostedNote.PostedNotePayload SetNoteProgress([FromBody]SetNoteProgressRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			PostedNote relevantNote = PostedNoteHandler.GetNote(noteId);
+			PostedNote relevantNote = PostedNoteHandler.GetNote(requestObject.noteId);
 
 			if (relevantNote == null)
-				throw new Exception("No note with id " + noteId.ToString());
+				throw new Exception("No note with id " + requestObject.noteId.ToString());
 
 			if (relevantNote.NoteTypeId.HasValue && !NoteTypeHandler.UserCanPostNotesOfType(user.UserId, relevantNote.NoteTypeId.Value))
 				throw new Exception("Cannot modify or create notes of this type");
 
-			relevantNote.Completed = progressLevel;
+			relevantNote.Completed = requestObject.progressLevel;
 
-			if (progressLevel)
+			if (requestObject.progressLevel)
 			{
 				relevantNote.CompletedTime = ProMaUser.NowTime();
 				relevantNote.CompletedUserId = user.UserId;
@@ -224,8 +250,8 @@ namespace ProMa.Controllers
 			return PostedNoteHandler.GetPayloadNote(relevantNote, user.UserId);
 		}
 
-		[HttpGet]
-		public PostedNote.PostedNotePayload ToggleHighlightNote(int noteId)
+		[HttpPost]
+		public PostedNote.PostedNotePayload ToggleHighlightNote([FromBody]int noteId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 

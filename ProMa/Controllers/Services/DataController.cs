@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http.Features;
 namespace ProMa.Controllers
 {
 	public class DataController : Controller
-    {
+	{
 		public const string USERIDSESSIONKEY = "userId";
 		public const string USERPASSWORDSESSIONKEY = "userPassword";
 
@@ -46,14 +46,21 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpPost]
-		public ProMaUser LogInProMaUser(string userName, string password, bool skipHash)
+		public class LogInProMaUserRequestObject
 		{
-			string shaPassword = skipHash ? password : ProMaUser.ComputeSHA256(password);
+			public string userName { get; set; }
+			public string password { get; set; }
+			public bool skipHash { get; set; }
+		}
+
+		[HttpPost]
+		public ProMaUser LogInProMaUser([FromBody]LogInProMaUserRequestObject requestObject)
+		{
+			string shaPassword = requestObject.skipHash ? requestObject.password : ProMaUser.ComputeSHA256(requestObject.password);
 
 			// For the convenience of users, we want to return a message in the case where a user name exists, but the password is wrong
 			// the slight security concerns relating to this is noted
-			ProMaUser relevantUser = ProMaUserHandler.ThisCache.FirstOrDefault(x => x.UserName.ToLower() == userName.ToLower());
+			ProMaUser relevantUser = ProMaUserHandler.ThisCache.FirstOrDefault(x => x.UserName.ToLower() == requestObject.userName.ToLower());
 
 			if (relevantUser != null)
 			{
@@ -77,25 +84,31 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public void LogOutUser()
 		{
 			HttpContext.Items.Clear();
 		}
 
+		public class RegisterProMaUserRequestObject
+		{
+			public string userName { get; set; }
+			public string md5Password { get; set; }
+		}
+
 		[HttpPost]
-		public ProMaUser RegisterProMaUser(string userName, string md5Password)
+		public ProMaUser RegisterProMaUser([FromBody]RegisterProMaUserRequestObject requestObject)
 		{
 			using (ProMaDB scope = new ProMaDB())
 			{
-				if (string.IsNullOrWhiteSpace(md5Password))
+				if (string.IsNullOrWhiteSpace(requestObject.md5Password))
 					throw new Exception("Invalid password");
 
-				if (!ProMaUser.VerifyName(userName))
+				if (!ProMaUser.VerifyName(requestObject.userName))
 					throw new Exception("Invalid user name");
 
 				// make sure no user with the same name
-				ProMaUser existingUser = ProMaUserHandler.GetUserByUserName(userName);
+				ProMaUser existingUser = ProMaUserHandler.GetUserByUserName(requestObject.userName);
 
 				if (existingUser != null)
 				{
@@ -104,9 +117,9 @@ namespace ProMa.Controllers
 
 				ProMaUser newUser = new ProMaUser();
 
-				newUser.HashedPassword = ProMaUser.ComputeSHA256(md5Password); ;
+				newUser.HashedPassword = ProMaUser.ComputeSHA256(requestObject.md5Password); ;
 				newUser.JoinTime = ProMaUser.NowTime();
-				newUser.UserName = userName;
+				newUser.UserName = requestObject.userName;
 
 				ProMaUserHandler.AddProMaUser(newUser);
 
@@ -126,7 +139,7 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public ProMaUser GetLoggedInUser()
 		{
 			if (LoggedInUser == null)
@@ -137,7 +150,7 @@ namespace ProMa.Controllers
 			return LoggedInUser;
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public List<ProMaUser> GetFriends()
 		{
 			ProMaUser user = LoggedInUser;
@@ -149,7 +162,7 @@ namespace ProMa.Controllers
 		}
 
 		// Expects an image with the file name image and strings userId and md5Password
-		[HttpGet]
+		[HttpPost]
 		public void UploadImage()
 		{
 			// KAG TODO: This had the most amount of changes; Need to find several changes
@@ -176,7 +189,7 @@ namespace ProMa.Controllers
 			*/
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public bool HeartBeat()
 		{
 			if (LoggedInUser == null)
@@ -188,16 +201,23 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpGet]
-		public List<KeyValuePair<string, int>> LongPoll(int userId, int choreCacheVersion, int friendshipCacheVersion)
+		public class LongPollRequestObject
 		{
-			Task<List<KeyValuePair<string, int>>> thisTask = Task.Run(() => LongPollInternal(userId, choreCacheVersion, friendshipCacheVersion));
+			public int userId { get; set; }
+			public int choreCacheVersion { get; set; }
+			public int friendshipCacheVersion { get; set; }
+		}
+
+		[HttpPost]
+		public List<KeyValuePair<string, int>> LongPoll([FromBody]LongPollRequestObject requestObject)
+		{
+			Task<List<KeyValuePair<string, int>>> thisTask = Task.Run(() => LongPollInternal(requestObject));
 			thisTask.Wait();
 			return thisTask.Result;
 		}
 
-		[HttpGet]
-		public static async Task<List<KeyValuePair<string, int>>> LongPollInternal(int userId, int choreCacheVersion, int friendshipCacheVersion)
+		[HttpPost]
+		public static async Task<List<KeyValuePair<string, int>>> LongPollInternal(LongPollRequestObject requestObject)
 		{
 			List<KeyValuePair<string, int>> returnThis = new List<KeyValuePair<string, int>>();
 
@@ -205,12 +225,12 @@ namespace ProMa.Controllers
 			{
 				await Task.Delay(100);
 				returnThis.Clear();
-				returnThis.Add(new KeyValuePair<string, int>("friendshipCacheVersion", FriendshipRequestHandler.LongPollInternal(userId)));
-				returnThis.Add(new KeyValuePair<string, int>("choreCacheVersion", CompletedChoreHandler.LongPollInternal(userId)));
+				returnThis.Add(new KeyValuePair<string, int>("friendshipCacheVersion", FriendshipRequestHandler.LongPollInternal(requestObject.userId)));
+				returnThis.Add(new KeyValuePair<string, int>("choreCacheVersion", CompletedChoreHandler.LongPollInternal(requestObject.userId)));
 			} while
 				(
-					friendshipCacheVersion == returnThis.First(x => x.Key == "friendshipCacheVersion").Value &&
-					choreCacheVersion == returnThis.First(x => x.Key == "choreCacheVersion").Value
+					requestObject.friendshipCacheVersion == returnThis.First(x => x.Key == "friendshipCacheVersion").Value &&
+					requestObject.choreCacheVersion == returnThis.First(x => x.Key == "choreCacheVersion").Value
 				);
 
 			return returnThis;

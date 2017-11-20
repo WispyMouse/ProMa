@@ -14,8 +14,8 @@ namespace ProMa.Controllers
 {
 	public class ChoresController : Controller
     {
-		[HttpGet]
-		public void AddNewChore(string newItemName)
+		[HttpPost]
+		public void AddNewChore([FromBody]string newItemName)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -27,15 +27,22 @@ namespace ProMa.Controllers
 			SharedChoreHandler.AddSharedChore(newChore, user.UserId);
 		}
 
-		[HttpGet]
-		public List<CompletedChore> GetChoreItems(int year, int month, int day)
+		public class GetChoreItemsRequestObject
+		{
+			public int year { get; set; }
+			public int month { get; set; }
+			public int day { get; set; }
+		}
+
+		[HttpPost]
+		public List<CompletedChore> GetChoreItems([FromBody]GetChoreItemsRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			DateTime dayForRequest = new DateTime(year, month, day).Date;
+			DateTime dayForRequest = new DateTime(requestObject.year, requestObject.month, requestObject.day).Date;
 
 			List<CompletedChore> returnThis = CompletedChoreHandler.GetChoreItemsForDateAndUser(user.UserId, dayForRequest);
 
@@ -68,8 +75,8 @@ namespace ProMa.Controllers
 			return returnThis.ToList();
 		}
 
-		[HttpGet]
-		public void RemoveChoreMembership(int choreId)
+		[HttpPost]
+		public void RemoveChoreMembership([FromBody]int choreId)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -79,8 +86,17 @@ namespace ProMa.Controllers
 			SharedChoreMembershipHandler.RemoveSharedChoreMembership(choreId, user.UserId);
 		}
 
-		[HttpGet]
-		public void ChangeChoreItemCompletion(int choreId, bool completed, int year, int month, int day)
+		public class ChangeChoreItemCompletionRequestObject
+		{
+			public int choreId { get; set; }
+			public bool completed { get; set; }
+			public int year { get; set; }
+			public int month { get; set; }
+			public int day { get; set; }
+		}
+
+		[HttpPost]
+		public void ChangeChoreItemCompletion([FromBody]ChangeChoreItemCompletionRequestObject requestObject)
 		{
 			using (ProMaDB scope = new ProMaDB())
 			{
@@ -89,21 +105,21 @@ namespace ProMa.Controllers
 				if (user == null)
 					throw new NotLoggedInException();
 
-				DateTime dayForRequest = new DateTime(year, month, day).Date;
+				DateTime dayForRequest = new DateTime(requestObject.year, requestObject.month, requestObject.day).Date;
 
-				if (completed)
+				if (requestObject.completed)
 				{
-					CompletedChoreHandler.CompleteChore(choreId, dayForRequest, user.UserId);
+					CompletedChoreHandler.CompleteChore(requestObject.choreId, dayForRequest, user.UserId);
 				}
 				else
 				{
-					CompletedChoreHandler.UnCompleteChore(choreId, dayForRequest);
+					CompletedChoreHandler.UnCompleteChore(requestObject.choreId, dayForRequest);
 				}
 			}
 		}
 
-		[HttpGet]
-		public List<ProMaUser> GetUsersNotAssignedToChore(int choreId)
+		[HttpPost]
+		public List<ProMaUser> GetUsersNotAssignedToChore([FromBody]int choreId)
 		{
 			using (ProMaDB scope = new ProMaDB())
 			{
@@ -119,17 +135,23 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpGet]
-		public void AssignUserToChore(int choreId, int userId)
+		public class AssignUserToChoreRequestObject
+		{
+			public int choreId { get; set; }
+			public int userId { get; set; }
+		}
+
+		[HttpPost]
+		public void AssignUserToChore([FromBody]AssignUserToChoreRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			if (FriendshipHandler.GetUserFriends(user.UserId).Any(x => x.UserId == userId))
+			if (FriendshipHandler.GetUserFriends(user.UserId).Any(x => x.UserId == requestObject.userId))
 			{
-				SharedChoreMembershipHandler.AddSharedChoreMembership(choreId, userId);
+				SharedChoreMembershipHandler.AddSharedChoreMembership(requestObject.choreId, requestObject.userId);
 			}
 			else
 			{
@@ -137,8 +159,8 @@ namespace ProMa.Controllers
 			}
 		}
 
-		[HttpGet]
-		public void RememberSorting(SerializableIntIntPair[] pairings)
+		[HttpPost]
+		public void RememberSorting([FromBody]SerializableIntIntPair[] pairings)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
@@ -148,25 +170,32 @@ namespace ProMa.Controllers
 			SharedChoreMembershipHandler.SaveSortingOrders(pairings, user.UserId);
 		}
 
-		[HttpGet]
-		public void SaveChoreAlert(int choreId, int alertHour, int alertMinute)
+		public class SaveChoreAlertRequestObject
+		{
+			public int choreId { get; set; }
+			public int alertHour { get; set; }
+			public int alertMinute { get; set; }
+		}
+
+		[HttpPost]
+		public void SaveChoreAlert([FromBody]SaveChoreAlertRequestObject requestObject)
 		{
 			ProMaUser user = DataController.LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			SharedChoreMembership toUpdate = SharedChoreMembershipHandler.GetSharedChoreMembership(choreId, user.UserId);
+			SharedChoreMembership toUpdate = SharedChoreMembershipHandler.GetSharedChoreMembership(requestObject.choreId, user.UserId);
 
-			if (alertHour == -1)
+			if (requestObject.alertHour == -1)
 			{
 				toUpdate.AlertHour = null;
 				toUpdate.AlertMinute = null;
 			}
 			else
 			{
-				toUpdate.AlertHour = alertHour;
-				toUpdate.AlertMinute = alertMinute;
+				toUpdate.AlertHour = requestObject.alertHour;
+				toUpdate.AlertMinute = requestObject.alertMinute;
 			}
 
 			SharedChoreMembershipHandler.UpdateSharedChoreMembership(toUpdate);
