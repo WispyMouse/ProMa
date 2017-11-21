@@ -177,6 +177,10 @@ p.weaktext {
 	vertical-align: top;
 }
 
+	.noteAction > a {
+		vertical-align: inherit;
+	}
+
 	.noteAction .promaicon:not(.promaicon-wait) {
 		vertical-align: top;
 	}
