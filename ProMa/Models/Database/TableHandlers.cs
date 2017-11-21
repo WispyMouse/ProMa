@@ -9,6 +9,11 @@ using System.Web;
 
 namespace ProMa.Models
 {
+	public static class TransactionLocks
+	{
+		public static string StringLock = string.Empty;
+	}
+
 	public static class ProMaUserHandler
 	{
 		public static List<ProMaUser> ThisCache
@@ -595,7 +600,7 @@ namespace ProMa.Models
 	{
 		public static void AddNoteTypeMembership(NoteTypeMembership toAdd)
 		{
-			using (TransactionScope lockScope = new TransactionScope())
+			lock (TransactionLocks.StringLock)
 			{
 				using (ProMaDB scope = new ProMaDB())
 				{
@@ -611,8 +616,6 @@ namespace ProMa.Models
 					scope.Entry(toAdd).State = EntityState.Added;
 					scope.SaveChanges();
 				}
-
-				lockScope.Complete();
 			}
 		}
 
