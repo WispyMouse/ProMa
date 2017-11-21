@@ -32,7 +32,6 @@ function LoginWithInformation(userName, password, skipHash) {
 }
 
 function SetUserInformation(ProMaUserEntityObject) {
-	console.log(ProMaUserEntityObject);
 	SetCookie(USERNAMECOOKIE, ProMaUserEntityObject.UserName);
 
 	LoggedInUser = {
