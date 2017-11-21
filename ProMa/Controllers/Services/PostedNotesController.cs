@@ -193,15 +193,7 @@ namespace ProMa.Controllers
 
 			if (!includeMany)
 			{
-				// TODO KAG: Fix this mobile recognition
-				// if (HttpContext.Request.Browser.IsMobileDevice)
-				{
-					// 	postedNoteFinishedList = orderedQuery.Take(50).ToList();
-				}
-				// else
-				{
-					postedNoteFinishedList = orderedQuery.Take(100).ToList();
-				}
+				postedNoteFinishedList = orderedQuery.Take(100).ToList();
 			}
 			else
 			{
