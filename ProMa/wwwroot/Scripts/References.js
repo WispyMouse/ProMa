@@ -184,7 +184,7 @@ function GetCookie(key, defaultValue) {
 }
 
 function ParseDateFromJSONReturn(toParse) {
-	return new Date(parseInt(toParse.substr(6, toParse.length - 6)));
+	return new Date(toParse);
 }
 
 // http://javascript.about.com/library/bldst.htm
