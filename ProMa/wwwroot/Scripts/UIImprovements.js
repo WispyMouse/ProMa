@@ -277,7 +277,6 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 
 	var thisAjaxCall = $.ajax({
 		url: url,
-		dataType: "json",
 		type: requestType,
 		data: transferedData,
 		contentType: !formFlag ? "application/json; charset=utf-8" : "application/x-www-form-urlencoded",
