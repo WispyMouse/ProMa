@@ -406,7 +406,7 @@ var friendshipCacheVersion = -1;
 function LongPoll() {
 	var data = { userId: LoggedInUser.userId, choreCacheVersion: choreCacheVersion, friendshipCacheVersion: friendshipCacheVersion };
 
-	AjaxCallWithWait("/Services/Data/LongPoll", data).done(function (msg) {
+	AjaxCallWithWait("/Services/LongPoll/LongPoll/LongPoll", data).done(function (msg) {
 		var responseChoreCacheVersion = ValueOfKeyInKeyValuePairArray(msg, "choreCacheVersion");
 		if (choreCacheVersion !== responseChoreCacheVersion) {
 			ChoreList.GetChoreItems();

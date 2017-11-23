@@ -275,7 +275,7 @@ if (typeof PostedNotes == "undefined") {
 
 			var data = { sortOption: sortOption };
 
-			AjaxCallWithWait("/Services/PostedNotes/GetAllNotes", data, $(".bigWaitHolder"), false, true, false, true, "POST")
+			AjaxCallWithWait("/Services/PostedNotes/GetAllNotes", data, $(".bigWaitHolder"), false, true, false)
 			.done(function (msg) {
 				$("#NoteLandingZone").html("");
 
@@ -400,8 +400,7 @@ if (typeof PostedNotes == "undefined") {
 			formData.append("image", droppedFile);
 
 			var $textArea = $(dom).closest(highParent).find(".noteTextInput");
-
-			AjaxCallWithWait("/Services/Data/UploadImage", formData, $(dom), true, false, true, false).done(function (msg) {
+			AjaxCallWithWait("/Services/Data/UploadImage", formData, $(dom), true, false, true, true).done(function (msg) {
 				var text = $textArea.html();
 				var addBreaklineToBefore = text.length === 0 ?
 					false :
