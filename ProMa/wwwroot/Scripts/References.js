@@ -15,7 +15,6 @@
 /// <reference path="Utilities/AdminConsole.js">
 /// <reference path="Utilities/NoteTypeManagement.js">
 /// <reference path="Utilities/FunStuff.js">
-/// <reference path="Utilities/Resume.js">
 /// <reference path="Utilities/Themes.js">
 /// <reference path="Utilities/Calendar.js">
 

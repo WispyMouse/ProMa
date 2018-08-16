@@ -4,3 +4,4 @@ ProMa/localsettings.json
 ProMa/localsettings.Development.json
 .vs/ProMa/v15/sqlite3/storage.ide
 *.pubxml
+*.stackdump
