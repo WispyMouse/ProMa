@@ -82,7 +82,7 @@ function ShowWorkshop() {
 
 	var desiredTabSelector = GetCookie(LASTWORKSHOPUTILITIESTAB, "");
 	var desiredTabIndex = 0;
-	if (desiredTabSelector.length != 0) {
+	if (desiredTabSelector.length !== 0) {
 		desiredTabIndex = Math.max($(desiredTabSelector).index("#WorkshopUtilities > div"), 0);
 	}
 
@@ -194,7 +194,7 @@ function PopTabCreation() {
 	}
 
 	tabCreationFunctions.forEach(function (value) {
-		if (value != null) {
+		if (value !== null) {
 			$("#WorkshopUtilities").children("ul").append("<li><a href='#" + value.id + "'>" + value.tabName + "</a></li>");
 			$("#WorkshopUtilities").append("<div id='" + value.id + "'></div>");
 		}
@@ -203,7 +203,7 @@ function PopTabCreation() {
 	$("#WorkshopUtilities").tabs("refresh");
 
 	tabCreationFunctions.forEach(function (value) {
-		if (value != null) {
+		if (value !== null) {
 			value.functionToRun();
 		}
 	});
@@ -250,7 +250,7 @@ function AddSortOption(id, name, title, type, defaultValue, domPassFunc, doNotSa
 function AdjustShowSortOptions() {
 	$.each($(".optionList"), function (index, value) {
 		$.each($(value).find("span"), function (innerIndex, innerValue) {
-			if ($(innerValue).attr("data-type") != undefined && $.parseJSON($(innerValue).attr("data-donotsave")) === false) {
+			if ($(innerValue).attr("data-type") !== undefined && $.parseJSON($(innerValue).attr("data-donotsave")) === false) {
 				var cookieValue = GetCookie("SORTOPTION" + $(value).attr("data-id") + $(innerValue).attr("data-type"), $(innerValue).attr("data-defaultvalue"));
 
 				if ($(innerValue).find("input[type=checkbox]").length > 0) {
@@ -459,7 +459,8 @@ function AppendNoteCreationArea($dom, noteAreaButtonFunc) {
 		"<div class='formSet noteAreaHolder'>" +
 			"<div class='formRow'><div class='noteTextInput' contenteditable='true' style='height: " + oldHeight.toString() + "px'>" + oldHtmlValue + "</div></div>" +
 			"<div class='formRow'><button class='noteAreaButton formItem' type='button'>Post</button>&nbsp;as&nbsp;type&nbsp;<select class='noteTypeSelect formItem'></select></div>" +
-			"<div class='formRow uploadImage'><input type='file' accept='image/*'/><button type='button' onclick='UploadImage(this, \"" + highParent + "\")'>Upload Image</button></div>" +
+			"<div class='formRow'><span class='weaktext'>Upload image WIP!</span></div>" +
+			// "<div class='formRow uploadImage'><input type='file' accept='image/*'/><button type='button' onclick='UploadImage(this, \"" + highParent + "\")'>Upload Image</button></div>" +
 		"</div>"
 		);
 

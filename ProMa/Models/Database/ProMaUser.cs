@@ -1,55 +1,47 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace ProMa.Models
 {
-    public partial class ProMaUser
-    {
-        public ProMaUser()
-        {
-            CalendarEntries = new HashSet<CalendarEntry>();
-            FriendshipRequestsRecipient = new HashSet<FriendshipRequest>();
-            FriendshipRequestsSender = new HashSet<FriendshipRequest>();
-            FriendshipsMemberOne = new HashSet<Friendship>();
-            FriendshipsMemberTwo = new HashSet<Friendship>();
-            NoteTypeMemberships = new HashSet<NoteTypeMembership>();
-            PostedNotesCompletedUser = new HashSet<PostedNote>();
-            PostedNotesEditedUser = new HashSet<PostedNote>();
-            PostedNotesUser = new HashSet<PostedNote>();
-            SharedChoreMemberships = new HashSet<SharedChoreMembership>();
-        }
+	public class ProMaUser
+	{
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key]
+		public int UserId { get; set; }
 
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string HashedPassword { get; set; }
-        public DateTimeOffset JoinTime { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool EnterIsNewLinePref { get; set; }
-        public string EmailAddress { get; set; }
-        public bool IsDemo { get; set; }
+		public string UserName { get; set; }
+
+		[XmlIgnore]
+		[JsonIgnore]
+		public string HashedPassword { get; set; }
+		public DateTimeOffset JoinTime { get; set; }
+
+		public string EmailAddress { get; set; }
+
+		public bool IsAdmin { get; set; }
+		public bool IsDemo { get; set; }
+		public bool EnterIsNewLinePref { get; set; }
 
 		// Used for meta calls so the user can be relogged in
 		[NotMapped]
 		public string PassBackPassword { get; set; }
 
 		public ICollection<CalendarEntry> CalendarEntries { get; set; }
-        public ICollection<FriendshipRequest> FriendshipRequestsRecipient { get; set; }
-        public ICollection<FriendshipRequest> FriendshipRequestsSender { get; set; }
-        public ICollection<Friendship> FriendshipsMemberOne { get; set; }
-        public ICollection<Friendship> FriendshipsMemberTwo { get; set; }
-        public ICollection<NoteTypeMembership> NoteTypeMemberships { get; set; }
-        public ICollection<PostedNote> PostedNotesCompletedUser { get; set; }
-        public ICollection<PostedNote> PostedNotesEditedUser { get; set; }
-        public ICollection<PostedNote> PostedNotesUser { get; set; }
-        public ICollection<SharedChoreMembership> SharedChoreMemberships { get; set; }
-
-		public static DateTime NowTime(int utcOffset = 0)
-		{
-			return DateTime.UtcNow.ToUniversalTime().AddHours(utcOffset);
-		}
+		public ICollection<FriendshipRequest> FriendshipRequestsRecipient { get; set; }
+		public ICollection<FriendshipRequest> FriendshipRequestsSender { get; set; }
+		public ICollection<Friendship> FriendshipsMemberOne { get; set; }
+		public ICollection<Friendship> FriendshipsMemberTwo { get; set; }
+		public ICollection<NoteTypeMembership> NoteTypeMemberships { get; set; }
+		public ICollection<PostedNote> PostedNotesCompletedUser { get; set; }
+		public ICollection<PostedNote> PostedNotesEditedUser { get; set; }
+		public ICollection<PostedNote> PostedNotesUser { get; set; }
+		public ICollection<SharedChoreMembership> SharedChoreMemberships { get; set; }
 
 		// The password hashing method is to take the md5 input
 		// then do a SHA256 hash of the result
@@ -79,6 +71,11 @@ namespace ProMa.Models
 			}
 
 			return hashString;
+		}
+
+		public static DateTime NowTime(int utcOffset = 0)
+		{
+			return DateTime.UtcNow.ToUniversalTime().AddHours(utcOffset);
 		}
 
 		public static bool VerifyName(string name)

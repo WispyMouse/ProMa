@@ -157,15 +157,11 @@ function IsMobileDevice() {
 }
 
 /// Animates a wait icon on a form element. Puts wait icon after element
-function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWait, showFinishIcon, alterHeaders, requestType) {
+function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWait, showFinishIcon, uploadMode) {
 	var $waitImage = null;
 
 	if (bigWait === undefined) {
 		bigWait = false;
-	}
-
-	if (requestType === undefined) {
-		requestType = "POST";
 	}
 
 	if (replaceElementWithWait === undefined) {
@@ -176,8 +172,8 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 		showFinishIcon = true;
 	}
 
-	if (alterHeaders === undefined) {
-		alterHeaders = true;
+	if (uploadMode === undefined) {
+		uploadMode = false;
 	}
 
 	if ($formElement != null && $formElement !== undefined && $formElement.length !== 0) {
@@ -254,7 +250,7 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 	if (data == null) {
 		transferedData = "";
 	} else {
-		if (Object.keys(data).length == 1) {
+		if (Object.keys(data).length === 1 && uploadMode === false) {
 			firstInformation = data[Object.keys(data)[0]].toString();
 		}
 
@@ -263,11 +259,7 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 			formFlag = true;
 			transferedData = "=" + firstInformation;
 		} else {
-			if (alterHeaders) {
-				transferedData = JSON.stringify(data);
-			} else if (!alterHeaders) {
-				transferedData = data;
-			}
+			transferedData = JSON.stringify(data);
 		}
 	}
 
@@ -277,10 +269,10 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 
 	var thisAjaxCall = $.ajax({
 		url: url,
-		type: requestType,
+		type: "POST",
 		data: transferedData,
-		contentType: !formFlag ? "application/json; charset=utf-8" : "application/x-www-form-urlencoded",
-		processData: alterHeaders,
+		contentType: uploadMode ? false : (!formFlag ? "application/json; charset=utf-8" : "application/x-www-form-urlencoded"),
+		processData: !uploadMode,
 		success: function (msg) {
 			if ($waitImage != null) {
 				if ($formElement[0].tagName === "BUTTON") {

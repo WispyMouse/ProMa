@@ -166,27 +166,25 @@ namespace ProMa.Controllers
 		public void UploadImage()
 		{
 			// KAG TODO: This had the most amount of changes; Need to find several changes
-			/*
+			
 			ProMaUser user = LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			HttpPostedFile file = HttpContext.Request.Current.Request.Files["image"];
-
-			if (file == null)
+			//if (uploadedFile == null)
 				throw new ArgumentException("No image in transport; this system only allows for uploading of a single image");
 
-			string randomFileName = Guid.NewGuid().ToString() + "." + Regex.Match(file.FileName, @"\.(.*)").Groups[1].Value;
+			//string randomFileName = Guid.NewGuid().ToString() + "." + Regex.Match(uploadedFile.FileName, @"\.(.*)").Groups[1].Value;
 
-			if (file.ContentLength > 10485760) // 10 MB; the web.config won't allow anything this large to get through in the first place, though
+			//if (uploadedFile.Length > 10485760) // 10 MB; the web.config won't allow anything this large to get through in the first place, though
 				throw new Exception("File too large");
 
-			file.SaveAs(HttpRuntime.AppDomainAppPath + "/Images/UploadedImages/" + randomFileName);
-			HttpContext.Response.BufferOutput = true;
-			HttpContext.Response.Write("{\"fileName\": \"" + randomFileName + "\"}");
-			HttpContext.Response.Body.Flush();
-			*/
+			
+			// file.SaveAs(HttpRuntime.AppDomainAppPath + "/Images/UploadedImages/" + randomFileName);
+			// HttpContext.Response.BufferOutput = true;
+			// HttpContext.Response.Write("{\"fileName\": \"" + randomFileName + "\"}");
+			// HttpContext.Response.Body.Flush();
 		}
 
 		[HttpPost]

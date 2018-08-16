@@ -1,29 +1,60 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace ProMa.Models
 {
-    public partial class PostedNote
-    {
-        public int NoteId { get; set; }
-        public int UserId { get; set; }
-        public DateTimeOffset PostedTime { get; set; }
-        public bool Active { get; set; }
-        public DateTimeOffset? CompletedTime { get; set; }
-        public bool Highlighted { get; set; }
-        public int? NoteTypeId { get; set; }
-        public string NoteTitle { get; set; }
-        public bool Completed { get; set; }
-        public int? CompletedUserId { get; set; }
-        public DateTimeOffset? EditedTime { get; set; }
-        public int? EditedUserId { get; set; }
-        public string NoteText { get; set; }
+	public class PostedNote
+	{
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key]
+		public int NoteId { get; set; }
 
-        public ProMaUser CompletedUser { get; set; }
-        public ProMaUser EditedUser { get; set; }
-        public NoteType NoteType { get; set; }
-        public ProMaUser User { get; set; }
+		public DateTimeOffset PostedTime { get; set; }
+
+		public string NoteText { get; set; }
+
+		public bool Active { get; set; }
+		public bool Highlighted { get; set; }
+
+		public bool Completed { get; set; }
+		public DateTimeOffset? CompletedTime { get; set; }
+		public int? CompletedUserId { get; set; }
+		[XmlIgnore]
+		[JsonIgnore]
+		[ForeignKey("CompletedUserId")]
+		public ProMaUser CompletedUser { get; set; }
+
+		public DateTimeOffset? EditedTime { get; set; }
+		public int? EditedUserId { get; set; }
+		[XmlIgnore]
+		[JsonIgnore]
+		[ForeignKey("EditedUserId")]
+		public ProMaUser EditedUser { get; set; }
+
+		public string NoteTitle { get; set; }
+
+		public int UserId { get; set; }
+		[XmlIgnore]
+		[JsonIgnore]
+		[ForeignKey("UserId")]
+		public ProMaUser PostedUser { get; set; }
+
+		[DataMember]
+		public int? NoteTypeId { get; set; }
+		[XmlIgnore]
+		[JsonIgnore]
+		[ForeignKey("NoteTypeId")]
+		public NoteType TypeOfNote { get; set; }
+
+		public PostedNote()
+		{
+		}
 
 		public class PostedNotePayload
 		{

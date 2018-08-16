@@ -69,7 +69,7 @@ if (typeof NoteTypeManagement === "undefined") {
 						optGroupLabel = hibernatedNoteTypesLabel;
 					}
 
-					var sharedWithOthers = value.SharedWithOthers != null && value.SharedWithOthers.length > 0;
+					var sharedWithOthers = value.SharedWithOthers !== null && value.SharedWithOthers.length > 0;
 
 					if (isOwner) {
 						$("#NoteTypeSelector").find("optgroup[label='" + optGroupLabel + "']").append("<option value='" + value.NoteTypeId + "' data-hibernated='" + value.Hibernated + "' title='" + (sharedWithOthers ? "This note type is shared with others" : "") + "'>" + value.NoteTypeName + (sharedWithOthers ? "*" : "") + "</option>");
@@ -108,7 +108,7 @@ if (typeof NoteTypeManagement === "undefined") {
 				$.each($("#BottomBar").find(".optionList").find(".typefilter"), function (index, value) {
 					var desiredValue = GetCookie("SORTOPTION" + $(value).parent().attr("data-id") + $(value).attr("data-type"), $(value).attr("data-defaultvalue"));
 
-					if ($(value).find("option[value=" + desiredValue + "]").length == 1) {
+					if ($(value).find("option[value=" + desiredValue + "]").length === 1) {
 						$(value).find("select").val(desiredValue);
 					}
 					else {

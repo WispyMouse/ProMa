@@ -11,7 +11,7 @@ using System;
 namespace ProMa.Migrations
 {
     [DbContext(typeof(ProMaDB))]
-    partial class ProMaContextModelSnapshot : ModelSnapshot
+    partial class ProMaDBModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace ProMa.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ProMa.Models.CalendarEntries", b =>
+            modelBuilder.Entity("ProMa.Models.CalendarEntry", b =>
                 {
                     b.Property<int>("CalendarId")
                         .ValueGeneratedOnAdd();
@@ -41,7 +41,7 @@ namespace ProMa.Migrations
                     b.ToTable("CalendarEntries");
                 });
 
-            modelBuilder.Entity("ProMa.Models.CompletedChores", b =>
+            modelBuilder.Entity("ProMa.Models.CompletedChore", b =>
                 {
                     b.Property<DateTime>("ChoreDate")
                         .HasColumnType("date");
@@ -61,27 +61,12 @@ namespace ProMa.Migrations
                     b.HasIndex("SharedChoreId")
                         .HasName("IX_SharedChoreId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("CompletedChores");
                 });
 
-            modelBuilder.Entity("ProMa.Models.FriendshipRequests", b =>
-                {
-                    b.Property<int>("SenderId");
-
-                    b.Property<int>("RecipientId");
-
-                    b.HasKey("SenderId", "RecipientId");
-
-                    b.HasIndex("RecipientId")
-                        .HasName("IX_RecipientId");
-
-                    b.HasIndex("SenderId")
-                        .HasName("IX_SenderId");
-
-                    b.ToTable("FriendshipRequests");
-                });
-
-            modelBuilder.Entity("ProMa.Models.Friendships", b =>
+            modelBuilder.Entity("ProMa.Models.Friendship", b =>
                 {
                     b.Property<int>("MemberOneId");
 
@@ -98,7 +83,40 @@ namespace ProMa.Migrations
                     b.ToTable("Friendships");
                 });
 
-            modelBuilder.Entity("ProMa.Models.NoteTypeMemberships", b =>
+            modelBuilder.Entity("ProMa.Models.FriendshipRequest", b =>
+                {
+                    b.Property<int>("SenderId");
+
+                    b.Property<int>("RecipientId");
+
+                    b.HasKey("SenderId", "RecipientId");
+
+                    b.HasAlternateKey("RecipientId", "SenderId");
+
+                    b.HasIndex("RecipientId")
+                        .HasName("IX_RecipientId");
+
+                    b.HasIndex("SenderId")
+                        .HasName("IX_SenderId");
+
+                    b.ToTable("FriendshipRequests");
+                });
+
+            modelBuilder.Entity("ProMa.Models.NoteType", b =>
+                {
+                    b.Property<int>("NoteTypeId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Hibernated");
+
+                    b.Property<string>("NoteTypeName");
+
+                    b.HasKey("NoteTypeId");
+
+                    b.ToTable("NoteTypes");
+                });
+
+            modelBuilder.Entity("ProMa.Models.NoteTypeMembership", b =>
                 {
                     b.Property<int>("NoteTypeId");
 
@@ -119,26 +137,12 @@ namespace ProMa.Migrations
                     b.ToTable("NoteTypeMemberships");
                 });
 
-            modelBuilder.Entity("ProMa.Models.NoteTypes", b =>
-                {
-                    b.Property<int>("NoteTypeId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Hibernated");
-
-                    b.Property<string>("NoteTypeName");
-
-                    b.HasKey("NoteTypeId");
-
-                    b.ToTable("NoteTypes");
-                });
-
-            modelBuilder.Entity("ProMa.Models.PostedNotes", b =>
+            modelBuilder.Entity("ProMa.Models.PostedNote", b =>
                 {
                     b.Property<int>("NoteId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool?>("Active")
+                    b.Property<bool>("Active")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("((1))");
 
@@ -181,7 +185,7 @@ namespace ProMa.Migrations
                     b.ToTable("PostedNotes");
                 });
 
-            modelBuilder.Entity("ProMa.Models.ProMaUsers", b =>
+            modelBuilder.Entity("ProMa.Models.ProMaUser", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
@@ -205,7 +209,19 @@ namespace ProMa.Migrations
                     b.ToTable("ProMaUsers");
                 });
 
-            modelBuilder.Entity("ProMa.Models.SharedChoreMemberships", b =>
+            modelBuilder.Entity("ProMa.Models.SharedChore", b =>
+                {
+                    b.Property<int>("SharedChoreId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ChoreName");
+
+                    b.HasKey("SharedChoreId");
+
+                    b.ToTable("SharedChores");
+                });
+
+            modelBuilder.Entity("ProMa.Models.SharedChoreMembership", b =>
                 {
                     b.Property<int>("SharedChoreId");
 
@@ -230,110 +246,112 @@ namespace ProMa.Migrations
                     b.ToTable("SharedChoreMemberships");
                 });
 
-            modelBuilder.Entity("ProMa.Models.SharedChores", b =>
+            modelBuilder.Entity("ProMa.Models.CalendarEntry", b =>
                 {
-                    b.Property<int>("SharedChoreId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ChoreName");
-
-                    b.HasKey("SharedChoreId");
-
-                    b.ToTable("SharedChores");
-                });
-
-            modelBuilder.Entity("ProMa.Models.CalendarEntries", b =>
-                {
-                    b.HasOne("ProMa.Models.ProMaUsers", "User")
+                    b.HasOne("ProMa.Models.ProMaUser", "PostedUser")
                         .WithMany("CalendarEntries")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_dbo.CalendarEntries_dbo.ProMaUsers_UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("ProMa.Models.CompletedChores", b =>
+            modelBuilder.Entity("ProMa.Models.CompletedChore", b =>
                 {
-                    b.HasOne("ProMa.Models.SharedChores", "SharedChore")
+                    b.HasOne("ProMa.Models.SharedChore", "SharedChore")
                         .WithMany("CompletedChores")
                         .HasForeignKey("SharedChoreId")
-                        .HasConstraintName("FK_dbo.ChoreItems_dbo.SharedChores_SharedChoreId");
+                        .HasConstraintName("FK_dbo.ChoreItems_dbo.SharedChores_SharedChoreId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ProMa.Models.ProMaUser", "CompletedUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("ProMa.Models.FriendshipRequests", b =>
+            modelBuilder.Entity("ProMa.Models.Friendship", b =>
                 {
-                    b.HasOne("ProMa.Models.ProMaUsers", "Recipient")
-                        .WithMany("FriendshipRequestsRecipient")
-                        .HasForeignKey("RecipientId")
-                        .HasConstraintName("FK_dbo.FriendshipRequests_dbo.ProMaUsers_RecipientId");
-
-                    b.HasOne("ProMa.Models.ProMaUsers", "Sender")
-                        .WithMany("FriendshipRequestsSender")
-                        .HasForeignKey("SenderId")
-                        .HasConstraintName("FK_dbo.FriendshipRequests_dbo.ProMaUsers_SenderId");
-                });
-
-            modelBuilder.Entity("ProMa.Models.Friendships", b =>
-                {
-                    b.HasOne("ProMa.Models.ProMaUsers", "MemberOne")
+                    b.HasOne("ProMa.Models.ProMaUser", "MemberOne")
                         .WithMany("FriendshipsMemberOne")
                         .HasForeignKey("MemberOneId")
-                        .HasConstraintName("FK_dbo.Friendships_dbo.ProMaUsers_MemberOneId");
+                        .HasConstraintName("FK_dbo.Friendships_dbo.ProMaUsers_MemberOneId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ProMa.Models.ProMaUsers", "MemberTwo")
+                    b.HasOne("ProMa.Models.ProMaUser", "MemberTwo")
                         .WithMany("FriendshipsMemberTwo")
                         .HasForeignKey("MemberTwoId")
-                        .HasConstraintName("FK_dbo.Friendships_dbo.ProMaUsers_MemberTwoId");
+                        .HasConstraintName("FK_dbo.Friendships_dbo.ProMaUsers_MemberTwoId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("ProMa.Models.NoteTypeMemberships", b =>
+            modelBuilder.Entity("ProMa.Models.FriendshipRequest", b =>
                 {
-                    b.HasOne("ProMa.Models.NoteTypes", "NoteType")
+                    b.HasOne("ProMa.Models.ProMaUser", "Recipient")
+                        .WithMany("FriendshipRequestsRecipient")
+                        .HasForeignKey("RecipientId")
+                        .HasConstraintName("FK_dbo.FriendshipRequests_dbo.ProMaUsers_RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ProMa.Models.ProMaUser", "Sender")
+                        .WithMany("FriendshipRequestsSender")
+                        .HasForeignKey("SenderId")
+                        .HasConstraintName("FK_dbo.FriendshipRequests_dbo.ProMaUsers_SenderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("ProMa.Models.NoteTypeMembership", b =>
+                {
+                    b.HasOne("ProMa.Models.NoteType", "NoteType")
                         .WithMany("NoteTypeMemberships")
                         .HasForeignKey("NoteTypeId")
-                        .HasConstraintName("FK_dbo.NoteTypeMemberships_dbo.NoteTypes_NoteTypeId");
+                        .HasConstraintName("FK_dbo.NoteTypeMemberships_dbo.NoteTypes_NoteTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ProMa.Models.ProMaUsers", "User")
+                    b.HasOne("ProMa.Models.ProMaUser", "MemberUser")
                         .WithMany("NoteTypeMemberships")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_dbo.NoteTypeMemberships_dbo.ProMaUsers_UserId");
+                        .HasConstraintName("FK_dbo.NoteTypeMemberships_dbo.ProMaUsers_UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("ProMa.Models.PostedNotes", b =>
+            modelBuilder.Entity("ProMa.Models.PostedNote", b =>
                 {
-                    b.HasOne("ProMa.Models.ProMaUsers", "CompletedUser")
+                    b.HasOne("ProMa.Models.ProMaUser", "CompletedUser")
                         .WithMany("PostedNotesCompletedUser")
                         .HasForeignKey("CompletedUserId")
                         .HasConstraintName("FK_dbo.PostedNotes_dbo.ProMaUsers_CompletedUserId");
 
-                    b.HasOne("ProMa.Models.ProMaUsers", "EditedUser")
+                    b.HasOne("ProMa.Models.ProMaUser", "EditedUser")
                         .WithMany("PostedNotesEditedUser")
                         .HasForeignKey("EditedUserId")
                         .HasConstraintName("FK_dbo.PostedNotes_dbo.ProMaUsers_EditedUserId");
 
-                    b.HasOne("ProMa.Models.NoteTypes", "NoteType")
+                    b.HasOne("ProMa.Models.NoteType", "TypeOfNote")
                         .WithMany("PostedNotes")
                         .HasForeignKey("NoteTypeId")
-                        .HasConstraintName("FK_dbo.PostedNotes_dbo.NoteTypes_NoteTypeId");
+                        .HasConstraintName("FK_dbo.PostedNotes_dbo.NoteTypes_NoteTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ProMa.Models.ProMaUsers", "User")
+                    b.HasOne("ProMa.Models.ProMaUser", "PostedUser")
                         .WithMany("PostedNotesUser")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_dbo.PostedNotes_dbo.ProMaUsers_UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ProMa.Models.SharedChoreMemberships", b =>
+            modelBuilder.Entity("ProMa.Models.SharedChoreMembership", b =>
                 {
-                    b.HasOne("ProMa.Models.SharedChores", "SharedChore")
+                    b.HasOne("ProMa.Models.SharedChore", "SharedChore")
                         .WithMany("SharedChoreMemberships")
                         .HasForeignKey("SharedChoreId")
-                        .HasConstraintName("FK_dbo.SharedChoreMemberships_dbo.SharedChores_SharedChoreId");
+                        .HasConstraintName("FK_dbo.SharedChoreMemberships_dbo.SharedChores_SharedChoreId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ProMa.Models.ProMaUsers", "User")
+                    b.HasOne("ProMa.Models.ProMaUser", "MemberUser")
                         .WithMany("SharedChoreMemberships")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_dbo.SharedChoreMemberships_dbo.ProMaUsers_UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
