@@ -155,8 +155,8 @@ function UploadImage(dom, highParent) {
 
 		var $textArea = $(dom).closest(highParent).find(".noteTextInput");
 
-		AjaxCallWithWait("/Services/Data/UploadImage", formData, $(dom), true, false, true, false).done(function (msg) {
-			$textArea.html($textArea.html() + ($textArea.html().length !== 0 ? "\r\n" : "") + "[[image:" + msg.fileName + "]]\r\n");
+		AjaxCallWithWait("/Services/Data/UploadImage", formData, $(dom), true, false, true, true).done(function (msg) {
+			$textArea.html($textArea.html() + ($textArea.html().length !== 0 ? "\r\n" : "") + "[[image:" + msg + "]]\r\n");
 			$(dom).parent().find("input[type=file]").val("");
 		}).fail(function (msg) {
 			AddFadingWarning($(dom).closest(highParent).find("input[type=file]"), "Upload failed. The image may have been too big? 10MB is the maximum size.", true);
@@ -459,8 +459,7 @@ function AppendNoteCreationArea($dom, noteAreaButtonFunc) {
 		"<div class='formSet noteAreaHolder'>" +
 			"<div class='formRow'><div class='noteTextInput' contenteditable='true' style='height: " + oldHeight.toString() + "px'>" + oldHtmlValue + "</div></div>" +
 			"<div class='formRow'><button class='noteAreaButton formItem' type='button'>Post</button>&nbsp;as&nbsp;type&nbsp;<select class='noteTypeSelect formItem'></select></div>" +
-			"<div class='formRow'><span class='weaktext'>Upload image WIP!</span></div>" +
-			// "<div class='formRow uploadImage'><input type='file' accept='image/*'/><button type='button' onclick='UploadImage(this, \"" + highParent + "\")'>Upload Image</button></div>" +
+			"<div class='formRow uploadImage'><input type='file' accept='image/*'/><button type='button' onclick='UploadImage(this, \"" + highParent + "\")'>Upload Image</button></div>" +
 		"</div>"
 		);
 

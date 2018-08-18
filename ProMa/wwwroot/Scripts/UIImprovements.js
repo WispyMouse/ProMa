@@ -246,9 +246,10 @@ function AjaxCallWithWait(url, data, $formElement, replaceElementWithWait, bigWa
 	// If there is one piece of information in the data object, then we're going to send this request as a form.
 	// Otherwise, stringify the object and place it in the body as a json type data
 	var transferedData = null, formFlag = false, firstInformation = "";
-	
 	if (data == null) {
 		transferedData = "";
+	} else if (uploadMode) {
+		transferedData = data;
 	} else {
 		if (Object.keys(data).length === 1 && uploadMode === false) {
 			firstInformation = data[Object.keys(data)[0]].toString();

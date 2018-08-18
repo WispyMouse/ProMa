@@ -9,6 +9,13 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using System.IO;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net;
+using System.Collections.Specialized;
+using Microsoft.Extensions.Configuration;
 
 namespace ProMa.Controllers
 {
@@ -163,28 +170,54 @@ namespace ProMa.Controllers
 
 		// Expects an image with the file name image and strings userId and md5Password
 		[HttpPost]
-		public void UploadImage()
+		public string UploadImage(IFormFile image)
 		{
-			// KAG TODO: This had the most amount of changes; Need to find several changes
-			
 			ProMaUser user = LoggedInUser;
 
 			if (user == null)
 				throw new NotLoggedInException();
 
-			//if (uploadedFile == null)
+			if (image == null)
 				throw new ArgumentException("No image in transport; this system only allows for uploading of a single image");
 
-			//string randomFileName = Guid.NewGuid().ToString() + "." + Regex.Match(uploadedFile.FileName, @"\.(.*)").Groups[1].Value;
-
-			//if (uploadedFile.Length > 10485760) // 10 MB; the web.config won't allow anything this large to get through in the first place, though
+			if (image.Length > 10485760) // 10 MB; the web.config won't allow anything this large to get through in the first place, though
 				throw new Exception("File too large");
 
-			
-			// file.SaveAs(HttpRuntime.AppDomainAppPath + "/Images/UploadedImages/" + randomFileName);
-			// HttpContext.Response.BufferOutput = true;
-			// HttpContext.Response.Write("{\"fileName\": \"" + randomFileName + "\"}");
-			// HttpContext.Response.Body.Flush();
+			byte[] uploadBytes;
+
+			using (MemoryStream stream = new MemoryStream())
+			{
+				image.CopyTo(stream);
+				uploadBytes = stream.ToArray();
+			}
+
+			Dictionary<string, string> content = new Dictionary<string, string>();
+			content.Add("type", "base64");
+			content.Add("image", Convert.ToBase64String(uploadBytes));
+
+			IConfigurationBuilder builder = new ConfigurationBuilder()
+					.SetBasePath(Directory.GetCurrentDirectory())
+					.AddJsonFile("localsettings.json");
+
+			IConfigurationRoot Configuration = builder.Build();
+
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.imgur.com/3/image");
+			request.Headers.Add("Authorization", $"Client-ID {Configuration.GetSection("IMGURAPI").GetValue<string>("ClientID")}");
+			request.Method = "POST";
+			request.ContentType = "application/x-www-form-urlencoded";
+			request.ContentLength = uploadBytes.Length;
+
+			Stream writer = request.GetRequestStream();
+			writer.Write(uploadBytes, 0, uploadBytes.Length);			
+
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+			using (Stream responseStream = response.GetResponseStream())
+			{
+				StreamReader reader = new StreamReader(responseStream, true);
+				string responseString = reader.ReadToEnd();
+				return JObject.Parse(responseString).SelectToken("data.link").Value<string>();
+			}				
 		}
 
 		[HttpPost]

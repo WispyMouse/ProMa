@@ -406,7 +406,7 @@ if (typeof PostedNotes == "undefined") {
 					false :
 					text.match(/<br\/?>\s*$/gi) === null;
 
-				$textArea.html(text + (addBreaklineToBefore ? "<br/>" : "") + "[[image:" + msg.fileName + "]]" + "<br/><br/>");
+				$textArea.html(text + (addBreaklineToBefore ? "<br/>" : "") + "[[image:" + msg + "]]" + "<br/><br/>");
 			}).fail(function (msg) {
 				AddFadingWarning($(dom).closest(highParent).find("input[type=file]"), "Upload failed. The image may have been too big? 10MB is the maximum size.", true);
 			});
