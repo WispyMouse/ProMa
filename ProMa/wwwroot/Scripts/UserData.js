@@ -49,10 +49,14 @@ function GetLoggedInUserInfo() {
 	var def = $.Deferred();
 
 	AjaxCallWithWait("/Services/Data/GetLoggedInUser", null, $(".loginPending"), true)
-	.done(function (msg) {
-		SetUserInformation(msg);
-
-		def.resolve();
+		.done(function (msg) {
+			if (msg === null || typeof (msg) === 'undefined') {
+			 // 204 no content returns an undefined
+			def.reject(); // The user isn't logged in
+		} else {
+			SetUserInformation(msg);
+			def.resolve();
+		}
 	}).fail(function (msg) {
 		def.reject();
 	});

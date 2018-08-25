@@ -150,7 +150,7 @@ namespace ProMa.Controllers
 		public ProMaUser GetLoggedInUser()
 		{
 			if (LoggedInUser == null)
-				throw new NotLoggedInException();
+				return null;
 
 			ProMaUser returnThis = LoggedInUser;
 
