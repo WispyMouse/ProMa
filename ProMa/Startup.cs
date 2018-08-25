@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using ProMa.Hubs;
 
 namespace ProMa
 {
@@ -34,10 +35,8 @@ namespace ProMa
 			services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
 			services.AddDistributedMemoryCache();
 			services.AddHttpContextAccessor();
-			services.AddSession(options =>
-			{
-				options.IdleTimeout = TimeSpan.FromMinutes(20);
-			});
+			services.AddSession();
+			services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +59,13 @@ namespace ProMa
 
 			app.UseStaticHttpContext();
 			app.UseSession();
+
+			app.UseWebSockets();
+
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<LongPollHub>("/longpollHub");
+			});
 
 			app.UseMvc(routes =>
             {

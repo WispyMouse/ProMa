@@ -5,3 +5,4 @@ ProMa/localsettings.Development.json
 .vs/ProMa/v15/sqlite3/storage.ide
 *.pubxml
 *.stackdump
+node_modules/

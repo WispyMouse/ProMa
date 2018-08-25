@@ -12,6 +12,8 @@ $(document).ready(function () {
 	});
 });
 
+var activeHeartBeat = null;
+
 function ShowWorkshop() {
 	document.title = DEFAULTPROMANAME;
 
@@ -88,13 +90,20 @@ function ShowWorkshop() {
 
 	$("#WorkshopUtilities").tabs("option", "active", desiredTabIndex);
 	NoteTypeManagement.GetNoteTypes()
-	.done(function () {
+		.done(function () {
 		LongPoll();
 	});
 }
 
 function HeartBeat() {
-	AjaxCallWithWait("/Services/Data/HeartBeat", null).done(function (msg) {
+	// Don't keep multiple heartbeats around
+	console.log("Heart beat start")
+	if (activeHeartBeat !== null) {
+		console.log("Heart beat ended due to new heart beat starting");
+		activeHeartBeat.reject("multiple");
+	}
+
+	activeHeartBeat = AjaxCallWithWait("/Services/Data/HeartBeat", null).done(function (msg) {
 		if (msg === true) {
 			AdminConsole.AddHeartBeat();
 			setTimeout(HeartBeat, 100000);
@@ -104,6 +113,11 @@ function HeartBeat() {
 		}
 
 	}).fail(function (msg) {
+		console.log("Heartbeat rejected, probably");
+		if (msg === "multiple") {
+			return;
+		}
+
 		if (msg.readyState === undefined || msg.readyState >= 4) {
 			AdminConsole.AddBrokenHeartBeat();
 		}
@@ -143,7 +157,6 @@ function AutoRelogLoop(previousTheme) {
 		$("#AutoRelog").closest(".ui-dialog").remove();
 		Themes.ChangeTheme(previousTheme); // reset theme back to previous value
 		HeartBeat(); // restart heartbeat
-		LongPoll();
 	});
 }
 
@@ -404,28 +417,26 @@ var choreCacheVersion = -1;
 var friendshipCacheVersion = -1;
 
 function LongPoll() {
-	var data = { userId: LoggedInUser.userId, choreCacheVersion: choreCacheVersion, friendshipCacheVersion: friendshipCacheVersion };
+	var longPollConnection = new signalR.HubConnectionBuilder()
+		.withUrl("/longpollHub", signalR.HttpTransportType.LongPolling)
+		.build();
 
-	AjaxCallWithWait("/Services/LongPoll/LongPoll/LongPoll", data).done(function (msg) {
-		var responseChoreCacheVersion = ValueOfKeyInKeyValuePairArray(msg, "choreCacheVersion");
-		if (choreCacheVersion !== responseChoreCacheVersion) {
+	longPollConnection.on("LongPollPop", function (newChoreCacheVersion, newFriendshipCacheVersion) {
+		if (choreCacheVersion !== newChoreCacheVersion) {
 			ChoreList.GetChoreItems();
-			choreCacheVersion = responseChoreCacheVersion;
+			choreCacheVersion = newChoreCacheVersion;
 		}
 
-		var responseFriendshipCacheVersion = ValueOfKeyInKeyValuePairArray(msg, "friendshipCacheVersion");
-		if (friendshipCacheVersion !== responseFriendshipCacheVersion) {
+		if (friendshipCacheVersion !== newFriendshipCacheVersion) {
 			UserConsole.UpdateFriends();
-			friendshipCacheVersion = responseFriendshipCacheVersion;
+			friendshipCacheVersion = newFriendshipCacheVersion;
 		}
 
-		LongPoll();
-	}).fail(function (msg) {
-		if (!WindowIsNavigating) {
-			AdminConsole.AddBrokenHeartBeat();
-			AutoRelog();
-		}		
+		friendshipCacheVersion = newFriendshipCacheVersion;
+		longPollConnection.invoke("LongPoll", LoggedInUser.userId, choreCacheVersion, friendshipCacheVersion);
 	});
+
+	longPollConnection.start().then(function () { longPollConnection.invoke("LongPoll", LoggedInUser.userId, choreCacheVersion, friendshipCacheVersion); });
 }
 
 // Helper function for LongPoll, because it returns a list of key value pairs
