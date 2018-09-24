@@ -25,7 +25,7 @@ namespace ProMa.Hubs
 					choreCacheVersion == newChoreCacheVersion
 				);
 
-			await Clients.Caller.SendAsync("LongPollPop", newFriendshipCacheVersion, newChoreCacheVersion);
+			await Clients.Caller.SendAsync("LongPollPop", newChoreCacheVersion, newFriendshipCacheVersion);
 		}
     }
 }
