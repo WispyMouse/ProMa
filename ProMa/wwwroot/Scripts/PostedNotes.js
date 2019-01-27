@@ -28,17 +28,18 @@ if (typeof PostedNotes == "undefined") {
 
 			SetCookie(DEFAULTNOTETYPECOOKIENAME, noteTypeId);
 
-			if (PostedNotes.VerifyIfPostIsValid(noteText) && $("#PostNote").find("button.noteAreaButton").is(":visible")) {
+			if (PostedNotes.VerifyIfPostIsValid(noteText)) {
+				if ($("#PostNote").find("button.noteAreaButton").css("visibility") !== "hidden") {
+					var data = { noteText: noteText, noteTypeId: noteTypeId };
 
-				var data = { noteText: noteText, noteTypeId: noteTypeId };
-
-				AjaxCallWithWait("/Services/PostedNotes/PostNote", data, $("#PostNote").find("button.noteAreaButton"), true)
-				.done(function (msg) {
-					if (msg != null) {
-						PostedNotes.AppendNote(msg, true);
-						$("#PostNote").find(".noteTextInput").html("");
-					}
-				});
+					AjaxCallWithWait("/Services/PostedNotes/PostNote", data, $("#PostNote").find("button.noteAreaButton"), true)
+						.done(function (msg) {
+							if (msg != null) {
+								PostedNotes.AppendNote(msg, true);
+								$("#PostNote").find(".noteTextInput").html("");
+							}
+						});
+				}
 			} else {
 				AddFadingWarning($("#PostNote").find("button.noteAreaButton"), "No note written");
 			}
