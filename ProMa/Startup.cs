@@ -92,7 +92,12 @@ namespace ProMa
 				ProMaUserHandler.PermanentlyDeleteUser(demoUser);
 			}
 
-			new DataController().RegisterProMaUser(new DataController.RegisterProMaUserRequestObject() { userName = "DemoAccount", md5Password = ProMaUser.ComputeMD5Hash("DemoAccount") });
+			ProMaUser demoAccount =
+				new DataController().RegisterProMaUser(new DataController.RegisterProMaUserRequestObject() { userName = "DemoAccount", md5Password = ProMaUser.ComputeMD5Hash("DemoAccount") });
+
+			demoAccount.IsDemo = true;
+
+			ProMaUserHandler.UpdateUser(demoAccount);
 		}
     }
 }
