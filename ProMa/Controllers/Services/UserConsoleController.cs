@@ -29,6 +29,8 @@ namespace ProMa.Controllers
 
 			List<ProMaUser> fittingUsers = ProMaUserHandler.GetAllUsers().Where(x => x.UserName.ToLower().Contains(name.ToLower()) && x.UserId != user.UserId).ToList();
 
+			fittingUsers = fittingUsers.Where(x => x.UserName != "DemoAccount").ToList();
+
 			List<ProMaUser> returnThis = new List<ProMaUser>();
 
 			List<FriendshipRequest> excludeBecauseRequested = FriendshipRequestHandler.GetRequestsForUser(user.UserId);
@@ -53,6 +55,17 @@ namespace ProMa.Controllers
 
 			if (user == null)
 				throw new NotLoggedInException();
+
+			if (user.IsDemo)
+				throw new Exception("Can't send friend requests as the Demo account");
+
+			ProMaUser target = ProMaUserHandler.GetUser(toUser);
+
+			if (target == null)
+				throw new Exception("No user with that ID exists");
+
+			if (target.IsDemo)
+				throw new Exception("Can't send friend requests to the Demo account");
 
 			FriendshipRequest newRequest = new FriendshipRequest();
 			newRequest.SenderId = user.UserId;

@@ -24,6 +24,7 @@ if (typeof UserConsole === "undefined") {
 				"<div class='formSet'>" +
 					"<div class='formRow'><span class='label'>&nbsp;</span><button class='formItem' type='button' onclick='LogOutUser();'>Log Out</button></div>" +
 				"</div>" +
+				(LoggedInUser.isDemo ? "" :
 				"<hr/>" +
 				"<div id='PendingUserConsole'></div>" +
 				"<div class='formSet'>" +
@@ -33,14 +34,14 @@ if (typeof UserConsole === "undefined") {
 					"<div class='formRow'><span class='label'>Name contains:</span><input id='UserNameContains' class='formItem' type='text'/></div>" +
 					"<div class='formRow'><span class='label'>&nbsp;</span><button class='formItem' type='button' onclick='UserConsole.SearchForFriends();'>Search</button></div>" +
 					"<div class='formRow'><span class='label'>&nbsp;</span><div class='formItem' id='UserConsoleSearchResults'></div></div>" +
-				"</div>";
+				"</div>");
 
 			$("#UserConsole").html(newHtml);
 
 			// function called by initial long poll: UserConsole.UpdateFriends();
 		},
 		SearchForFriends: function () {
-			var data = { name: $("#UserNameContains").val(), excludeOwn: true };
+			var data = { name: $("#UserNameContains").val() };
 
 			AjaxCallWithWait("/Services/UserConsole/UsersForFriendRequest", data, $("#ChoreItems"), true, true).done(function (msg) {
 				$("#UserConsoleSearchResults").html("<ul></ul>");
