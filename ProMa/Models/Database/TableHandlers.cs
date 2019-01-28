@@ -82,6 +82,38 @@ namespace ProMa.Models
 		{
 			return ThisCache;
 		}
+
+		public static void PermanentlyDeleteUser(ProMaUser toDelete)
+		{
+			using (ProMaDB scope = new ProMaDB())
+			{
+				foreach (PostedNote currentNote in PostedNoteHandler.GetNotes
+					(shownToUser: toDelete.UserId, includeInactive: true, onlyInactive: false, includeComplete: true, onlyThisNoteId: -1, includeHibernatedNotes: true))
+				{
+					PostedNoteHandler.PermanentlyDeleteNote(currentNote);
+				}
+
+				foreach (NoteType currentNoteType in NoteTypeHandler.GetNoteTypesForUser(toDelete.UserId))
+				{
+					NoteTypeHandler.DeleteNoteType(currentNoteType);
+				}
+
+				foreach (SharedChoreMembership currentSharedChoreMembership in SharedChoreMembershipHandler.GetSharedChoreMembershipsForUser(toDelete.UserId))
+				{
+					SharedChoreHandler.PermanentlyDeleteSharedChore(currentSharedChoreMembership.SharedChoreId);
+				}
+
+				foreach (CalendarEntry currentCalendarEntry in CalendarHandler.GetAllCalendarEntriesForUser(toDelete.UserId))
+				{
+					CalendarHandler.DeleteCalendar(currentCalendarEntry.CalendarId);
+				}
+
+				scope.ProMaUsers.Remove(toDelete);
+				scope.SaveChanges();
+
+				ThisCache.Remove(toDelete);
+			}
+		}
 	}
 
 	public static class PostedNoteHandler
@@ -221,6 +253,15 @@ namespace ProMa.Models
 
 			return returnThis;
 		}
+
+		public static void PermanentlyDeleteNote(PostedNote toDelete)
+		{
+			using (ProMaDB scope = new ProMaDB())
+			{
+				scope.PostedNotes.Remove(toDelete);
+				scope.SaveChanges();
+			}
+		}
 	}
 
 	public static class CompletedChoreHandler
@@ -267,6 +308,14 @@ namespace ProMa.Models
 			foreach (SharedChoreMembership curMembership in memberships)
 			{
 				CompletedChoreHandler.AddToUserChoreCacheIterator(curMembership.UserId);
+			}
+		}
+
+		public static List<CompletedChore> GetAllCompletedChoreItems(int sharedChoreId)
+		{
+			using (ProMaDB scope = new ProMaDB())
+			{
+				return scope.CompletedChores.Where(x => x.SharedChoreId == sharedChoreId).ToList();
 			}
 		}
 
@@ -471,6 +520,27 @@ namespace ProMa.Models
 			using (ProMaDB scope = new ProMaDB())
 			{
 				return scope.SharedChores.FirstOrDefault(x => x.SharedChoreId == sharedChoreId);
+			}
+		}
+
+		public static void PermanentlyDeleteSharedChore(int sharedChoreId)
+		{
+			using (ProMaDB scope = new ProMaDB())
+			{
+				SharedChore sharedChore = SharedChoreHandler.GetSharedChore(sharedChoreId);
+
+				foreach (CompletedChore currentCompletedChore in CompletedChoreHandler.GetAllCompletedChoreItems(sharedChore.SharedChoreId))
+				{
+					CompletedChoreHandler.UnCompleteChore(sharedChore.SharedChoreId, currentCompletedChore.ChoreDate);
+				}
+
+				foreach (SharedChoreMembership currentSharedChoreMembership in SharedChoreMembershipHandler.GetSharedChoreMembershipsForChore(sharedChoreId))
+				{
+					SharedChoreMembershipHandler.RemoveSharedChoreMembership(sharedChoreId, currentSharedChoreMembership.UserId);
+				}
+
+				scope.Remove(sharedChore);
+				scope.SaveChanges();
 			}
 		}
 	}
@@ -871,6 +941,14 @@ namespace ProMa.Models
 				toReturn = toReturn.OrderBy(x => x.ForDate.Year).ThenBy(x => x.ForDate.Month).ThenBy(x => x.ForDate.Day).ToList();
 
 				return toReturn;
+			}
+		}
+
+		public static List<CalendarEntry> GetAllCalendarEntriesForUser(int userId)
+		{
+			using (ProMaDB scope = new ProMaDB())
+			{
+				return scope.CalendarEntries.Where(x => x.UserId == userId).ToList();
 			}
 		}
 	}

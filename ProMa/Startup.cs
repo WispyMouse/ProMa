@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ProMa.Hubs;
+using ProMa.Models;
+using ProMa.Controllers;
 
 namespace ProMa
 {
@@ -77,6 +79,20 @@ namespace ProMa
 					name: "Services",
 					template: "Services/{controller=Home}/{action=Index}/{id?}");
 			});
+
+			ClearDemoAccount();
         }
+
+		void ClearDemoAccount()
+		{
+			ProMaUser demoUser = ProMaUserHandler.GetUserByUserName("DemoAccount");
+
+			if (demoUser != null)
+			{
+				ProMaUserHandler.PermanentlyDeleteUser(demoUser);
+			}
+
+			new DataController().RegisterProMaUser(new DataController.RegisterProMaUserRequestObject() { userName = "DemoAccount", md5Password = ProMaUser.ComputeMD5Hash("DemoAccount") });
+		}
     }
 }
