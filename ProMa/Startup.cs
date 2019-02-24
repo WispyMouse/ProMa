@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ProMa.Hubs;
 using ProMa.Models;
 using ProMa.Controllers;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ProMa
 {
@@ -39,10 +42,19 @@ namespace ProMa
 			services.AddHttpContextAccessor();
 			services.AddSession();
 			services.AddSignalR();
+
+			services.AddDirectoryBrowser();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		private StaticFileOptions GetStaticFileConfiguration()
+		{
+			var provider = new FileExtensionContentTypeProvider();
+			provider.Mappings[".unityweb"] = "application/octect-stream";
+			return new StaticFileOptions { ContentTypeProvider = provider };
+		}
+
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -57,7 +69,7 @@ namespace ProMa
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(GetStaticFileConfiguration());
 
 			app.UseStaticHttpContext();
 			app.UseSession();
