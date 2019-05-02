@@ -43,7 +43,6 @@ namespace ProMa.Controllers
 
 				if (cacheUser.HashedPassword == userPassword)
 				{
-					cacheUser.PassBackPassword = userPassword;
 					return cacheUser;
 				}
 				else
@@ -60,8 +59,14 @@ namespace ProMa.Controllers
 			public bool skipHash { get; set; }
 		}
 
+		public class LogInProMaUserResponse
+		{
+			public ProMaUser User { get; set; }
+			public string PassBackPassword { get; set; }
+		}
+
 		[HttpPost]
-		public ProMaUser LogInProMaUser([FromBody]LogInProMaUserRequestObject requestObject)
+		public LogInProMaUserResponse LogInProMaUser([FromBody]LogInProMaUserRequestObject requestObject)
 		{
 			string shaPassword = requestObject.skipHash ? requestObject.password : ProMaUser.ComputeSHA256(requestObject.password);
 
@@ -76,9 +81,11 @@ namespace ProMa.Controllers
 					HttpContext.Session.SetInt32(USERIDSESSIONKEY, relevantUser.UserId);
 					HttpContext.Session.SetString(USERPASSWORDSESSIONKEY, shaPassword);
 
-					relevantUser.PassBackPassword = shaPassword;
+					LogInProMaUserResponse response = new LogInProMaUserResponse();
+					response.User = relevantUser;
+					response.PassBackPassword = shaPassword;
 
-					return relevantUser;
+					return response;
 				}
 				else
 				{

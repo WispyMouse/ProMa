@@ -109,7 +109,6 @@ function HeartBeat() {
 			setTimeout(HeartBeat, 100000);
 		} else {
 			AdminConsole.AddBrokenHeartBeat();
-			AutoRelog();
 		}
 
 	}).fail(function (msg) {
@@ -148,6 +147,7 @@ function AutoRelog() {
 }
 
 function AutoRelogLoop(previousTheme) {
+	console.log("Relogging");
 	LoginWithInformation(LoggedInUser.userName, LoggedInUser.PassBackPassword, true).fail(function () {
 		setTimeout(function () {
 			Themes.ChangeTheme("Offline");
@@ -434,6 +434,10 @@ function LongPoll() {
 
 		friendshipCacheVersion = newFriendshipCacheVersion;
 		longPollConnection.invoke("LongPoll", LoggedInUser.userId, choreCacheVersion, friendshipCacheVersion);
+	});
+
+	longPollConnection.onclose(function () {
+		AutoRelog();
 	});
 
 	longPollConnection.start().then(function () { longPollConnection.invoke("LongPoll", LoggedInUser.userId, choreCacheVersion, friendshipCacheVersion); });

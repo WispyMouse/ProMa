@@ -22,7 +22,9 @@ function LoginWithInformation(userName, password, skipHash) {
 	var data = { userName: userName, password: password, skipHash: skipHash };
 
 	AjaxCallWithWait("/Services/Data/LogInProMaUser", data, $(".loginWaiter"), true).done(function (msg) {
-		SetUserInformation(msg);
+		SetUserInformation(msg.User);
+		console.log(msg);
+		LoggedInUser.PassBackPassword = msg.PassBackPassword;
 		def.resolve();
 	}).fail(function (msg) {
 		def.reject();
@@ -34,15 +36,13 @@ function LoginWithInformation(userName, password, skipHash) {
 function SetUserInformation(ProMaUserEntityObject) {
 	SetCookie(USERNAMECOOKIE, ProMaUserEntityObject.UserName);
 
-	LoggedInUser = {
-		userId: ProMaUserEntityObject.UserId,
-		isAdmin: ProMaUserEntityObject.IsAdmin,
-		isDemo: ProMaUserEntityObject.IsDemo,
-		enterAsNewlinePref: ProMaUserEntityObject.EnterIsNewLinePref,
-		emailAddress: ProMaUserEntityObject.EmailAddress === null ? "" : ProMaUserEntityObject.EmailAddress,
-		userName: ProMaUserEntityObject.UserName,
-		PassBackPassword: ProMaUserEntityObject.PassBackPassword
-	};
+	LoggedInUser.userId = ProMaUserEntityObject.UserId;
+	LoggedInUser.isAdmin = ProMaUserEntityObject.IsAdmin;
+	LoggedInUser.isDemo = ProMaUserEntityObject.IsDemo;
+	LoggedInUser.enterAsNewlinePref = ProMaUserEntityObject.EnterIsNewLinePref;
+	LoggedInUser.emailAddress = ProMaUserEntityObject.EmailAddress === null ? "" : ProMaUserEntityObject.EmailAddress;
+	LoggedInUser.userName = ProMaUserEntityObject.UserName;
+	// PassBackPassword is handled only at the LoginWithInformation step
 }
 
 function GetLoggedInUserInfo() {

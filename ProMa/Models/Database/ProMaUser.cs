@@ -28,10 +28,6 @@ namespace ProMa.Models
 		public bool IsDemo { get; set; }
 		public bool EnterIsNewLinePref { get; set; }
 
-		// Used for meta calls so the user can be relogged in
-		[NotMapped]
-		public string PassBackPassword { get; set; }
-
 		public ICollection<CalendarEntry> CalendarEntries { get; set; }
 		public ICollection<FriendshipRequest> FriendshipRequestsRecipient { get; set; }
 		public ICollection<FriendshipRequest> FriendshipRequestsSender { get; set; }
