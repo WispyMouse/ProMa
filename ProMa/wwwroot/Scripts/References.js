@@ -34,21 +34,21 @@ var TODAYDATENUMBER = DateToDay(TODAY);
 var TimeModes = {
 	JUSTTIMEMODE: 1,
 	JUSTDATEMODE: 2,
-	TIMEANDDATEMODE: 3,
-}
+	TIMEANDDATEMODE: 3
+};
 
 var DateModes = {
 	FULLDATE: 1,
 	REMOVEYEARIFSAME: 2,
 	CASUAL: 3
-}
+};
 
 function FormatDateString(toFormat, timeMode, dateMode, adjustTimezone) {
-	if (timeMode == undefined) {
+	if (timeMode === undefined) {
 		timeMode = TimeModes.TIMEANDDATEMODE;
 	}
 
-	if (dateMode == undefined) {
+	if (dateMode === undefined) {
 		dateMode = DateModes.FULLDATE;
 	}
 
@@ -86,7 +86,7 @@ function FormatDateString(toFormat, timeMode, dateMode, adjustTimezone) {
 		dayDifference = Math.abs(dayDifference);
 	}
 
-	if (dateMode == DateModes.FULLDATE || dateMode === DateModes.REMOVEYEARIFSAME) {
+	if (dateMode === DateModes.FULLDATE || dateMode === DateModes.REMOVEYEARIFSAME) {
 		dateString = (fixedTime.getMonth() + 1).toString() + "/" + fixedTime.getDate().toString();
 
 		if (yearIsDifferent || dateMode === DateModes.FULLDATE) {
@@ -102,7 +102,7 @@ function FormatDateString(toFormat, timeMode, dateMode, adjustTimezone) {
 		} else if (dayDifference === 1 && !dateIsBefore) {
 			dateString = "Tomorrow";
 		} else if (dayDifference < 8) {
-			dateString = InWords(dayDifference) + " Days"
+			dateString = InWords(dayDifference) + " Days";
 
 			if (dateIsBefore) {
 				dateString += " Ago";
@@ -149,7 +149,7 @@ function FormatDateString(toFormat, timeMode, dateMode, adjustTimezone) {
 }
 
 function AMPMString(hour, minute) {
-	return (hour % 12 + (hour % 12 == 0 ? 12 : 0)).toString() + ":" + (minute < 10 ? "0" : "") + minute.toString() + " " + (hour < 12 ? "AM" : "PM");
+	return (hour % 12 + (hour % 12 === 0 ? 12 : 0)).toString() + ":" + (minute < 10 ? "0" : "") + minute.toString() + " " + (hour < 12 ? "AM" : "PM");
 }
 
 /* SetCookie and GetCookie mutated from this stack overflow answer from Vignesh Pichamani
@@ -220,17 +220,17 @@ function IsLeapYear(year) {
 function DateToDay(date) {
 	var feb = DaysInFebruary(date.getFullYear());
 	var aggregateMonths = [0, // January
-				     31, // February
-				     31 + feb, // March
-				     31 + feb + 31, // April
-				     31 + feb + 31 + 30, // May
-				     31 + feb + 31 + 30 + 31, // June
-				     31 + feb + 31 + 30 + 31 + 30, // July
-				     31 + feb + 31 + 30 + 31 + 30 + 31, // August
-				     31 + feb + 31 + 30 + 31 + 30 + 31 + 31, // September
-				     31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30, // October
-				     31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31, // November
-				     31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30, // December
+					31, // February
+					31 + feb, // March
+					31 + feb + 31, // April
+					31 + feb + 31 + 30, // May
+					31 + feb + 31 + 30 + 31, // June
+					31 + feb + 31 + 30 + 31 + 30, // July
+					31 + feb + 31 + 30 + 31 + 30 + 31, // August
+					31 + feb + 31 + 30 + 31 + 30 + 31 + 31, // September
+					31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30, // October
+					31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31, // November
+					31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 // December
 	];
 	return aggregateMonths[date.getMonth()] + date.getDate();
 }

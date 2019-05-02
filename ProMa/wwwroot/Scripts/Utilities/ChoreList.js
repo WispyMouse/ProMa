@@ -7,8 +7,8 @@ if (typeof ChoreList === "undefined") {
 
 			$choreListLanding.append("<div id='ChoreItems'></div>" +
 				"<div class='formSet'>" +
-					"<div class='formRow'><input type='text' id='ChoreDate' value='' class='formItem'/><button onclick='ChoreList.ChangeDay(-1); return false;' type='button'>&lt;</button><button onclick='ChoreList.ChangeDay(0); return false;'>today</button><button onclick='ChoreList.ChangeDay(1); return false;'>&gt;</button></div>" +
-					"<div class='formRow addItem'><input type='text' class='formItem'/><button onclick='ChoreList.AddChoreItem(); return false;'>Add New Chore</button></div>" +
+				"<div class='formRow'><input type='text' id='ChoreDate' value='' class='formItem'/><button onclick='ChoreList.ChangeDay(-1); return false;' type='button'>&lt;</button><button onclick='ChoreList.ChangeDay(0); return false;'>today</button><button onclick='ChoreList.ChangeDay(1); return false;'>&gt;</button></div>" +
+				"<div class='formRow addItem'><input type='text' class='formItem'/><button onclick='ChoreList.AddChoreItem(); return false;'>Add New Chore</button></div>" +
 				"</div>" +
 				"<hr/>" +
 				"<p>This chore utility helps organize daily tasks that you might have. Ex, take out the trash.</p>" +
@@ -32,9 +32,9 @@ if (typeof ChoreList === "undefined") {
 					$("#ChoreList").find(".addItem").find("input").val("");
 
 					AjaxCallWithWait("/Services/Chores/AddNewChore", data, $("#ChoreList").find(".addItem").find("button"), true)
-					.done(function (msg) {
-						// This will refresh thanks to the long poll
-					});
+						.done(function (msg) {
+							// This will refresh thanks to the long poll
+						});
 				}
 			} else {
 				AddFadingWarning($("#ChoreList").find(".addItem").find("button"), "No chore name");
@@ -59,86 +59,86 @@ if (typeof ChoreList === "undefined") {
 
 			var data = { year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1, day: selectedDate.getDate() };
 			AjaxCallWithWait("/Services/Chores/GetChoreItems", data, $("#ChoreItems"), true, true)
-			.done(function (msg) {
-				$("#ChoreItems").html("");
-				$.each(msg, function (index, value) {
-					var completionString = "";
+				.done(function (msg) {
+					$("#ChoreItems").html("");
+					$.each(msg, function (index, value) {
+						var completionString = "";
 
-					if (value.UserId !== null) {
-						var completionTime = ParseDateFromJSONReturn(value.PostedTime);
-						var completionTimeString = FormatDateString(completionTime, TimeModes.JUSTTIMEMODE);
+						if (value.UserId !== null) {
+							var completionTime = ParseDateFromJSONReturn(value.PostedTime);
+							var completionTimeString = FormatDateString(completionTime, TimeModes.JUSTTIMEMODE);
 
-						completionString = "<i class='weaktext fadedBackground' title='" + FormatDateString(completionTime, TimeModes.JUSTDATEMODE, DateModes.FULLDATE) + "'>" + value.CompletedUser.UserName + ", " + completionTimeString + "</i>";
-					} else if (value.LastDoneUser !== null) {
-						var dateMode = DateModes.CASUAL;
-						if (DateToDay(selectedDate) !== TODAYDATENUMBER || selectedDate.getFullYear() !== TODAY.getFullYear())
-							dateMode = DateModes.REMOVEYEARIFSAME;
+							completionString = "<i class='weaktext fadedBackground' title='" + FormatDateString(completionTime, TimeModes.JUSTDATEMODE, DateModes.FULLDATE) + "'>" + value.CompletedUser.UserName + ", " + completionTimeString + "</i>";
+						} else if (value.LastDoneUser !== null) {
+							var dateMode = DateModes.CASUAL;
+							if (DateToDay(selectedDate) !== TODAYDATENUMBER || selectedDate.getFullYear() !== TODAY.getFullYear())
+								dateMode = DateModes.REMOVEYEARIFSAME;
 
-						var completionTime = ParseDateFromJSONReturn(value.LastDoneTime);
-						var completionTimeString = FormatDateString(completionTime, TimeModes.JUSTDATEMODE, dateMode);
-						completionString = "<i class='weaktext fadedBackground' title='" + FormatDateString(completionTime, TimeModes.JUSTDATEMODE, DateModes.FULLDATE) + "'>" + value.LastDoneUser.UserName + ", " + completionTimeString + "</i>";
-					}
+							var completionTime = ParseDateFromJSONReturn(value.LastDoneTime);
+							var completionTimeString = FormatDateString(completionTime, TimeModes.JUSTDATEMODE, dateMode, false);
+							completionString = "<i class='weaktext fadedBackground' title='" + FormatDateString(completionTime, TimeModes.JUSTDATEMODE, DateModes.FULLDATE, false) + "'>" + value.LastDoneUser.UserName + ", " + completionTimeString + "</i>";
+						}
 
-					var alertHour = value.SharedChore.Membership.AlertHour;
-					var alertMinute = value.SharedChore.Membership.AlertMinute;
-					var alertTime = "";
-					var alertBellString = "";
+						var alertHour = value.SharedChore.Membership.AlertHour;
+						var alertMinute = value.SharedChore.Membership.AlertMinute;
+						var alertTime = "";
+						var alertBellString = "";
 
-					if (alertHour != null) {
-						alertTime = AMPMString(alertHour, alertMinute);
-						alertBellString = "<span class='noteAction'><span class='promaicon promaicon-bell promaicon-clear' title='Alert set for " + alertTime + "'></span></span>";
-					}
+						if (alertHour !== null) {
+							alertTime = AMPMString(alertHour, alertMinute);
+							alertBellString = "<span class='noteAction'><span class='promaicon promaicon-bell promaicon-clear' title='Alert set for " + alertTime + "'></span></span>";
+						}
 
-					$("#ChoreItems").append(
-						"<span data-choreid='" + value.SharedChoreId + "' data-alertHour='" + alertHour + "' data-alertMinute='" + alertMinute + "' class='choreListItem'>" +
+						$("#ChoreItems").append(
+							"<span data-choreid='" + value.SharedChoreId + "' data-alertHour='" + alertHour + "' data-alertMinute='" + alertMinute + "' class='choreListItem'>" +
 							"<span class='promaicon promaicon-handle'></span>" +
 							"<span class='checkboxHolder'>" +
-								"<input type='checkbox' onchange='ChoreList.ChangeChoreItemCompletion(this);' " + (value.Completed ? "checked" : "") + "/>" +
+							"<input type='checkbox' onchange='ChoreList.ChangeChoreItemCompletion(this);' " + (value.Completed ? "checked" : "") + "/>" +
 							"</span>" +
 							"<span class='choreName' title='" + value.SharedChore.ChoreName + "'>" + value.SharedChore.ChoreName + "</span>" +
 							"<span class='noteActionList'>" +
-								"<span class='noteAction'>" + completionString + "</span>" +
-								alertBellString +
-								"<span class='noteAction'><a href='javascript:void(0);' onclick='ChoreList.ManageChore(this, false);'><span class='promaicon promaicon-page' title='Manage this chore.'></span></a></span>" +
+							"<span class='noteAction'>" + completionString + "</span>" +
+							alertBellString +
+							"<span class='noteAction'><a href='javascript:void(0);' onclick='ChoreList.ManageChore(this, false);'><span class='promaicon promaicon-page' title='Manage this chore.'></span></a></span>" +
 							"</span>" +
-						"</span>"
+							"</span>"
 						);
 
-					if (DateToDay(selectedDate) === TODAYDATENUMBER) {
-						// prime to send an alert if the chore wasn't done today
-						if (alertHour != null && alertMinute != null && value.UserId === null) {
-							var targetTime = new Date(nowTime);
-							targetTime.setHours(alertHour, alertMinute, 0, 0);
-							var timeDiff = targetTime - nowTime;
+						if (DateToDay(selectedDate) === TODAYDATENUMBER) {
+							// prime to send an alert if the chore wasn't done today
+							if (alertHour !== null && alertMinute !== null && value.UserId === null) {
+								var targetTime = new Date(nowTime);
+								targetTime.setHours(alertHour, alertMinute, 0, 0);
+								var timeDiff = targetTime - nowTime;
 
-							if (timeDiff > 0) {
-								ChoreList.choreAlerts.push(setTimeout(function () { ChoreList.ChoreAlert(value.SharedChore.ChoreName, value.SharedChoreId, alertTime); }, timeDiff));
-							} else {
-								// we're past due for completing this chore, and it wasn't marked off
-								ChoreList.ChoreAlert(value.SharedChore.ChoreName, value.SharedChoreId, alertTime);
+								if (timeDiff > 0) {
+									ChoreList.choreAlerts.push(setTimeout(function () { ChoreList.ChoreAlert(value.SharedChore.ChoreName, value.SharedChoreId, alertTime); }, timeDiff));
+								} else {
+									// we're past due for completing this chore, and it wasn't marked off
+									ChoreList.ChoreAlert(value.SharedChore.ChoreName, value.SharedChoreId, alertTime);
+								}
 							}
 						}
-					}
+					});
+					ChoreList.choreListLoadingItems = false;
+
+					$("#ChoreItems").sortable({
+						handle: ".promaicon.promaicon-handle",
+						stop: function (event, ui) {
+							var data = { pairings: [] };
+
+							$.each($("#ChoreItems > span"), function (index, value) {
+								data.pairings.push({ Key: parseInt($(value).attr("data-choreid")), Value: index });
+							});
+
+							AjaxCallWithWait("/Services/Chores/RememberSorting", data, $("#ChoreItems"), true, true).done(function () {
+								ChoreList.GetChoreItems();
+							});
+						}
+					});
+
+					def.resolve();
 				});
-				ChoreList.choreListLoadingItems = false;
-
-				$("#ChoreItems").sortable({
-					handle: ".promaicon.promaicon-handle",
-					stop: function (event, ui) {
-						var data = { pairings: [] };
-
-						$.each($("#ChoreItems > span"), function (index, value) {
-							data.pairings.push({ Key: parseInt($(value).attr("data-choreid")), Value: index });
-						});
-
-						AjaxCallWithWait("/Services/Chores/RememberSorting", data, $("#ChoreItems"), true, true).done(function () {
-							ChoreList.GetChoreItems();
-						});
-					}
-				});
-
-				def.resolve();
-			});
 
 			return def;
 		},
@@ -147,9 +147,9 @@ if (typeof ChoreList === "undefined") {
 
 			if (confirm("Are you sure you want to remove yourself from this chore?")) {
 				AjaxCallWithWait("/Services/Chores/RemoveChoreMembership", data, $("#ChoreItems"), true, true)
-				.done(function (msg) {
-					// This will refresh thanks to the long poll
-				});
+					.done(function (msg) {
+						// This will refresh thanks to the long poll
+					});
 			}
 		},
 		ChangeChoreItemCompletion: function (button) {
@@ -166,9 +166,9 @@ if (typeof ChoreList === "undefined") {
 			}
 
 			AjaxCallWithWait("/Services/Chores/ChangeChoreItemCompletion", data, $(button).parent(), true, false)
-			.done(function (msg) {
-				// This will refresh thanks to the long poll
-			});
+				.done(function (msg) {
+					// This will refresh thanks to the long poll
+				});
 		},
 		ManageChore: function (button, forceOpen) {
 			if ($(button).closest(".choreListItem").find(".manageChore").length !== 0) {
@@ -183,32 +183,32 @@ if (typeof ChoreList === "undefined") {
 			var data = { choreId: choreId };
 
 			AjaxCallWithWait("/Services/Chores/GetUsersNotAssignedToChore", data, $(button), true, false)
-			.done(function (msg) {
-				var userSelectorHtml = "<option value='-1'>(none)</option>";
+				.done(function (msg) {
+					var userSelectorHtml = "<option value='-1'>(none)</option>";
 
-				$.each(msg, function (index, value) {
-					userSelectorHtml += "<option value='" + value.UserId + "'>" + value.UserName + "</option>";
+					$.each(msg, function (index, value) {
+						userSelectorHtml += "<option value='" + value.UserId + "'>" + value.UserName + "</option>";
+					});
+
+					$(button).closest(".choreListItem").append("<div class='manageChore'>" +
+						"<div class='formSet'>" +
+						"<div class='formRow'>" +
+						"<select class='userIdSelector'>" + userSelectorHtml + "</select><button type='button' title='Share this chore with the selected user to the left.' onclick='ChoreList.AddChoreMembership(this)'>Share</button>" +
+						"<button onclick='ChoreList.RemoveChoreMembership(" + choreId + ")' title='Remove YOURSELF from this chore. All other people will keep this chore, if anyone has it.' type='button'>Remove Chore</button>" +
+						"</div>" +
+						"</div>" +
+						"<div class='formSet'>" +
+						"<div class='formRow'>" +
+						"<input type='number' min='0' max='23' title='Military-time style hours, where 0 is midnight and 12 is noon.' class='hourInput'/><input type='number' min='0' max='59' title='Minutes.' class='minuteInput'/><button type='button' onclick='ChoreList.SaveAlert(this)' title='Save the alert. Alerts are daily popups reminding you of this chore.''>Save Alert</button><button type='button' onclick='ChoreList.ClearAlert(this)' title='Clears the inputs to the left. This does not save the alert being cleared, so make sure to hit save after this!'>Clear</button>" +
+						"</div>" +
+						"</div>" +
+						"</div>");
+
+					if ($(button).closest(".choreListItem").attr("data-alerthour") !== "null") {
+						$(button).closest(".choreListItem").find(".hourInput").val($(button).closest(".choreListItem").attr("data-alerthour"));
+						$(button).closest(".choreListItem").find(".minuteInput").val($(button).closest(".choreListItem").attr("data-alertminute"));
+					}
 				});
-
-				$(button).closest(".choreListItem").append("<div class='manageChore'>" +
-						"<div class='formSet'>" +
-							"<div class='formRow'>" +
-								"<select class='userIdSelector'>" + userSelectorHtml + "</select><button type='button' title='Share this chore with the selected user to the left.' onclick='ChoreList.AddChoreMembership(this)'>Share</button>" +
-								"<button onclick='ChoreList.RemoveChoreMembership(" + choreId + ")' title='Remove YOURSELF from this chore. All other people will keep this chore, if anyone has it.' type='button'>Remove Chore</button>" +
-							"</div>" +
-						"</div>" +
-						"<div class='formSet'>" +
-							"<div class='formRow'>" +
-								"<input type='number' min='0' max='23' title='Military-time style hours, where 0 is midnight and 12 is noon.' class='hourInput'/><input type='number' min='0' max='59' title='Minutes.' class='minuteInput'/><button type='button' onclick='ChoreList.SaveAlert(this)' title='Save the alert. Alerts are daily popups reminding you of this chore.''>Save Alert</button><button type='button' onclick='ChoreList.ClearAlert(this)' title='Clears the inputs to the left. This does not save the alert being cleared, so make sure to hit save after this!'>Clear</button>" +
-							"</div>" +
-						"</div>" +
-					"</div>");
-
-				if ($(button).closest(".choreListItem").attr("data-alerthour") !== "null") {
-					$(button).closest(".choreListItem").find(".hourInput").val($(button).closest(".choreListItem").attr("data-alerthour"));
-					$(button).closest(".choreListItem").find(".minuteInput").val($(button).closest(".choreListItem").attr("data-alertminute"));
-				}
-			});
 		},
 		AddChoreMembership: function (button) {
 			var choreId = $(button).closest(".choreListItem").attr("data-choreid");
@@ -217,9 +217,9 @@ if (typeof ChoreList === "undefined") {
 			if (userId !== "-1") {
 				var data = { choreId: choreId, userId: userId };
 				AjaxCallWithWait("/Services/Chores/AssignUserToChore", data, $(button), true, false)
-				.done(function (msg) {
-					ChoreList.ManageChore($(button).closest(".choreListItem").find(".noteAction").find("a")[0], true);
-				});
+					.done(function (msg) {
+						ChoreList.ManageChore($(button).closest(".choreListItem").find(".noteAction").find("a")[0], true);
+					});
 			}
 		},
 		GetSelectedDate: function () {
@@ -268,8 +268,8 @@ if (typeof ChoreList === "undefined") {
 
 			if ($existingAlertForId.length === 0) {
 				$("html").append("<div class='ChoreAlert' data-choreid='" + choreId.toString() + "'>" +
-				"<p>This is the alert you set for <strong>" + choreText + "</strong>,</p><p>which is going off at <strong>" + timeString + "</strong>!</p>" +
-				"</div>");
+					"<p>This is the alert you set for <strong>" + choreText + "</strong>,</p><p>which is going off at <strong>" + timeString + "</strong>!</p>" +
+					"</div>");
 
 				var $alertDiv = $(".ChoreAlert").last();
 
@@ -305,7 +305,7 @@ if (typeof ChoreList === "undefined") {
 
 		choreListLoadingItems: false,
 		choreAlerts: []
-	}
+	};
 
 	SubscribeToTabCreation("ChoreList", "Chore List", ChoreList.init);
 }

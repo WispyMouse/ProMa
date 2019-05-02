@@ -7,3 +7,4 @@ ProMa/localsettings.Development.json
 *.stackdump
 node_modules/
 ProMa/wwwroot/Games/Build/
+*.user
