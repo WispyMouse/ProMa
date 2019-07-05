@@ -81,11 +81,6 @@ namespace ProMa
 				routes.MapHub<LongPollHub>("/longpollHub");
 			});
 
-			app.UseSignalR(routes =>
-			{
-				routes.MapHub<MusicJunkHub>("/musicjunkHub");
-			});
-
 			app.UseMvc(routes =>
             {
                 routes.MapRoute(

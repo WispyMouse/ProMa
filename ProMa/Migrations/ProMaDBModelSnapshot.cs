@@ -102,41 +102,6 @@ namespace ProMa.Migrations
                     b.ToTable("FriendshipRequests");
                 });
 
-            modelBuilder.Entity("ProMa.Models.MusicJunkArtist", b =>
-                {
-                    b.Property<int>("ArtistId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ArtistName");
-
-                    b.Property<int>("GeniusId");
-
-                    b.HasKey("ArtistId");
-
-                    b.ToTable("MusicJunkArtists");
-                });
-
-            modelBuilder.Entity("ProMa.Models.MusicJunkSong", b =>
-                {
-                    b.Property<int>("SongId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ArtistId");
-
-                    b.Property<int>("GeniusId");
-
-                    b.Property<string>("Lyrics");
-
-                    b.HasKey("SongId");
-
-                    b.HasAlternateKey("ArtistId", "SongId");
-
-                    b.HasIndex("ArtistId")
-                        .HasName("IX_ArtistId");
-
-                    b.ToTable("MusicJunkSongs");
-                });
-
             modelBuilder.Entity("ProMa.Models.NoteType", b =>
                 {
                     b.Property<int>("NoteTypeId")
@@ -331,15 +296,6 @@ namespace ProMa.Migrations
                         .WithMany("FriendshipRequestsSender")
                         .HasForeignKey("SenderId")
                         .HasConstraintName("FK_dbo.FriendshipRequests_dbo.ProMaUsers_SenderId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("ProMa.Models.MusicJunkSong", b =>
-                {
-                    b.HasOne("ProMa.Models.MusicJunkArtist", "Artist")
-                        .WithMany("Songs")
-                        .HasForeignKey("ArtistId")
-                        .HasConstraintName("FK_dbo.MusicJunkSongs_dbo.MusicJunkArtists_ArtistId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
