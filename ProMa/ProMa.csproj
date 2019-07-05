@@ -3,7 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+    <UserSecretsId>5bf883eb-4fa9-4471-aff0-245505042774</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190705000027_ArtistsSongs.cs" />
+    <Compile Remove="Migrations\20190705000027_ArtistsSongs.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Resume.pdf" />
@@ -34,7 +40,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\Scripts\" />
     <Folder Include="wwwroot\Styles\" />
   </ItemGroup>
 
@@ -56,6 +61,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\MusicJunk\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Games\Tetris.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -11,9 +11,10 @@ using System;
 namespace ProMa.Migrations
 {
     [DbContext(typeof(ProMaDB))]
-    partial class ProMaDBModelSnapshot : ModelSnapshot
+    [Migration("20190705000927_ArtistsSongs")]
+    partial class ArtistsSongs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,8 +110,6 @@ namespace ProMa.Migrations
 
                     b.Property<string>("ArtistName");
 
-                    b.Property<int>("GeniusId");
-
                     b.HasKey("ArtistId");
 
                     b.ToTable("MusicJunkArtists");
@@ -118,18 +117,16 @@ namespace ProMa.Migrations
 
             modelBuilder.Entity("ProMa.Models.MusicJunkSong", b =>
                 {
-                    b.Property<int>("SongId")
+                    b.Property<int>("SongID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ArtistId");
 
-                    b.Property<int>("GeniusId");
-
                     b.Property<string>("Lyrics");
 
-                    b.HasKey("SongId");
+                    b.HasKey("SongID");
 
-                    b.HasAlternateKey("ArtistId", "SongId");
+                    b.HasAlternateKey("ArtistId", "SongID");
 
                     b.HasIndex("ArtistId")
                         .HasName("IX_ArtistId");

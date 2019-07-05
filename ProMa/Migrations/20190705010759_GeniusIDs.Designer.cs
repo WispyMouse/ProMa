@@ -11,9 +11,10 @@ using System;
 namespace ProMa.Migrations
 {
     [DbContext(typeof(ProMaDB))]
-    partial class ProMaDBModelSnapshot : ModelSnapshot
+    [Migration("20190705010759_GeniusIDs")]
+    partial class GeniusIDs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -22,6 +22,9 @@ namespace ProMa.Models
 		public virtual DbSet<SharedChoreMembership> SharedChoreMemberships { get; set; }
 		public virtual DbSet<SharedChore> SharedChores { get; set; }
 
+		public virtual DbSet<MusicJunkArtist> MusicJunkArtists { get; set; }
+		public virtual DbSet<MusicJunkSong> MusicJunkSongs { get; set; }
+
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -217,9 +220,22 @@ namespace ProMa.Models
 					.HasConstraintName("FK_dbo.SharedChoreMemberships_dbo.ProMaUsers_UserId");
 			});
 
-			modelBuilder.Entity<SharedChore>(entity =>
+			modelBuilder.Entity<MusicJunkArtist>(entity =>
 			{
-				entity.HasKey(e => e.SharedChoreId);
+				entity.HasKey(e => e.ArtistId);
+			});
+
+			modelBuilder.Entity<MusicJunkSong>(entity =>
+			{
+				entity.HasKey(e => e.SongId);
+
+				entity.HasIndex(e => e.ArtistId)
+					.HasName("IX_ArtistId");
+
+				entity.HasOne(d => d.Artist)
+					.WithMany(p => p.Songs)
+					.HasForeignKey(d => d.ArtistId)
+					.HasConstraintName("FK_dbo.MusicJunkSongs_dbo.MusicJunkArtists_ArtistId");
 			});
 		}
 	}
