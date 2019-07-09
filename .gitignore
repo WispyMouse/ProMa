@@ -1,5 +1,3 @@
-ProMa/bin/
-ProMa/obj/
 ProMa/localsettings.json
 ProMa/localsettings.Development.json
 .vs/
@@ -9,3 +7,4 @@ node_modules/
 ProMa/wwwroot/Games/Build/
 *.user
 */bin/*
+*/obj/*
