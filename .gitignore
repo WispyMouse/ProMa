@@ -8,3 +8,4 @@ ProMa/localsettings.Development.json
 node_modules/
 ProMa/wwwroot/Games/Build/
 *.user
+*/bin/*
