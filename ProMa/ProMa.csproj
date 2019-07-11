@@ -56,10 +56,4 @@
     <None Include="wwwroot\Styles\UnloggedStyles.css" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Views\Games\Tetris.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-  </ItemGroup>
-
 </Project>
