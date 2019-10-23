@@ -154,14 +154,16 @@ namespace ProMa.Controllers
 		}
 
 		[HttpPost]
-		public ProMaUser GetLoggedInUser()
+		public LogInProMaUserResponse GetLoggedInUser()
 		{
 			if (LoggedInUser == null)
 				return null;
 
-			ProMaUser returnThis = LoggedInUser;
+            LogInProMaUserResponse response = new LogInProMaUserResponse();
+            response.User = LoggedInUser;
+            response.PassBackPassword = LoggedInUser.HashedPassword;
 
-			return LoggedInUser;
+            return response;
 		}
 
 		[HttpPost]
