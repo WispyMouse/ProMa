@@ -32,7 +32,7 @@ function LoginWithInformation(userName, password, skipHash) {
 }
 
 function SetUserInformation(ProMaUserEntityObject) {
-	SetCookie(USERNAMECOOKIE, ProMaUserEntityObject.UserName);
+	SetCookie(USERNAMECOOKIE, ProMaUserEntityObject.User.UserName);
 
 	LoggedInUser.userId = ProMaUserEntityObject.User.UserId;
     LoggedInUser.isAdmin = ProMaUserEntityObject.User.IsAdmin;
